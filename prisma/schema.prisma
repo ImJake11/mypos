@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id      String    @id @unique @default(uuid())
+  content String
+  product Product[]
+}
+
+model Product {
+  id                  String               @id @unique @default(uuid())
+  name                String               @default("")
+  description         String?
+  categoryID          String
+  category            Category             @relation(fields: [categoryID], references: [id])
+  sellingPrice        Int
+  costPrice           Int
+  tax                 Int
+  bulkEnabled         Boolean              @default(false)
+  highlights          String?
+  stock               Int
+  lowStock            Int
+  variants            Variants[]
+  coverImage          String
+  photoSnapshots      String[]
+  bulkTier            BulkTire[]
+  promotionalDiscount PromotionalDiscount?
+  createdAt           DateTime             @default(now())
+  isActive            Boolean              @default(true)
+  isFavorite          Boolean              @default(false)
+}
+
+model Variants {
+  id         String  @id @unique @default(uuid())
+  name       String
+  price      Int
+  stock      Int
+  imageUrl   String
+  isPositive Boolean @default(false)
+  product    Product @relation(fields: [productId], references: [id])
+  productId  String  
+  isArchived Boolean @default(false)
+}
+
+model BulkTire {
+  id        String  @id @unique @default(uuid())
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  
+  quantity  Int
+  discount  Int
+}
+
+model PromotionalDiscount {
+  id             String  @id @unique @default(uuid())
+  expirationDate String
+  discountRate   Float
+  description    String?
+  product        Product @relation(fields: [productId], references: [id])
+  productId      String  @unique
+}
