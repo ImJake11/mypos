@@ -4,14 +4,14 @@ import { NewProductProps } from "../models/newProductModel"
 interface Prop {
     productViewOpen: boolean,
     currentData: {},
+    isListView: boolean,
 }
 
 
 const initialState: Prop = {
     productViewOpen: false,
-    currentData: {
-
-    },
+    currentData: {},
+    isListView: false
 }
 
 
@@ -28,9 +28,12 @@ const inventorySlice = createSlice({
                 state.currentData = {};
             }
         },
-        resetInventoryState: ()=> initialState,
+        toggleInventoryListView: state => {
+            state.isListView = !state.isListView;
+        },
+        resetInventoryState: () => initialState,
     }
 });
 
-export const { toggleProductView , resetInventoryState} = inventorySlice.actions;
+export const { toggleProductView, resetInventoryState, toggleInventoryListView } = inventorySlice.actions;
 export default inventorySlice.reducer;

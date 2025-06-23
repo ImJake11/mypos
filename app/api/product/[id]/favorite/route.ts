@@ -1,18 +1,16 @@
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import dotenv from "dotenv";
-import io from "socket.io-client"
+import { getSocket } from "@/app/lib/utils/socket/socket";
 
-dotenv.config();
 
-const socket = io(String(process.env.SOCKET_URL));
+const socket = getSocket();
 
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
 
     try {
 
-        const {id} = await params;
+        const { id } = await params;
 
         const { isFavorite } = await req.json();
 
@@ -35,8 +33,9 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
             isFavorite: isFavorite,
         }
 
-        // emit web socket event
-        socket.emit("update_favorite", dataToEmit);
+        if (socket) {
+            socket.emit("favorite_event", dataToEmit);
+        }
 
         return NextResponse.json({ message: "Product updated successfully" }, { status: 200 })
 

@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../lib/utils/db/prisma";
-import io from "socket.io-client";
-import dotenv from "dotenv";
+import { getSocket } from "@/app/lib/utils/socket/socket";
 
-dotenv.config();
-
-const socket = io(String(process.env.SOCKET_URL));
+const socket = getSocket();
 
 export async function GET(req: NextRequest) {
 
@@ -36,7 +33,9 @@ export async function POST(req: NextRequest) {
             }
         });
 
-        socket.emit("add_category", data)
+        if (socket) {
+            socket.emit("category_event", { payload: data, type: "CREATE" });
+        }
 
         return NextResponse.json({ message: "New Category Added" }, { status: 200 })
 
@@ -46,7 +45,6 @@ export async function POST(req: NextRequest) {
 }
 
 export async function PUT(req: NextRequest) {
-
 
     try {
 
@@ -65,7 +63,9 @@ export async function PUT(req: NextRequest) {
             }
         });
 
-        socket.emit("update_category", data);
+        if (socket) {
+            socket.emit("category_event", { payload: data, type: "UPDATE"});
+        }
 
         return NextResponse.json({}, { status: 200 });
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import ToasEnum from '../enum/toastEnum';
 import { closeToas, promptConfirmed } from '../redux/toastSlice';
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, color, motion } from "framer-motion";
 
 const Toas = () => {
 
@@ -13,32 +13,87 @@ const Toas = () => {
 
     const { message, isVisible, type, context, payload } = useSelector((state: RootState) => state.toasSlice);
 
-    function generateColorAttr() {
+    function generateColorAttr(): React.CSSProperties {
+
+        let attr: React.CSSProperties = {};
+
 
         switch (type) {
 
             case ToasEnum.DEFAULT:
-                return "bg-gray-900 text-white";
+                attr = {
+                    backgroundColor: "var(--background)",
+                    border: "solid 2px var(--primary)",
+                }
+                break;
+
             case ToasEnum.PENDING:
-                return "bg-yellow-600 text-white";
+                attr = {
+                    backgroundColor: "var(--backgrouxnd",
+                    border: "solid 2px yellow",
+                }
+                break;
             case ToasEnum.SUCCESS:
-                return "bg-blue-500 text-white";
+                attr = {
+                    backgroundColor: "var(--background)",
+                    border: "solid 2px green",
+                }
+                break;
             case ToasEnum.ERROR:
-                return "bg-red-500 text-white";
+                attr = {
+                    backgroundColor: "var(--background)",
+                    border: "solid 2px red",
+                }
+                break;
             case ToasEnum.CONFIRMATION:
-                return "bg-red-500 text-white"
+                attr = {
+                    backgroundColor: "red",
+                    border: "solid 2px red",
+                }
+                break;
+
+            default:
+                attr = {
+                    backgroundColor: "var(--background)",
+                    border: "solid 2px var(--primary)",
+                }
         }
+
+        return attr;
     }
 
-    // close toas after 5 seconds
-    useEffect(() => {
+    function generateIcon(): { color: string, icon: string } {
 
-        if (type === ToasEnum.CONFIRMATION) return;
+        let icon = "";
+        let color = "";
 
-        setTimeout(() => {
-            dispatch(closeToas())
-        }, 5000);
-    }, [isVisible]);
+        switch (type) {
+            case ToasEnum.CONFIRMATION:
+                icon = "ri-error-warning-line";
+                color = "white";
+                break;
+            case ToasEnum.DEFAULT:
+                icon = "ri-notification-2-line"
+                color = "var(--primary)"
+                break;
+            case ToasEnum.ERROR:
+                color = 'red'
+                icon = "ri-error-warning-line";
+                break;
+            case ToasEnum.PENDING:
+                color = 'yellow'
+                icon = "ri-loader-2-line"
+                break;
+            case ToasEnum.SUCCESS:
+                color = 'green'
+                icon = "ri-check-double-line";
+                break;
+
+        }
+
+        return { icon, color }
+    }
+
 
 
     const handleConfirmationn = () => {
@@ -55,9 +110,27 @@ const Toas = () => {
         dispatch(closeToas());
     }
 
+
+
+    // close toas after 5 seconds
+    useEffect(() => {
+
+        if (type !== ToasEnum.CONFIRMATION) {
+            
+            setTimeout(() => {
+                dispatch(closeToas())
+            }, 5000);
+        }
+
+
+    }, [isVisible]);
+
+
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`flex gap-1.5 absolute h-fit w-[40rem] right-3 bottom-3 ${generateColorAttr()} rounded-[11px] box-border p-[15px_]`}
+            {isVisible && <motion.div className={`flex items-center gap-1.5 absolute h-fit w-[40rem] right-3 bottom-3 rounded-[7px] box-border p-[15px_10px]`}
+                style={generateColorAttr()}
+
                 initial={{
                     opacity: 0,
                     y: 20,
@@ -72,7 +145,12 @@ const Toas = () => {
                     opacity: 0,
                 }}
             >
-                <i className="ri-error-warning-line"></i>
+                <i className={generateIcon().icon}
+                    style={{
+                        fontSize: "1.3rem",
+                        color: generateIcon().color,
+                    }}
+                ></i>
                 <span>{message}</span>
                 <div className='flex-1'></div>
 
@@ -82,11 +160,11 @@ const Toas = () => {
                  * show onnly f the toas type is confirmation
                 */}
                 {type === ToasEnum.CONFIRMATION && <>
-                    <button className='p-[7px_12px] bg-white rounded-[7px] text-red-500'
+                    <button className='p-[7px_12px] bg-white rounded-[3px] text-red-500'
                         onClick={handleCancellation}
                     >Cancel</button>
 
-                    <button className='p-[7px_12px] border border-white rounded-[7px] text-white'
+                    <button className='p-[7px_12px] border border-white rounded-[3px] text-white'
                         onClick={handleConfirmationn}
                     >Confirm</button>
                 </>}

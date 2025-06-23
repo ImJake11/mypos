@@ -7,6 +7,7 @@ import { NewProductProps } from '@/app/lib/models/newProductModel';
 import { toggleCategoryTab, updateNewProductState } from '@/app/lib/redux/newProductSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/toastSlice';
+import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { faAdd, faCircleExclamation, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useRef, useState } from 'react'
@@ -61,42 +62,27 @@ const Category = () => {
         fetchData();
 
     }, []);
+    
 
-
-    // listen to web socket changes 
-    useEffect(() => {
-        socket = io(String(process.env.NEXT_PUBLIC_SOCKET_URL));
-
-        socket.on("connection", () => {
-            console.log("Connected to web socket");
-        });
-
-        socket.on("added_category", (newData: CategoryModel) => {
-            setData(prev => [...prev, newData])
-
-        })
-
-        socket.on("updated_category", (updatedData: CategoryModel) => {
-            setData(prev => prev.map(d => d.id === updatedData.id ? { ...d, ...updatedData } : d));
-        });
-
-        socket.on("disconnect", () => {
-            console.log("Disconnected to web socket")
-        });
-
-        return () => {
-            socket.disconnect()
+    useSocketEvent("category_event", (eventData: { payload: any, type: string }) => {
+        const { type, payload } = eventData;
+        if (type === "CREATE") {
+            setData(prev => [...prev, payload]);
         }
-    }, []);
+
+        else if (type === "UPDATE") {
+            setData(prev => prev.map(cat => cat.id === payload.id ? { ...cat, ...payload } : cat));
+        }
+    })
 
 
     function ButtonTile({ content, id, isSelected }: ButtonTileProp) {
 
         return (
             <div className={`flex w-full pr-2 justify-center items-center`}
-            style={{
-                backgroundColor: isSelected? "var(--secondary-background)" : "var(--background)"
-            }}
+                style={{
+                    backgroundColor: isSelected ? "var(--secondary-background)" : "var(--background)"
+                }}
             >
                 <button key={id} className='w-full min-h-[3rem] flex items-center p-[0_15px] '
                     onClick={() => {

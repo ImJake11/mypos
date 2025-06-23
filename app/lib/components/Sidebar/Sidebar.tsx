@@ -5,19 +5,20 @@ import { faBarChart, faChartPie, faCircleDot, faCreditCard, faList, faNewspaper,
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import UserProfile from './UserProfile';
+import { motion } from "framer-motion";
 
 const titleStyles = "text-[.8rem] text-gray-500 mb-[1rem]";
 
 const Sidebar = () => {
 
     return (
-        <div className='w-[20vw] h-screen flex flex-col overflow-hidden'
+        <div className='w-[18vw] h-screen flex flex-col overflow-hidden'
             style={{
                 backgroundColor: "var(--background)"
             }}
         >
             {/** logo container */}
-            <div className='w-full min-h-[4rem] border-b-gray-300  border-b'> </div>
+            <div className='w-full min-h-[4rem]'> </div>
 
             <div className='w-full flex-1 flex flex-col p-2.5 overflow-auto '>
                 <ButtonTile icon={faChartPie} name='Overview' />
@@ -46,13 +47,27 @@ const ButtonTile = ({ name, icon }: ButtonProps) => {
     const isSelected = name.toLowerCase() === "overview";
 
 
-    return <button className={`
-        ${isSelected ? "linear-bg-40" : "no-linear-bg"}
-        w-full h-[3rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
+    return <motion.button className={`w-full h-[3rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
+
+        style={{
+            backgroundSize: "200% 100%",
+            backgroundPosition: "0% 0%",
+            backgroundImage: isSelected ? "linear-gradient(45deg,var(--tertiary), var(--primary), var(--secondary), var(--tertiary))" : undefined,
+        }}
+
+        animate={{
+            backgroundPosition: "100% 0%"
+        }}
+        transition={{
+            duration: 3,
+            ease: "linear",
+            repeat: Infinity,
+            repeatType: "reverse",
+        }}
     >
         <FontAwesomeIcon icon={icon} size={"1x"} className="text-[1.2rem]" />
         <p>{name}</p>
-    </button>
+    </motion.button>
 }
 
 export default Sidebar

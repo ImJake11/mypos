@@ -180,7 +180,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
             <div className='flex-1 grid place-content-center'>
 
                 {/** delete */}
-                {isForUpdate ? <div className={`cursor-pointer p-[10px_15px] rounded-[7px] text-white bg-linear-30 ${data.isArchived ? " from-blue-400 to-blue-800" : " from-red-400 to-red-800"}`}
+                {isForUpdate ? <div className={`cursor-pointer p-[10px_15px] rounded-[7px] text-white ${data.isArchived ? "linear-bg-40" : " error-gradient-bg"}`}
                     onClick={handleVariantAction}
                 >{isArchived ? "UnArchive" : "Archive"}</div> :
                     <FontAwesomeIcon icon={faTrash} className='text-[1.5rem] text-red-500 ' onClick={() => appDispatch(deleteVariant(index))} />

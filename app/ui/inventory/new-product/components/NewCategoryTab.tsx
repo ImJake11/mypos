@@ -29,7 +29,7 @@ const NewCategoryTab = () => {
 
             if (!res.ok) return;
 
-            dispatch(openToas({ message: "Category Added", type: ToasEnum.SUCCESS }));
+            dispatch(openToas({ message: "New category Added", type: ToasEnum.SUCCESS }));
 
         } else {
             const res = await fetch("/api/category", {
@@ -42,7 +42,7 @@ const NewCategoryTab = () => {
 
             if (!res.ok) return;
 
-            dispatch(openToas({ message: "Category Updated", type: ToasEnum.SUCCESS }))
+            dispatch(openToas({ message: "Category updated", type: ToasEnum.SUCCESS }))
         }
 
         setCategory("")

@@ -4,8 +4,10 @@ import React, { useEffect, useRef, useState } from 'react'
 import ProductTile from './ProductTile';
 import { NewProductProps } from '@/app/lib/models/newProductModel';
 import io, { Socket } from 'socket.io-client';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { resetInventoryState } from '@/app/lib/redux/inventorySlice';
+import { RootState } from '@/app/lib/redux/store';
+import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 
 interface Prop {
     rawData: NewProductProps[],
@@ -14,61 +16,27 @@ const ProductList = ({ rawData }: Prop) => {
 
     const dispatch = useDispatch();
 
+    const { isListView } = useSelector((state: RootState) => state.inventorySlice);
+
     const [products, setProducts] = useState<NewProductProps[]>(rawData);
-
-
-    let socket: typeof Socket;
 
     // update product state based on socket event
     useEffect(() => {
 
-        // reset initial products state 
+        // reset initial inventory state 
         dispatch(resetInventoryState())
-        socket = io(String(process.env.NEXT_PUBLIC_SOCKET_URL));
-
-        socket.on("connection", () => {
-            console.log("Connected to web socket");
-        });
-
-
-        socket.on("updated_favorite", (newData: NewProductProps) => {
-
-            setProducts(prevProducts => {
-
-                // find the specific product to update
-                const updatedProducts = prevProducts.map(product => {
-                    if (product.id === newData.id) {
-
-                        return { ...product, isFavorite: newData.isFavorite }
-                    }
-                    //return the product that is not updated
-                    return product;
-                });
-
-
-                // return the updated products list
-                return updatedProducts;
-            });
-        });
-
-        socket.on("disconnect", () => {
-            console.log("Disconnected from web socket");
-        });
-
-
-        return () => {
-            socket.off("updated_favorite");
-            socket.disconnect();
-        }
-
-
     }, []);
 
 
+    useSocketEvent("favorite_event", (data: any) => {
+        const { id, isFavorite } = data;
+        setProducts(prev => prev.map(pro => pro.id === id ? { ...pro, isFavorite } : pro));
+    })
 
 
     return (
-        <div className='flex-1 grid grid-cols-4 overflow-auto gap-3.5 p-3.5'>
+        <div className={`flex-1 overflow-auto gap-3.5 p-3.5 ${isListView ? "flex flex-col" : "grid grid-cols-4"}`}
+        >
             {products ? products.map((d, i) => <ProductTile key={i} data={d} />) : null}
         </div>
     )

@@ -192,10 +192,10 @@ function ProductDetails({ category,
     <div className='flex flex-col gap-3 w-full'>
       <span className='italic text-5xl'>{name}</span>
       <div className='flex gap-1.5'>
-        <div className='bg-linear-to-r from-blue-400 to-blue-700 rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
+        <div className='linear-bg-40 rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
           <FontAwesomeIcon icon={faFilter} /><span>{category.content}</span>
         </div>
-        <div className='bg-linear-to-r from-blue-400 to-blue-700 rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
+        <div className='linear-bg-40 rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
           <FontAwesomeIcon icon={faCircle} /><span>Active</span>
         </div>
       </div>
@@ -211,7 +211,7 @@ function ProductDetails({ category,
       {/** total price */}
       <div className='flex gap-2 text-[1.2rem] items-center'>
         <div className='p-2'>
-          <FontAwesomeIcon icon={faTag} className='text-blue-500' />
+          <FontAwesomeIcon icon={faTag} style={{color: "var(--primary)"}} />
         </div>
         <span>Php {discountRate !== 0 ? computeTotalPrice() : sellingPrice}</span>
 
@@ -231,7 +231,7 @@ function ProductDetails({ category,
 
 
     {/** discount */}
-    {discountRate !== 0 && <div className='w-[60%] flex gap-1.5 bg-linear-to-br from-blue-400 to-blue-700 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
+    {discountRate !== 0 && <div className='w-[60%] flex gap-1.5 linear-bg-40 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
       <i className="ri-discount-percent-fill"></i>
       <span>{discountRate}% OFF ( Valid until: {expirationDate} )</span>
     </div>}
