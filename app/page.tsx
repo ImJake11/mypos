@@ -3,7 +3,7 @@ import Sidebar from './lib/components/Sidebar/Sidebar'
 
 const page = () => {
   return (
-    <div className='w-screen h-screen flex'>
+    <div className='w-screen h-screen flex relative'>
       <Sidebar />
       {/** body */}
       <div className='flex-1 flex flex-col'>

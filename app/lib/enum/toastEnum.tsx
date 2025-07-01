@@ -1,7 +1,3 @@
-
-
-
-
 enum ToasEnum {
     DEFAULT,
     ERROR,

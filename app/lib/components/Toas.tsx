@@ -22,40 +22,40 @@ const Toas = () => {
 
             case ToasEnum.DEFAULT:
                 attr = {
-                    backgroundColor: "var(--background)",
-                    border: "solid 2px var(--primary)",
+                    backgroundColor: "var(--main-bg-primary-dark)",
+                    border: "solid 2px var(--toas-default)",
                 }
                 break;
 
             case ToasEnum.PENDING:
                 attr = {
                     backgroundColor: "var(--backgrouxnd",
-                    border: "solid 2px yellow",
+                    border: "solid 2px var(--toas-pending)",
                 }
                 break;
             case ToasEnum.SUCCESS:
                 attr = {
-                    backgroundColor: "var(--background)",
-                    border: "solid 2px green",
+                    backgroundColor: "var(--main-bg-primary-dark)",
+                    border: "solid 2px var(--toas-success)",
                 }
                 break;
             case ToasEnum.ERROR:
                 attr = {
-                    backgroundColor: "var(--background)",
-                    border: "solid 2px red",
+                    backgroundColor: "var(--main-bg-primary-dark)",
+                    border: "solid 2px var(--toas-error)",
                 }
                 break;
             case ToasEnum.CONFIRMATION:
                 attr = {
                     backgroundColor: "red",
-                    border: "solid 2px red",
+                    border: "solid 2px var(--toas-error)",
                 }
                 break;
 
             default:
                 attr = {
-                    backgroundColor: "var(--background)",
-                    border: "solid 2px var(--primary)",
+                    backgroundColor: "var(--main-bg-primary-dark)",
+                    border: "solid 2px var(--toas-primary)",
                 }
         }
 
@@ -116,7 +116,7 @@ const Toas = () => {
     useEffect(() => {
 
         if (type !== ToasEnum.CONFIRMATION) {
-            
+
             setTimeout(() => {
                 dispatch(closeToas())
             }, 5000);
@@ -128,7 +128,7 @@ const Toas = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`flex items-center gap-1.5 absolute h-fit w-[40rem] right-3 bottom-3 rounded-[7px] box-border p-[15px_10px]`}
+            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit w-[40rem] right-3 bottom-3 box-border p-[15px_10px]`}
                 style={generateColorAttr()}
 
                 initial={{

@@ -1,60 +1,58 @@
 "use client";
 
 import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faBarChart, faChartPie, faCircleDot, faCreditCard, faList, faNewspaper, faTableColumns, faTableList, faTentArrowLeftRight, faTruck, faUser } from '@fortawesome/free-solid-svg-icons';
+import { faArrowRight, faBarChart, faChartPie, faCircleDot, faCreditCard, faList, faMaximize, faMinimize, faNewspaper, faTableColumns, faTableList, faTentArrowLeftRight, faTruck, faUser } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React from 'react'
+import React, { useEffect } from 'react'
 import UserProfile from './UserProfile';
 import { motion } from "framer-motion";
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../redux/store';
+import { toggleSidebar } from '../../redux/sidebarSlice';
+import PosIcon from '../../icons/posIcon';
+import InventoryIcon from '../../icons/inventoryIcon';
 
-const titleStyles = "text-[.8rem] text-gray-500 mb-[1rem]";
 
 const Sidebar = () => {
 
     return (
-        <div className='w-[18vw] h-screen flex flex-col overflow-hidden'
+        <motion.div className='h-screen flex flex-col overflow-hidden min-w-[var(--sidebar-width)] w-[var(--sidebar-width)]'
             style={{
-                backgroundColor: "var(--background)"
+                backgroundColor: "var(--main-bg-primary-dark)"
             }}
         >
             {/** logo container */}
-            <div className='w-full min-h-[4rem]'> </div>
+            <div className='w-full min-h-[3.5rem] relative'>
 
+            </div>
             <div className='w-full flex-1 flex flex-col p-2.5 overflow-auto '>
-                <ButtonTile icon={faChartPie} name='Overview' />
-                <ButtonTile icon={faTableList} name='Orders' />
-                <ButtonTile icon={faTableColumns} name='Categories' />
-                <ButtonTile icon={faCreditCard} name='Transactions' />
-                <ButtonTile icon={faCircleDot} name='Inventory' />
-                <ButtonTile icon={faBarChart} name='Report' />
-                <ButtonTile icon={faUser} name='User Management' />
-                <ButtonTile icon={faTruck} name='Delivery Orders' />
+                <ButtonTile icon={<PosIcon />} name='POS' />
+                <ButtonTile icon={<InventoryIcon />} name='Inventory' />
             </div>
             {/** profile container */}
             <UserProfile />
-        </div>
+        </motion.div>
     )
 }
 
 interface ButtonProps {
     name: string,
-    icon: IconProp,
+    icon: any,
 }
 const ButtonTile = ({ name, icon }: ButtonProps) => {
 
+    const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
 
     // for development only
-    const isSelected = name.toLowerCase() === "overview";
+    const isSelected = name.toLowerCase() === "inventory";
 
 
     return <motion.button className={`w-full h-[3rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
-
         style={{
             backgroundSize: "200% 100%",
             backgroundPosition: "0% 0%",
-            backgroundImage: isSelected ? "linear-gradient(45deg,var(--tertiary), var(--primary), var(--secondary), var(--tertiary))" : undefined,
+            backgroundImage: isSelected ? "linear-gradient(45deg,var(--main-bg-primary-dark), var(--color-brand-primary), var(--color-brand-secondary), var(--main-bg-primary-dark))" : undefined,
         }}
-
         animate={{
             backgroundPosition: "100% 0%"
         }}
@@ -65,9 +63,23 @@ const ButtonTile = ({ name, icon }: ButtonProps) => {
             repeatType: "reverse",
         }}
     >
-        <FontAwesomeIcon icon={icon} size={"1x"} className="text-[1.2rem]" />
-        <p>{name}</p>
+        <motion.div
+            animate={{
+                x: isSidebarMinimize ? ".6rem" : "0rem",
+            }}>
+            <div className='w-[1.5rem] h-[1.5rem]'>{icon}</div>
+        </motion.div>
+        {!isSidebarMinimize && <p>{name}</p>}
     </motion.button>
 }
+
+function SubButton({ name, }: { name: string }) {
+    return <div className='w-[80%] h-[3rem] rounded-[3px] bg-[var(--tertiary)] p-2 flex items-center gap-2 place-self-end'
+    >
+        <i className="ri-arrow-right-s-fill"></i>
+        {name}
+    </div>
+}
+
 
 export default Sidebar

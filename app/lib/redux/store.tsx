@@ -1,17 +1,20 @@
 import { configureStore } from "@reduxjs/toolkit";
-import newProductSlice from "./newProductSlice";
+import productSlice from "./productSlice";
 import toasSlice from "./toastSlice";
 import processSlice from "./processSlice";
 import inventorySlice from "./inventorySlice";
 import appMiddlewareListner from "./listeners/applicationListener";
-
+import sidebarSlice from "./sidebarSlice";
+import posSlice from "./posSlice";
 
 const store = configureStore({
     reducer: {
-        newProductSlice,
+        productSlice,
         processSlice,
         toasSlice,
         inventorySlice,
+        sidebarSlice,
+        posSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(appMiddlewareListner.middleware)

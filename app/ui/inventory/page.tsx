@@ -1,13 +1,13 @@
 import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
-import ProductTile from './components/ProductTile'
-import { NewProductProps } from '@/app/lib/models/newProductModel';
-import ViewProductTab from './components/ViewProductTab';
-import ProductList from './components/ProductList';
+import { ProductProps } from '@/app/lib/models/productModel';
+import ViewProductTab from './components/InventoryProductViewTab/ProductTab';
+import ProductList from './components/InventoryProductList';
 import Toas from '@/app/lib/components/Toas';
 import InventoryAppar from './components/InventoryAppar';
-import CategoriesList from './components/CategoriesList';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
+import ProcessDialog from '@/app/lib/components/ProcessDialog/ProcessDialog';
+import InventoryFilterContainer from './components/InventoryFilterContainer';
 
 export default async function Page() {
 
@@ -21,33 +21,40 @@ export default async function Page() {
         method: "GET",
     });
 
-    if (!productResponse.ok ) {
+    const categoryResponse = await fetch(`${baseUrl}/api/category`, {
+        method: "GET",
+    });
+
+    if (!productResponse.ok) {
         throw new Error(`Failed to fetch product: ${productResponse.statusText}`)
     }
 
-    const { data } = await productResponse.json();
+    const { productData } = await productResponse.json();
 
-    const productData: NewProductProps[] = data;
-    
+    const products: ProductProps[] = productData;
+
+    const { categoryData } = await categoryResponse.json();
+
+    const categories: CategoryModel[] = categoryData;
+
 
     return (
-        <div className='gradient-main-background w-screen h-screen flex overflow-hidden relative'
+        <div className='bg-[var(--background)] w-screen h-screen flex overflow-hidden relative'
             style={{
 
             }}
         >
             <Sidebar />
-
             <div className='flex-1  flex flex-col'>
                 {/** appbar */}
                 <InventoryAppar />
-                <CategoriesList />
                 {/** body */}
-                <ProductList rawData={productData} />
+                <ProductList rawData={products} categoryData={categoryData} />
             </div>
+            <InventoryFilterContainer categories={categoryData} />
             <ViewProductTab />
             <Toas />
-
+            <ProcessDialog />
         </div>
     )
 }

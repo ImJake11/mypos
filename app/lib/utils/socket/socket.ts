@@ -31,9 +31,6 @@ export const initializeSocket = () => {
 
 
 export const getSocket = (): typeof Socket | undefined => {
-    if(!socket){
-        initializeSocket();
-    }
     return socket;
 }
 

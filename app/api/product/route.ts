@@ -1,6 +1,6 @@
 
 import { Prisma } from "@/app/generated/prisma";
-import { BulkTableProp, NewProductProps, VariantsProps } from "@/app/lib/models/newProductModel";
+import { BulkTableProp, ProductProps, VariantsProps } from "@/app/lib/models/productModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -27,6 +27,7 @@ export async function POST(req: NextRequest) {
             promotionalDiscount,
             highlights,
             bulkTier,
+            coverImageId,
             bulkEnabled, } = body;
 
 
@@ -36,11 +37,11 @@ export async function POST(req: NextRequest) {
         }
 
         const rawBulkTier = bulkTier as BulkTableProp[];
-        const rawVariants = variants as VariantsProps[]
 
 
         const { id } = await prisma.product.create({
             data: {
+                coverImageId,
                 highlights,
                 categoryID,
                 costPrice,
@@ -89,7 +90,9 @@ export async function PUT(req: NextRequest) {
         const { updatedRawData } = await req.json();
 
 
-        const newData: NewProductProps = updatedRawData;
+        const newData: ProductProps = updatedRawData;
+
+        console.log(newData);
 
         const {
             bulkEnabled,
@@ -112,8 +115,6 @@ export async function PUT(req: NextRequest) {
             id,
         } = newData;
 
-        console.log(id);
-
         await prisma.product.update({
             data: {
                 categoryID,
@@ -130,13 +131,29 @@ export async function PUT(req: NextRequest) {
                 stock,
                 tax,
                 name,
+                promotionalDiscount: {
+                    upsert: {
+                        create: {
+                            discountRate: promotionalDiscount.discountRate,
+                            expirationDate: promotionalDiscount.expirationDate,
+                            description: promotionalDiscount.description,
+                        },
+                        update: {
+                            description: promotionalDiscount.description,
+                            discountRate: promotionalDiscount.discountRate,
+                            expirationDate: promotionalDiscount.expirationDate,
+
+                        },
+                        where: {
+                            id: promotionalDiscount.id,
+                        }
+                    }
+                },
                 bulkTier: bulkTier.length > 0 ? {
                     upsert: bulkTier.map(tier => ({
                         create: {
-
                             discount: tier.discount,
                             quantity: tier.quantity,
-
                         },
                         update: {
                             discount: tier.discount,
@@ -144,7 +161,7 @@ export async function PUT(req: NextRequest) {
 
                         },
                         where: {
-                            id: tier.id!,
+                            id: tier.id ?? "",
                         }
                     }))
                 } : undefined,
@@ -157,7 +174,7 @@ export async function PUT(req: NextRequest) {
                             price: v.price,
                             stock: v.stock,
                             isPositive: v.isPositive,
-
+                            details: v.details,
                         },
                         update: {
                             isArchived: v.isArchived,
@@ -165,14 +182,14 @@ export async function PUT(req: NextRequest) {
                             name: v.name,
                             price: v.price,
                             stock: v.stock,
+                            details: v.details,
                             isPositive: v.isPositive,
                         },
                         where: {
-                            id: v.id!
+                            id: v.id
                         }
                     }))
                 }
-
             }, where: {
                 id: id!,
             }
@@ -190,7 +207,7 @@ export async function GET() {
 
     try {
 
-        const data = await prisma.product.findMany({
+        const productData = await prisma.product.findMany({
 
             include: {
                 bulkTier: true,
@@ -207,12 +224,13 @@ export async function GET() {
                         product: true,
                         productId: true,
                         stock: true,
+                        details: true,
                     }
                 },
             }
         });
 
-        return NextResponse.json({ data }, { status: 200 });
+        return NextResponse.json({ productData }, { status: 200 });
     } catch (e) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }

@@ -1,50 +1,103 @@
 @import "tailwindcss";
 
 :root {
+  /********--- COLORS --- ******/
+  --color-brand-primary: #0077b6;
+  --color-brand-secondary: #0096c7;
+
+  --main-bg-primary-dark: #141313;
+  --main-bg-secondary-dark: #201e1e;
+  --main-bg-primary-light: rgb(236, 230, 230);
+  --main-bg-secondary-light: #d4cdcd;
+
+  /*border*/
+  --border-focused: var(--color-brand-primary);
+  --border-default-dark: #3e3b3b;
+  --border-default-light: #797878;
+  --border-radius: 12px;
+
+  /* error */
+  --error-color-primary: red;
+  --error-color-secondary: rgb(115, 48, 48);
+
+  /*button*/
+  --button-primary-bg: var(--color-brand-primary);
+  --button-secondary-bg: transparent;
+  --button-border-radius: 8px;
+
+  /* toas  */
+  --toas-success: green;
+  --toas-error: red;
+  --toas-pending: yellow;
+  --toas-default: var(--color-brand-primary);
+  --toas-border-radius: 8px;
+
+  /* text input fields */
+  --tf-border-radius: 8px;
+  --tf-border-focused: var(--color-brand-primary);
+  --tf-border-default: var(--border-default-dark);
+
+  /* product card */
+  --product-card-bg: var(--main-bg-primary-dark);
+  --product-card-border-radius: 20px;
+
+  /* typography */
   --foreground: #ffffff;
-  --secondary-foreground: #c7cbd1;
-  --background: #121212;
-  --secondary-background: #191919;
-  --gradient-bg-color-one: #232526;
-  --gradient-bg-color-two: #414345;
-  --primary: #2948ff;
-  --secondary: #2f80ed;
-  --tertiary: rgb(34, 32, 32);
-  --error-color-one: #ED213A;
-  --error-color-two: #93291e;
+  --foreground-lighter: #b5b8be;
+
+
+  /* form section */
+  --form-section-border-radius: 12px;
+
+  /* sidebar */
+  --sidebar-width: 15vw;
 }
 
 
 body {
-  background: var(--background);
+  background: var(--main-bg-primary-dark);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
-.gradient-main-background {
-  background-image: linear-gradient(135deg, var(--gradient-bg-color-two), var(--gradient-bg-color-one));
+
+/* text input fields */
+.tf-attr {
+  border-radius: var(--tf-border-radius);
+  outline: solid var(--tf-border-default) 1px;
+  border: transparent;
 }
 
-.linear-bg-40 {
-  background-image: linear-gradient(40deg, var(--primary), var(--secondary));
+.tf-attr:focus {
+  outline: solid var(--color-brand-primary);
 }
 
-.no-linear-bg {
-  background-image: linear-gradient(var(--background), var(--background));
+/* primary button */
+
+.button-primary-gradient {
+  background-image: linear-gradient(40deg, var(--color-brand-primary), var(--color-brand-secondary));
 }
 
-.gray-linear-bg {
-  background-image: linear-gradient(70deg, gray, rgb(106, 100, 100));
+.button-primary-no-gradient {
+  background-image: unset;
 }
 
-.error-gradient-bg {
-  background-image: linear-gradient(135deg, var(--error-color-one), var(--error-color-two));
+.button-primary-disabled-gradient {
+  background-image: linear-gradient(45deg, rgb(67, 66, 66), gray);
+}
+
+
+/* main background gradients */
+.main-background-gradient {
+  background-image: linear-gradient(to bottom right, var(--main-bg-secondary-dark), var(--main-bg-primary-dark));
 }
 
 
 /*  srocll bar styles*/
 ::-webkit-scrollbar {
   width: 5px;
+  height: 5px;
+  background-color: var(--secondary-background);
 }
 
 ::-webkit-scrollbar-thumb {

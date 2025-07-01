@@ -2,7 +2,7 @@ import { Socket } from "socket.io-client";
 import { disconnectSocket, getSocket, initializeSocket } from "../socket/socket"
 import { useEffect } from "react";
 
-type SocketEventHandle = ([...args]: any) => void;
+type SocketEventHandler = ([...args]: any) => void;
 
 export const useSocketConnection = (): typeof Socket | undefined => {
 
@@ -13,17 +13,13 @@ export const useSocketConnection = (): typeof Socket | undefined => {
             initializeSocket();
         }
 
-        return () => {
-            disconnectSocket();
-        }
-
     }, []);
 
     return getSocket();
 }
 
 
-export const useSocketEvent = (eventName: string, handler: SocketEventHandle) => {
+export const useSocketEvent = (eventName: string, handler: SocketEventHandler) => {
 
     const socket = useSocketConnection();
 
@@ -32,6 +28,13 @@ export const useSocketEvent = (eventName: string, handler: SocketEventHandle) =>
         if (socket) {
             console.log(`Attaching connection for ${eventName}`);
             socket.on(eventName, handler);
+        }
+
+        return () => {
+            if (socket) {
+                console.log("Disconnecting to event", eventName);
+                socket.off(eventName);
+            }
         }
     }, [eventName, socket, handler]);
 

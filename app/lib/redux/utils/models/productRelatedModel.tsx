@@ -1,4 +1,4 @@
-import { VariantsProps } from "@/app/lib/models/newProductModel";
+import { VariantsProps } from "@/app/lib/models/productModel";
 
 
 export interface VariantActionModel<K extends keyof VariantsProps> {

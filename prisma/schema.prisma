@@ -18,6 +18,8 @@ model Category {
   id      String    @id @unique @default(uuid())
   content String
   product Product[]
+  url     String?
+  imageId String
 }
 
 model Product {
@@ -28,6 +30,7 @@ model Product {
   category            Category             @relation(fields: [categoryID], references: [id])
   sellingPrice        Int
   costPrice           Int
+  coverImageId        String
   tax                 Int
   bulkEnabled         Boolean              @default(false)
   highlights          String?
@@ -51,14 +54,15 @@ model Variants {
   imageUrl   String
   isPositive Boolean @default(false)
   product    Product @relation(fields: [productId], references: [id])
-  productId  String  
+  productId  String
   isArchived Boolean @default(false)
+  details    String?
 }
 
 model BulkTire {
   id        String  @id @unique @default(uuid())
   product   Product @relation(fields: [productId], references: [id])
-  productId String  
+  productId String
   quantity  Int
   discount  Int
 }

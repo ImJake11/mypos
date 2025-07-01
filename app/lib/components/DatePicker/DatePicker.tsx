@@ -4,9 +4,9 @@ import React, { useState } from 'react'
 import monthsName from '../../data/MonthsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { toggleDatePicker, updateNewProductState, updatePromotionalDiscount } from '../../redux/newProductSlice';
-import { NewProductKeys, PromotionalDiscountKeys } from '../../constants/NewProductKeys';
-import { NewProductProps, PromotionalDiscountProp } from '../../models/newProductModel';
+import { toggleDatePicker, updatePromotionalDiscount } from '../../redux/productSlice';
+import { PromotionalDiscountKeys } from '../../constants/ProductKeys';
+import { PromotionalDiscountProp } from '../../models/productModel';
 
 interface DateProp {
     month: number,
@@ -17,7 +17,7 @@ const DatePicker = () => {
 
     const dispatch = useDispatch();
 
-    const { isDatePickerOpen } = useSelector((state: RootState) => state.newProductSlice);
+    const { isDatePickerOpen } = useSelector((state: RootState) => state.productSlice);
 
     const today = new Date();
 
@@ -71,10 +71,7 @@ const DatePicker = () => {
         >
 
             <div className=' w-[500px] h-[70vh] rounded-[11px] flex flex-col
-                            md:w-[40vw] p-[20px_25px]'
-                style={{
-                    backgroundColor: "var(--background)"
-                }}
+                            md:w-[40vw] p-[20px_25px] bg-[var(--main-bg-primary-dark)]'
             >
 
                 <span className='text-[1.5rem] italic font-semibold'>Pick Date</span>
@@ -105,7 +102,7 @@ const DatePicker = () => {
                     <button className='border border-gray-400 rounded-[7px] p-[10px_15px]' onClick={() => {
                         dispatch(toggleDatePicker());
                     }}>Cancel</button>
-                    <button className='linear-bg-40 rounded-[7px]  p-[10px_15px]' onClick={handleSave}>Save</button>
+                    <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_15px]' onClick={handleSave}>Save</button>
                 </div>
             </div>
 
@@ -121,19 +118,19 @@ interface TileProp {
 
 }
 function Tile({ isSelected, value, onClick, name }: TileProp) {
-    return <div className={`cursor-pointer w-full h-[3rem] ${isSelected ? "linear-bg-40" : "no-linear-bg"}  grid place-content-center`}
-    style={{
-        border: "solid 1px var(--secondary-background)"
-    }}
+    return <div className={`cursor-pointer w-full h-[3rem] ${isSelected ? "button-primary-gradient" : "button-primary-no-gradient"}  grid place-content-center`}
+        style={{
+            border: "solid 1px var(--main-bg-secondary-dark)"
+        }}
         onClick={() => onClick(name, value)}
     >
         <span>{value}</span></div>
 }
 
-const header = (name: string) => <div className='flex-1 border  grid place-content-center h-[3rem]  italic font-semibold'
-style={{
-    border: "solid 2px var(--secondary-foreground)"
-}}
+const header = (name: string) => <div className='flex-1 border grid place-content-center h-[3rem]  italic font-semibold'
+    style={{
+        border: "solid 2px var(--main-bg-secondary-dark)"
+    }}
 >
     <span>{name}</span>
 </div>

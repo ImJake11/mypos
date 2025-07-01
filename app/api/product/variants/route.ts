@@ -1,4 +1,4 @@
-import { VariantsProps } from "@/app/lib/models/newProductModel";
+import { VariantsProps } from "@/app/lib/models/productModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
                 price: v.price,
                 productId: productID,
                 stock: v.stock,
+                details: v.details,
             }))
         });
 

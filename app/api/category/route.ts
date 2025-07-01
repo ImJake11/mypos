@@ -1,16 +1,16 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../lib/utils/db/prisma";
-import { getSocket } from "@/app/lib/utils/socket/socket";
+import io from "socket.io-client";
 
-const socket = getSocket();
+const socket = io(process.env.SOCKET_URL || "");
 
 export async function GET(req: NextRequest) {
 
     try {
 
-        const data = await prisma.category.findMany();
+        const categoryData = await prisma.category.findMany();
 
-        return NextResponse.json({ data }, { status: 200 });
+        return NextResponse.json({ categoryData }, { status: 200 });
 
     } catch (e) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
@@ -19,55 +19,39 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
 
-    const { content } = await req.json();
+    const { content, url, id, imageId } = await req.json();
 
     try {
 
-        const data = await prisma.category.create({
-            data: {
+        const data = await prisma.category.upsert({
+            create: {
+                imageId,
                 content,
+                url,
             },
-            select: {
-                content: true,
-                id: true,
-            }
-        });
-
-        if (socket) {
-            socket.emit("category_event", { payload: data, type: "CREATE" });
-        }
-
-        return NextResponse.json({ message: "New Category Added" }, { status: 200 })
-
-    } catch (e) {
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
-    }
-}
-
-export async function PUT(req: NextRequest) {
-
-    try {
-
-        const { id, content } = await req.json();
-
-        const data = await prisma.category.update({
-            data: {
+            update: {
                 content,
+                url,
             },
             where: {
-                id,
+                id
             },
             select: {
-                content: true,
                 id: true,
+                content: true,
+                imageId: true,
+                url: true,
             }
-        });
+        })
+
+        const categoryEventType = id ? "UPDATE" : "CREATE";
 
         if (socket) {
-            socket.emit("category_event", { payload: data, type: "UPDATE"});
+            socket.emit("category_event", { payload: data, type: categoryEventType });
+            console.log("Socket Emmited", categoryEventType);
         }
 
-        return NextResponse.json({}, { status: 200 });
+        return NextResponse.json({ message: "New Category Added", id: data.id }, { status: 200 })
 
     } catch (e) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
