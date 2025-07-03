@@ -67,7 +67,7 @@ const productSlice = createSlice({
     initialState,
     name: "new-product-slice",
     reducers: {
-        updateProductState: <K extends keyof ProductProps>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: ProductProps[K] }>) => {
+        formUpdateState: <K extends keyof ProductProps>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: ProductProps[K] }>) => {
 
             const { name, data } = action.payload;
 
@@ -92,7 +92,7 @@ const productSlice = createSlice({
             currentData[name] = data;
 
         },
-        updateBulkTier: <K extends keyof BulkTableProp>(state: ProductSliceProp, actions: PayloadAction<{ name: K, value: BulkTableProp[K], index: number }>) => {
+        formUpdateBulkTier: <K extends keyof BulkTableProp>(state: ProductSliceProp, actions: PayloadAction<{ name: K, value: BulkTableProp[K], index: number }>) => {
 
             const { name, value, index } = actions.payload;
 
@@ -104,7 +104,7 @@ const productSlice = createSlice({
                 state.data.bulkTier[index][name] = value;
             }
         },
-        updateVariants: <K extends keyof VariantsProps>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: VariantsProps[K], index: number }>) => {
+        formUpdateVariants: <K extends keyof VariantsProps>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: VariantsProps[K], index: number }>) => {
 
             const { name, data, index } = action.payload;
 
@@ -121,7 +121,7 @@ const productSlice = createSlice({
 
             list[index][name] = data;
         },
-        addVariant: (state) => {
+        formAddVariant: (state) => {
 
             const newData: VariantsProps = {
                 isArchived: false,
@@ -134,10 +134,10 @@ const productSlice = createSlice({
 
             state.data.variants.push(newData);
         },
-        deleteVariant: (state, action: PayloadAction<number>) => {
+        formDeleteVariant: (state, action: PayloadAction<number>) => {
             state.data.variants.splice(action.payload, 1);
         },
-        addBulkTire: (state) => {
+        formAddBulkTier: (state) => {
             const newData: BulkTableProp = {
                 quantity: 0,
                 discount: 0
@@ -145,18 +145,18 @@ const productSlice = createSlice({
 
             state.data.bulkTier.push(newData);
         },
-        deleteBulkTire: (state, actions: PayloadAction<number>) => {
+        formDeleteBulkTire: (state, actions: PayloadAction<number>) => {
 
             state.data.bulkTier.splice(actions.payload, 1);
         },
-        toggleDatePicker: (state) => {
+        formToggleDatePicker: (state) => {
             state.isDatePickerOpen = !state.isDatePickerOpen;
         },
-        toggleAutoComputeSellingPrice: (state) => {
+        formToggleAutoComputeSellingPrice: (state) => {
             state.isAutoComputeSellingPrice = !state.isAutoComputeSellingPrice;
         },
 
-        updatePromotionalDiscount: <K extends keyof PromotionalDiscountProp>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: PromotionalDiscountProp[K] }>) => {
+        formUpdatePromotionalDiscount: <K extends keyof PromotionalDiscountProp>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: PromotionalDiscountProp[K] }>) => {
 
             const { name, data } = action.payload;
 
@@ -166,7 +166,7 @@ const productSlice = createSlice({
 
             state.data.promotionalDiscount[name] = data;
         },
-        toggleCategoryTab: (state, action: PayloadAction<CategoryModel | null>) => {
+        formToggleCategoryTab: (state, action: PayloadAction<CategoryModel | null>) => {
 
             if (action.payload) {
 
@@ -189,29 +189,29 @@ const productSlice = createSlice({
             }
         },
         // for updating the product, this will set the whole data therefore the page can see the data based on user wants to update
-        setProductDataForUpdate: (state, action: PayloadAction<ProductProps>) => {
+        formSetProductDataForUpdate: (state, action: PayloadAction<ProductProps>) => {
             const { promotionalDiscount } = action.payload;
             // we will check also if it has promotional discount because it is outside the [NewProductProp]
 
             state.data = action.payload;
             state.isForUpdate = true;
         },
-        resetProductState: () => initialState,
+        formResetProductState: () => initialState,
     }
 });
 
 
-export const { updateProductState,
-    addBulkTire,
-    updateBulkTier,
-    deleteBulkTire,
-    toggleDatePicker,
-    toggleAutoComputeSellingPrice,
-    updateVariants,
-    addVariant,
-    resetProductState,
-    deleteVariant,
-    setProductDataForUpdate,
-    toggleCategoryTab,
-    updatePromotionalDiscount } = productSlice.actions;
+export const { formUpdateState,
+    formAddBulkTier,
+    formUpdateBulkTier,
+    formDeleteBulkTire,
+    formToggleDatePicker,
+    formToggleAutoComputeSellingPrice,
+    formUpdateVariants,
+    formAddVariant,
+    formResetProductState,
+    formDeleteVariant,
+    formSetProductDataForUpdate,
+    formToggleCategoryTab,
+    formUpdatePromotionalDiscount } = productSlice.actions;
 export default productSlice.reducer;

@@ -1,14 +1,13 @@
 "use client";
 
-import { CategoryModel } from '@/app/lib/models/categoryModel';
-import { BulkTableProp, ProductProps, PromotionalDiscountProp, VariantsProps } from '@/app/lib/models/productModel';
-import { toggleProductView } from '@/app/lib/redux/inventorySlice';
-import { setProductDataForUpdate } from '@/app/lib/redux/productSlice';
+import React from 'react';
+import { ProductProps } from '@/app/lib/models/productModel';
+import { inventoryToggleProductView } from '@/app/lib/redux/inventorySlice';
+import { formSetProductDataForUpdate } from '@/app/lib/redux/productSlice';
 import { RootState } from '@/app/lib/redux/store';
-import { faCartPlus, faCartShopping, faCircle, faClose, faEdit, faExpand, faFilter, faHeart, faImage, faKey, faListNumeric, faLock, faTag } from '@fortawesome/free-solid-svg-icons'
+import { faCartPlus, faClose, faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRouter } from 'next/navigation';
-import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from "framer-motion";
 import { KeyFeatures } from './ProductTabKeyFeatures';
@@ -23,11 +22,9 @@ const ViewProductTab = () => {
 
   const dispatch = useDispatch();
 
-  const { currentData, productViewOpen } = useSelector((state: RootState) => state.inventorySlice);
+  const { selectedProductDataForView, productViewOpen } = useSelector((state: RootState) => state.inventorySlice);
 
-  const data: ProductProps = currentData as ProductProps;
-
-
+  const data: ProductProps = selectedProductDataForView as ProductProps;
 
   return (
     <AnimatePresence>
@@ -48,7 +45,7 @@ const ViewProductTab = () => {
           opacity: 0
         }}
 
-        onClick={() => dispatch(toggleProductView(null))}
+        onClick={() => dispatch(inventoryToggleProductView(null))}
       >
         <motion.div className='absolute h-screen w-[40vw] right-0 flex flex-col overflow-auto gap-4'
           style={{
@@ -104,7 +101,7 @@ const ViewProductTab = () => {
             {/** update */}
             <button className='button-primary-gradient p-[10px_15px] rounded-[7px] flex items-center gap-2'
               onClick={() => {
-                dispatch(setProductDataForUpdate(data));
+                dispatch(formSetProductDataForUpdate(data));
                 router.push("/ui/inventory/product-form")
               }}
             >

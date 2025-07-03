@@ -1,9 +1,10 @@
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getSocket } from "@/app/lib/utils/socket/socket";
+import io from "socket.io-client";
 
 
-const socket = getSocket();
+const socket = io(process.env.SOCKET_URL!);
 
 
 export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {

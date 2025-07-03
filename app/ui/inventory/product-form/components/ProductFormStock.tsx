@@ -3,7 +3,7 @@
 import TextInputField from '@/app/ui/inventory/product-form/components/ProductFormTextInputField'
 import { ProductKeys } from '@/app/lib/constants/ProductKeys'
 import { ProductProps } from '@/app/lib/models/productModel'
-import { updateProductState } from '@/app/lib/redux/productSlice'
+import { formUpdateState } from '@/app/lib/redux/productSlice'
 import { RootState } from '@/app/lib/redux/store'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -27,7 +27,7 @@ const Stock = () => {
 
         if (isNan) return;
 
-        dispatch(updateProductState({ name: convertedAsKey, data: Number(value) }));
+        dispatch(formUpdateState({ name: convertedAsKey, data: Number(value) }));
 
     }
 
@@ -41,7 +41,7 @@ const Stock = () => {
 
         const name = ProductKeys.stock as keyof ProductProps;
 
-        dispatch(updateProductState({ name, data: total }));
+        dispatch(formUpdateState({ name, data: total }));
     }, [variants]);
 
     return (

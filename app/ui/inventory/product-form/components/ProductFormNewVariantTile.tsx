@@ -3,7 +3,7 @@
 import { ProductKeys, VariantKeys } from '@/app/lib/constants/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { VariantsProps } from '@/app/lib/models/productModel';
-import { deleteVariant, updateVariants } from '@/app/lib/redux/productSlice';
+import { formDeleteVariant, formUpdateVariants } from '@/app/lib/redux/productSlice';
 import { AppDispatch } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/toastSlice';
 import { ProductActionEnums } from '@/app/lib/redux/utils/enums/productActionEnums';
@@ -61,7 +61,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
         generateImageStringUrl({
             file, dispatch: appDispatch,
         }).then((dataUrl: string) => {
-            appDispatch(updateVariants({
+            appDispatch(formUpdateVariants({
                 data: dataUrl,
                 index,
                 name: VariantKeys.imageUrl as keyof VariantsProps,
@@ -79,7 +79,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
 
         const name = VariantKeys.isPositive as keyof VariantsProps;
 
-        appDispatch(updateVariants({ data: !isPositive, index: index, name }));
+        appDispatch(formUpdateVariants({ data: !isPositive, index: index, name }));
     }
 
     const handleVariantAction = () => {
@@ -121,7 +121,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
 
                         const convertedKey = VariantKeys.name as keyof VariantsProps;
 
-                        appDispatch(updateVariants({
+                        appDispatch(formUpdateVariants({
                             data: value,
                             index,
                             name: convertedKey,
@@ -140,7 +140,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
 
                         const name = VariantKeys.details as keyof VariantsProps;
 
-                        appDispatch(updateVariants({ data: value, name, index }))
+                        appDispatch(formUpdateVariants({ data: value, name, index }))
                     }}
                 />
             </div>
@@ -160,7 +160,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
 
                         if (isNan) return;
 
-                        appDispatch(updateVariants({ data: Number(value), index, name }));
+                        appDispatch(formUpdateVariants({ data: Number(value), index, name }));
                     }}
                 />
                 {/** arrows */}
@@ -182,7 +182,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
 
                         if (isNan) return;
 
-                        appDispatch(updateVariants({ data: Number(value), index, name: convertedKey }))
+                        appDispatch(formUpdateVariants({ data: Number(value), index, name: convertedKey }))
                     }}
                 />
             </div>
@@ -196,10 +196,10 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
             <div className='flex-1 grid place-content-center'>
 
                 {/** delete */}
-                {isForUpdate ? <div className={`cursor-pointer p-[10px_15px] rounded-[7px] text-white ${data.isArchived ? "linear-bg-40" : " error-gradient-bg"}`}
+                {isForUpdate ? <div className={`cursor-pointer p-[10px_15px] rounded-[7px] text-white ${data.isArchived ? "button-primary-gradient" : "button-primary-gradient-error"}`}
                     onClick={handleVariantAction}
                 >{isArchived ? "UnArchive" : "Archive"}</div> :
-                    <FontAwesomeIcon icon={faTrash} className='text-[1.5rem] text-red-500 ' onClick={() => appDispatch(deleteVariant(index))} />
+                    <FontAwesomeIcon icon={faTrash} className='text-[1.5rem] text-red-500 ' onClick={() => appDispatch(formDeleteVariant(index))} />
                 }
             </div>
         </div>

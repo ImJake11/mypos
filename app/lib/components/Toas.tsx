@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import ToasEnum from '../enum/toastEnum';
 import { closeToas, promptConfirmed } from '../redux/toastSlice';
-import { AnimatePresence, color, motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Toas = () => {
 

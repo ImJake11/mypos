@@ -3,7 +3,7 @@
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { toggleCategoryTab, updateProductState } from '@/app/lib/redux/productSlice';
+import { formToggleCategoryTab, formUpdateState } from '@/app/lib/redux/productSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { faAdd, faCircleExclamation, faEdit, faImage } from '@fortawesome/free-solid-svg-icons';
@@ -109,7 +109,7 @@ const Category = () => {
 
                 {/** create button */}
                 <button className='button-primary-gradient flex w-full min-h-[3rem]  items-center gap-3 p-3.5'
-                    onClick={() => dispatch(toggleCategoryTab(null))}
+                    onClick={() => dispatch(formToggleCategoryTab(null))}
                 >
                     <span className='font-semibold italic'>Create </span><FontAwesomeIcon icon={faAdd} />
                 </button>
@@ -137,18 +137,18 @@ function ButtonTile({ isSelected, data, onClose }: ButtonTileProp) {
 
                     const name = ProductKeys.categoryID as keyof ProductProps;
 
-                    dispatch(updateProductState({ name, data: data.id }));
+                    dispatch(formUpdateState({ name, data: data.id }));
 
                     onClose()
                 }}
             >
                 <div className='h-[3rem] w-[3rem] rounded-[5px] bg-[var(--tertiary)] overflow-hidden grid'>
-                    {data.url ? <img src={data.url} alt='image' className='h-full w-full' /> : <FontAwesomeIcon icon={faImage} className='place-self-center' />}
+                    {data.url ? <img src={data.url} alt='' className='h-full w-full' /> : <FontAwesomeIcon icon={faImage} className='place-self-center' />}
                 </div>
                 <span>{data.content}</span>
             </button>
             <FontAwesomeIcon icon={faEdit} className='text-gray-500'
-                onClick={() => dispatch(toggleCategoryTab(data))}
+                onClick={() => dispatch(formToggleCategoryTab(data))}
             />
         </div>
     )

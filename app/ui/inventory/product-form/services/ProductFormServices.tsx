@@ -1,11 +1,9 @@
-import { getDownloadURL, ref, uploadBytes, UploadResult, uploadString } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ProductProps, VariantsProps } from "../../../../lib/models/productModel";
-import { AppDispatch } from "../../../../lib/redux/store";
 import { storage } from "../../../../lib/utils/db/firebase";
-import { resetProcessDialogState, toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from "../../../../lib/redux/processSlice";
-import { resetProductState } from "../../../../lib/redux/productSlice";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { convertDataUrlToBlob } from "@/app/lib/utils/services/convertDataUrlToBlob";
+import { convertDataUrlToWebP } from "@/app/lib/utils/services/convertDataUrlToWebP";
+import { supabaseUploadAndGetIMageDownloadUrl } from "@/app/lib/utils/supabase/supabase_services";
 
 interface Props {
     productData: ProductProps,
@@ -62,20 +60,19 @@ class ProductFormServices {
 
         try {
 
-            // -- convert data url to file
-            const imageFile = await convertDataUrlToBlob(dataUrl)
+            // convert data url to web p
+            const webP = await convertDataUrlToWebP(dataUrl);
+            // convert webp to file
+            const imageFile = await convertDataUrlToBlob(webP)
 
-            const snapshot = await uploadBytes(imageRef, imageFile)
-            console.log("Successfully upload cover photo");
-
-            const downloadUrl = await getDownloadURL(snapshot.ref);
+            const downloadUrl = await supabaseUploadAndGetIMageDownloadUrl(`cover_images/${imageId}`, imageFile);
             console.log("Successfully retrieve the download url")
 
             return downloadUrl
 
         } catch (e) {
-
-            throw new Error(`Uploading cover photo error ${e}`)
+            console.log("Uploading cover photo failed", e);
+            throw new Error(`Uploading cover photo error`)
         }
     }
 
@@ -119,11 +116,15 @@ class ProductFormServices {
                 const isBase64 = variant.imageUrl.startsWith("data:");
 
                 if (isBase64) {
-                    const imageUrl = await this.saveImageToFirebase({
-                        dataUrl: variant.imageUrl,
-                        index,
-                        productID: id
-                    });
+                    const filePath = `variant_images/${id}/variant${index}`;
+
+                    // -- covert image to webp
+                    const webP = await convertDataUrlToWebP(variant.imageUrl);
+
+                    // -- covnert webp data to blob
+                    const imageFile = await convertDataUrlToBlob(webP);
+
+                    const imageUrl = await supabaseUploadAndGetIMageDownloadUrl(filePath, imageFile);
 
                     return {
                         imageUrl: imageUrl, // return with the new image url

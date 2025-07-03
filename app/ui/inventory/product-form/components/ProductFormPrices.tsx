@@ -5,10 +5,10 @@ import React, { useEffect, useMemo, useState } from 'react'
 import ErrorMessage from './ProductFormErrorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { addBulkTire, toggleAutoComputeSellingPrice, updateProductState } from '@/app/lib/redux/productSlice';
+import { formAddBulkTier, formToggleAutoComputeSellingPrice, formUpdateState } from '@/app/lib/redux/productSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import BulkTable from './ProductFormBulkTable';
+import BulkTable from './ProductFormBulkTable'; 
 import PromotionalDiscount from './ProductFormPromotionalDiscount';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
@@ -31,7 +31,7 @@ const Prices = () => {
 
         if (isNan) return;
 
-        dispatch(updateProductState({ name: convertedAsKey, data: Number(value) }))
+        dispatch(formUpdateState({ name: convertedAsKey, data: Number(value) }))
     }
 
 
@@ -47,7 +47,7 @@ const Prices = () => {
             // comput selling price
             const total = costPrice * (1 + convertedTax);
 
-            dispatch(updateProductState({ name, data: total }))
+            dispatch(formUpdateState({ name, data: total }))
         }
     }, [costPrice, tax, productSlice.isAutoComputeSellingPrice]);
 
@@ -55,7 +55,7 @@ const Prices = () => {
     return <div className='flex w-full flex-col gap-3 p-[20px_10px] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'>
         {/** auto compute selling price toggle toggle */}
         <div className='flex gap-1.5'><span>Auto Compute Selling Price</span>
-            <CheckBox isChecked={productSlice.isAutoComputeSellingPrice} onClick={() => dispatch(toggleAutoComputeSellingPrice())} />
+            <CheckBox isChecked={productSlice.isAutoComputeSellingPrice} onClick={() => dispatch(formToggleAutoComputeSellingPrice())} />
         </div>
 
         {/** error messages */}
@@ -78,15 +78,15 @@ const Prices = () => {
         <span className='font-semibold italic mt-1.5'>Advance Pricing</span>
 
         {/** bulk discount toggle */}
-        <div className='flex gap-1.5'><span>Bulk Discounts</span><CheckBox isChecked={bulkEnabled} onClick={() => dispatch(updateProductState({ name: "bulkEnabled", data: !bulkEnabled }))} /></div>
+        <div className='flex gap-1.5'><span>Bulk Discounts</span><CheckBox isChecked={bulkEnabled} onClick={() => dispatch(formUpdateState({ name: "bulkEnabled", data: !bulkEnabled }))} /></div>
 
         {bulkEnabled && <BulkTable data={productSlice.data} />}
         {/** tier button */}
-        {bulkEnabled && <button className='button-primary-gradient rounded-[var(--button-border-radius)] h-[3rem] p-[10px_15px w-[8rem]' onClick={() => dispatch(addBulkTire())}>Add tier</button>}
+        {bulkEnabled && <button className='button-primary-gradient rounded-[var(--button-border-radius)] h-[3rem] p-[10px_15px w-[8rem]' onClick={() => dispatch(formAddBulkTier())}>Add tier</button>}
 
 
         {/** promotional discount */}
-        <div className='flex gap-1.5'><span>Promotional Discount</span><CheckBox isChecked={productSlice.data.discountEnabled} onClick={() => dispatch(updateProductState({
+        <div className='flex gap-1.5'><span>Promotional Discount</span><CheckBox isChecked={productSlice.data.discountEnabled} onClick={() => dispatch(formUpdateState({
             data: !productSlice.data.discountEnabled,
             name: ProductKeys.discountEnabled as keyof ProductProps,
         }))} /></div>

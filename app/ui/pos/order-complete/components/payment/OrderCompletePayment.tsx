@@ -6,7 +6,7 @@ import { PaymentMethod } from '@/app/lib/enum/paymentMethod';
 import PaymentButton from './components/PaymentButton';
 import PaymentHelper from './services/paymentHelper';
 import { RootState } from '@/app/lib/redux/store';
-import isValidDecimalInput from '@/app/lib/redux/utils/functions/validateDecimalInput';
+import isValidDecimalInput from '@/app/lib/utils/services/validateDecimalInput';
 
 const OrderCompletePayment = () => {
 

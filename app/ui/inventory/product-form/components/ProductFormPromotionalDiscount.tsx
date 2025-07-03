@@ -3,7 +3,7 @@
 import { PromotionalDiscountKeys } from '@/app/lib/constants/ProductKeys';
 import monthsName from '@/app/lib/data/MonthsList';
 import { PromotionalDiscountProp } from '@/app/lib/models/productModel';
-import { updatePromotionalDiscount, toggleDatePicker } from '@/app/lib/redux/productSlice';
+import { formUpdatePromotionalDiscount, formToggleDatePicker } from '@/app/lib/redux/productSlice';
 import { AppDispatch } from '@/app/lib/redux/store';
 import React from 'react'
 
@@ -61,7 +61,7 @@ const PromotionalDiscount = ({ data, dispatch }: Props) => {
 
                             const convertedAsKey = name as keyof PromotionalDiscountProp;
 
-                            dispatch(updatePromotionalDiscount({ name: convertedAsKey, data: value }))
+                            dispatch(formUpdatePromotionalDiscount({ name: convertedAsKey, data: value }))
                         }}
 
                     ></textarea>
@@ -81,7 +81,7 @@ const PromotionalDiscount = ({ data, dispatch }: Props) => {
 
                             if (isNan) return;
 
-                            dispatch(updatePromotionalDiscount({ name: convertedAsKey, data: Number(value) }))
+                            dispatch(formUpdatePromotionalDiscount({ name: convertedAsKey, data: Number(value) }))
                         }}
                     />
                 </div>
@@ -90,7 +90,7 @@ const PromotionalDiscount = ({ data, dispatch }: Props) => {
                     {/** means show only this component if the function is not empty */}
                     {convertExpirationDate() && <div className='flex-1 grid place-content-center'><span>{convertExpirationDate()}</span></div>}
                     <button className='button-primary-gradient flex-1 rounded-[7px]'
-                        onClick={() => dispatch(toggleDatePicker())}
+                        onClick={() => dispatch(formToggleDatePicker())}
                     >Pick Date</button>
                 </div>
             </div>

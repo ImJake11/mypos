@@ -1,16 +1,19 @@
 "use client";
 
+import React, { useEffect, useState } from 'react'
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import ToasEnum from '@/app/lib/enum/toastEnum';
-import { toggleCategoryTab } from '@/app/lib/redux/productSlice';
+import { formToggleCategoryTab } from '@/app/lib/redux/productSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/toastSlice';
 import { storage } from '@/app/lib/utils/db/firebase';
 import { generateImageStringUrl } from '@/app/lib/utils/services/convertImageFileToString';
 import { getDownloadURL, ref, uploadBytes, uploadString } from 'firebase/storage';
 import { v4 as uuidv4 } from "uuid";
-import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
+import { convertDataUrlToWebP } from '@/app/lib/utils/services/convertDataUrlToWebP';
+import { convertDataUrlToBlob } from '@/app/lib/utils/services/convertDataUrlToBlob';
+import { supabaseUploadAndGetIMageDownloadUrl } from '@/app/lib/utils/supabase/supabase_services';
 
 const NewCategoryTab = () => {
 
@@ -19,18 +22,14 @@ const NewCategoryTab = () => {
     const { showCategoryTab, categoryUpdateData } = useSelector((state: RootState) => state.productSlice);
 
     const [newCategory, setNewCategory] = useState<string>("");
-    const [newImage, setNewImage] = useState<File | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [imagePreview, setImagePreview] = useState<string>("");
-    const [isUpdate, setIsUpdate] = useState(false);
 
 
     const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
 
         if (!file) return;
-
-        setNewImage(file);
 
         generateImageStringUrl({
             dispatch, file: file,
@@ -44,29 +43,51 @@ const NewCategoryTab = () => {
 
     const handleSave = async () => {
 
-        const imageId = categoryUpdateData.imageId ?? uuidv4();
-        let imageDownloadUrl: string | undefined = categoryUpdateData.url ?? "";
+        try {
+            // -- get new id if the current image id is empty
+            const imageId = categoryUpdateData.imageId === undefined ||
+                !categoryUpdateData.imageId ? uuidv4() : categoryUpdateData.imageId;
 
-        setIsLoading(true);
-        // -- 1. check newImage file if its not null
-        // if it is not null it means use attached a new photo
+            let imageDownloadUrl: string | undefined = categoryUpdateData.url ?? "";
 
-        if (newImage) {
-            imageDownloadUrl = await handleImageUpload(imageId);
+            setIsLoading(true);
+            // -- 1. check imagePreview if starts with data:
+            // this means user put new image
+
+            if (imagePreview.startsWith("data:")) {
+
+                const awaitedImageUrl = await handleImageUpload(imageId);
+
+                if (!awaitedImageUrl) {
+                    setIsLoading(false);
+                    dispatch(openToas({
+                        message: "Saving category failed",
+                        type: ToasEnum.ERROR,
+                    }))
+                    return;
+                }
+
+                imageDownloadUrl = awaitedImageUrl;
+            }
+
+            // --2. send data to db
+            await handleApiCall(imageId, imageDownloadUrl);
+
+            // --- 4. reset category
+            setNewCategory("");
+            setIsLoading(false);
+
+            // --- 5. close category tab
+            dispatch(formToggleCategoryTab(null));
+
+            // --- .6 display toas message
+            dispatch(openToas({ message: "Category process successfull", type: ToasEnum.SUCCESS }))
+        } catch (e) {
+            dispatch(openToas({
+                message: "Saving category failed",
+                type: ToasEnum.ERROR
+            }))
         }
-
-        // --2. send data to db
-        const id = await handleApiCall(imageId, imageDownloadUrl);
-
-        // --- 4. reset category
-        setNewCategory("");
-        setIsLoading(false);
-
-        // --- 5. close category tab
-        dispatch(toggleCategoryTab(null));
-
-        // --- .6 display toas message
-        dispatch(openToas({ message: "Category process successfull", type: ToasEnum.SUCCESS }))
     }
 
     const handleApiCall = async (imageId: string, imageUrl: string) => {
@@ -96,12 +117,10 @@ const NewCategoryTab = () => {
     }
 
     const handleImageUpload = async (id: string) => {
-        const filename = `category-image/${id}/${newImage?.name}`;
 
-        const imageRef = ref(storage, filename);
         console.log("Uploading image")
 
-        if (!newImage) {
+        if (!imagePreview || !imagePreview.startsWith("data:")) {
 
             dispatch(openToas({
                 message: "No image to upload",
@@ -112,21 +131,24 @@ const NewCategoryTab = () => {
 
         try {
 
-            const snapshot = await uploadBytes(imageRef, newImage);
-            console.log("Image uploaded succesfull", snapshot);
+            // --convert image data to webP url
+            const webpUrl = await convertDataUrlToWebP(imagePreview);
 
-            const imageUrl = await getDownloadURL(snapshot.ref);
+            // -- convert webp url to blob
+            const blobImage = await convertDataUrlToBlob(webpUrl);
+
+            const imageUrl = await supabaseUploadAndGetIMageDownloadUrl(`category_images/${id}`, blobImage);
             console.log("successfully retrieve download url", imageUrl)
 
             return imageUrl;
 
         } catch (e) {
-
             dispatch(openToas({
-                message: "Uable to upload category image",
+                message: "Unable to upload category image",
                 type: ToasEnum.ERROR,
             }));
-
+            console.log(e)
+            setIsLoading(false);
             throw new Error("Firebase image error");
         }
     }
@@ -140,7 +162,6 @@ const NewCategoryTab = () => {
         return () => {
             // clean up the state
             setImagePreview("");
-            setNewImage(null);
             setNewCategory("");
         }
     }, [categoryUpdateData]);
@@ -195,7 +216,7 @@ const NewCategoryTab = () => {
                             style={{
                                 border: "solid 1px var(--foreground)"
                             }}
-                            onClick={() => dispatch(toggleCategoryTab(null))}
+                            onClick={() => dispatch(formToggleCategoryTab(null))}
                         >Cancel</button>
                         {isLoading ? <div className='w-[6rem] h-[3rem] button-primary-gradient rounded-[var(--button-border-radius)] grid place-content-center'>
                             <CircularLoadingIndicator size={32} />

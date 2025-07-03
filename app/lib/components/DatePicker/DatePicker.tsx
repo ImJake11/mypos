@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import monthsName from '../../data/MonthsList';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { toggleDatePicker, updatePromotionalDiscount } from '../../redux/productSlice';
+import { formToggleDatePicker, formUpdatePromotionalDiscount } from '../../redux/productSlice';
 import { PromotionalDiscountKeys } from '../../constants/ProductKeys';
 import { PromotionalDiscountProp } from '../../models/productModel';
 
@@ -38,8 +38,8 @@ const DatePicker = () => {
 
         const name = PromotionalDiscountKeys.expirationDate as keyof PromotionalDiscountProp;
 
-        dispatch(updatePromotionalDiscount({ name: name, data: joinedDates }));
-        dispatch(toggleDatePicker())
+        dispatch(formUpdatePromotionalDiscount({ name: name, data: joinedDates }));
+        dispatch(formToggleDatePicker())
     }
 
     const handleDateUpdate = (name: string, data: any) => {
@@ -100,7 +100,7 @@ const DatePicker = () => {
 
                 <div className='flex justify-end gap-3 mt-6'>
                     <button className='border border-gray-400 rounded-[7px] p-[10px_15px]' onClick={() => {
-                        dispatch(toggleDatePicker());
+                        dispatch(formToggleDatePicker());
                     }}>Cancel</button>
                     <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_15px]' onClick={handleSave}>Save</button>
                 </div>

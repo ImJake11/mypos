@@ -3,7 +3,7 @@
 import NewVariantTile from './ProductFormNewVariantTile'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { addVariant } from '@/app/lib/redux/productSlice';
+import { formAddVariant } from '@/app/lib/redux/productSlice';
 import ErrorMessage from './ProductFormErrorMessage';
 
 
@@ -24,7 +24,7 @@ const Variants = () => {
             <div className='flex w-full justify-between'>
                 <span className='italic font-semibold  '>Variants</span>
                 <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_20px]'
-                    onClick={() => dispatch(addVariant())}
+                    onClick={() => dispatch(formAddVariant())}
                 >Add Variant</button>
             </div>
             {/** list of added variant */}

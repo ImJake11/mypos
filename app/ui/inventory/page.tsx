@@ -1,5 +1,5 @@
-import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
+import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import { ProductProps } from '@/app/lib/models/productModel';
 import ViewProductTab from './components/InventoryProductViewTab/ProductTab';
 import ProductList from './components/InventoryProductList';
@@ -7,35 +7,9 @@ import Toas from '@/app/lib/components/Toas';
 import InventoryAppar from './components/InventoryAppar';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import ProcessDialog from '@/app/lib/components/ProcessDialog/ProcessDialog';
-import InventoryFilterContainer from './components/InventoryFilterContainer';
+import InventoryFilterContainer from './components/InventoryFilterTab/InventoryFilterContainer';
 
 export default async function Page() {
-
-    const protocol = process.env.WEBSITE_PROTOCOL;
-    const host = process.env.WEBSITE_HOST;
-    const port = process.env.WEBSITE_PORT;
-
-    const baseUrl = `${protocol}://${host}:${port}`
-
-    const productResponse = await fetch(`${baseUrl}/api/product`, {
-        method: "GET",
-    });
-
-    const categoryResponse = await fetch(`${baseUrl}/api/category`, {
-        method: "GET",
-    });
-
-    if (!productResponse.ok) {
-        throw new Error(`Failed to fetch product: ${productResponse.statusText}`)
-    }
-
-    const { productData } = await productResponse.json();
-
-    const products: ProductProps[] = productData;
-
-    const { categoryData } = await categoryResponse.json();
-
-    const categories: CategoryModel[] = categoryData;
 
 
     return (
@@ -49,9 +23,9 @@ export default async function Page() {
                 {/** appbar */}
                 <InventoryAppar />
                 {/** body */}
-                <ProductList rawData={products} categoryData={categoryData} />
+                <ProductList />
             </div>
-            <InventoryFilterContainer categories={categoryData} />
+            <InventoryFilterContainer categories={[]} />
             <ViewProductTab />
             <Toas />
             <ProcessDialog />

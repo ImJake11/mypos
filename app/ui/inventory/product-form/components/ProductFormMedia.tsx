@@ -3,7 +3,7 @@
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { updateProductState } from '@/app/lib/redux/productSlice';
+import { formUpdateState } from '@/app/lib/redux/productSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/toastSlice';
 import React from 'react'
@@ -29,7 +29,7 @@ const UploadMedia = () => {
 
             const name = ProductKeys.coverImage as keyof ProductProps;
 
-            dispatch(updateProductState({ data: imageString, name }));
+            dispatch(formUpdateState({ data: imageString, name }));
         }
 
         reader.onerror = () => {

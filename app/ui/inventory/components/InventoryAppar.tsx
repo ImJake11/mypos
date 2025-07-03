@@ -1,16 +1,14 @@
 'use client';
 
-import { setFilterData, toggleFilterTab, toggleInventoryListView } from '@/app/lib/redux/inventorySlice';
-import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import React from 'react'
+import { inventoryToggleFilterTab, inventoryToggleInventoryListView } from '@/app/lib/redux/inventorySlice';
+import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from "framer-motion";
 import { openToas } from '@/app/lib/redux/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faSearch } from '@fortawesome/free-solid-svg-icons';
-import { FilterKeys } from '@/app/lib/constants/FilterKeys';
-import { FilterModel } from '@/app/lib/models/filterModel';
+import { faFilter } from '@fortawesome/free-solid-svg-icons';
 
 const InventoryAppar = () => {
 
@@ -18,17 +16,10 @@ const InventoryAppar = () => {
 
     const { isListView, isFilterTabVisible } = useSelector((state: RootState) => state.inventorySlice);
 
-    const handleQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const name = FilterKeys.name as keyof FilterModel;
-        const data = e.target.value;
-
-        dispatch(setFilterData({ name, data }))
-    }
-
     const handleListViewToggle = () => {
-        dispatch(toggleInventoryListView());
+        dispatch(inventoryToggleInventoryListView());
         dispatch(openToas({
-            message: isListView ? "Switched to grid view mode" : "Switched to list view mode",
+            message: isListView ? "Switched to grid mode" : "Switched to table mode",
             type: ToasEnum.DEFAULT,
         }))
     }
@@ -40,16 +31,11 @@ const InventoryAppar = () => {
         >
             <label className='italic font-semibold'>Inventory</label >
             <div className='flex gap-3'>
-                {/** tile type button */}
-                <motion.div className='flex' layout>
-                    <TileTypeButton icon='ri-layout-grid-fill' isSelected={isListView === false} onClick={handleListViewToggle} />
-                    <TileTypeButton icon='ri-list-view' isSelected={isListView === true} onClick={handleListViewToggle} />
-                </motion.div>
 
                 {/** filter button */}
                 <AnimatePresence>
-                    {!isFilterTabVisible && <motion.div className='linear-bg-40 p-[10px_15px] rounded-[7px] h-fit w-fit'
-                        onClick={() => dispatch(toggleFilterTab(true))}
+                    {!isFilterTabVisible && <motion.div className='button-primary-gradient p-[10px_15px] rounded-[7px] h-fit w-fit'
+                        onClick={() => dispatch(inventoryToggleFilterTab(true))}
                         initial={{
                             y: "-5rem",
                         }}
@@ -69,6 +55,18 @@ const InventoryAppar = () => {
                         Filter <FontAwesomeIcon icon={faFilter} />
                     </motion.div>}
                 </AnimatePresence>
+
+                {/** tile type button */}
+                <motion.div className='flex border h-[2.5rem] border-[var(--color-brand-primary)] rounded-[4px] overflow-hidden relative' layout>
+                    <motion.div className='w-[2.5rem] h-[2.5rem] absolute button-primary-gradient'
+                        animate={{
+                            transform: isListView ? "translateX(100%)" : "translateX(0%)"
+                        }}
+                    />
+                    <TileTypeButton icon='ri-layout-grid-fill'  onClick={handleListViewToggle} />
+                    <TileTypeButton icon='ri-table-fill'  onClick={handleListViewToggle} />
+                </motion.div>
+
             </div>
         </div>
     )
@@ -76,32 +74,18 @@ const InventoryAppar = () => {
 
 interface ButtonTileProp {
     icon: string,
-    isSelected: boolean,
     onClick: () => void,
 }
 
-function TileTypeButton({ icon, isSelected, onClick }: ButtonTileProp) {
+function TileTypeButton({ icon, onClick }: ButtonTileProp) {
 
     return <div className='w-[2.5rem] h-[2.5rem] relative'>
-        <motion.div className={`h-[2.5rem] rounded-[5px] w-[2.5rem]  linear-bg-40 absolute`}
-        layout
-            initial={{
-                opacity: 0,
-            }}
-            animate={{
-                opacity: isSelected ? 1 : 0,
-            }}
-
-            transition={{
-                duration: .25,
-                ease: "easeInOut",
-            }}
-
+        <motion.i className={`${icon} text-[1.5rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
+        whileHover={{
+        scale: 1.2
+        }}
             onClick={onClick}
-        />
-        <i className={`${icon} text-[1.5rem] absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2`}
-            onClick={onClick}
-        ></i>
+        ></motion.i>
     </div>
 }
 

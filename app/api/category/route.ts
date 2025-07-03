@@ -7,7 +7,6 @@ const socket = io(process.env.SOCKET_URL || "");
 export async function GET(req: NextRequest) {
 
     try {
-
         const categoryData = await prisma.category.findMany();
 
         return NextResponse.json({ categoryData }, { status: 200 });
@@ -30,6 +29,7 @@ export async function POST(req: NextRequest) {
                 url,
             },
             update: {
+                imageId,
                 content,
                 url,
             },

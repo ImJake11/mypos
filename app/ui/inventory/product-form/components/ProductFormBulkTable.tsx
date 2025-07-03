@@ -1,6 +1,6 @@
 "use client";
 import { BulkTableProp, ProductProps } from "@/app/lib/models/productModel";
-import { deleteBulkTire, updateBulkTier } from "@/app/lib/redux/productSlice";
+import { formDeleteBulkTire, formUpdateBulkTier } from "@/app/lib/redux/productSlice";
 import { AppDispatch } from "@/app/lib/redux/store";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -89,7 +89,7 @@ const Cell = ({ quantity, discount, index, total, sellingPrice, dispatch }: Cell
 
         if (isNan) return;
 
-        dispatch(updateBulkTier({ index, name, value: Number(value), }));
+        dispatch(formUpdateBulkTier({ index, name, value: Number(value), }));
     }
 
 
@@ -107,7 +107,7 @@ const Cell = ({ quantity, discount, index, total, sellingPrice, dispatch }: Cell
                 <FontAwesomeIcon icon={faArrowRight} />
                 <span>Php  {total}</span>
             </div>
-            <FontAwesomeIcon icon={faTrash} className='text-red-500 text-[1.5rem] flex-1' onClick={() => dispatch(deleteBulkTire(index))} />
+            <FontAwesomeIcon icon={faTrash} className='text-red-500 text-[1.5rem] flex-1' onClick={() => dispatch(formDeleteBulkTire(index))} />
         </div>
     )
 }

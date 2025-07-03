@@ -1,13 +1,12 @@
 import { createListenerMiddleware, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { promptConfirmed } from "../toastSlice";
-import { updateVariants } from "../productSlice";
-import { VariantsProps } from "../../models/productModel";
+import { formUpdateVariants } from "../productSlice";
+import { ProductProps, VariantsProps } from "../../models/productModel";
 import ListenerPayload from "../utils/models/appListenerModel";
 import { VariantActionModel } from "../utils/models/productRelatedModel";
 import { ProductActionEnums } from "../utils/enums/productActionEnums";
-import { confirmFilterData } from "../inventorySlice";
+import { confirmFilterData, inventorySetFilteredData } from "../inventorySlice";
 import { InventoryAction } from "../utils/enums/inventoryActionEnums";
-import InventoryMiddleWareService from "../services/inventoryMiddlewareActions";
 import { AppDispatch } from "../store";
 
 
@@ -27,23 +26,14 @@ appMiddlewareListner.startListening({
             const { name, data, index } = payload;
 
             // update the variant through reducer
-            listenerApi.dispatch(updateVariants({
+            listenerApi.dispatch(formUpdateVariants({
                 name: name as keyof VariantsProps,
                 data,
                 index,
             }));
 
         } else if (context === InventoryAction.FILTERDATA) {
-
-
-            const inventoryMiddlewareServices = new InventoryMiddleWareService({
-                data: { context, payload },
-                dispatch: listenerApi.dispatch as AppDispatch,
-            });
-
-            inventoryMiddlewareServices.handleDataFiltering();
-            console.log("filtering starting");
-
+            listenerApi.dispatch(inventorySetFilteredData(payload as ProductProps[]));
         }
     },
     matcher: isAnyOf(promptConfirmed, confirmFilterData),

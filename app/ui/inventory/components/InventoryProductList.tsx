@@ -1,79 +1,129 @@
 "use client"
 
-import React, { useEffect } from 'react'
-import ProductTile from './InventoryProductTile';
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ProductProps } from '@/app/lib/models/productModel';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetInventoryState, setProductListData, toggleFilterTab } from '@/app/lib/redux/inventorySlice';
+import { inventoryCategoryEvent, inventorySetErrorState, inventorySetLoadingState, inventorySetRawData, inventoryResetInventoryState } from '@/app/lib/redux/inventorySlice';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { AnimatePresence } from 'framer-motion';
-import InventoryFilterContainer from './InventoryFilterContainer';
-import { CategoryModel } from '@/app/lib/models/categoryModel';
+import { fetchAllProducts } from '@/app/lib/utils/api/product/productFetching';
+import InventoryErrorState from './InvetoryAltPages/InventoryErrorState';
+import InventoryLoadingState from './InvetoryAltPages/InventoryLoadingState';
+import GridTile from './InventoryProductTiles/InventoryGridTile';
+import InventoryTableViewTile from './InventoryProductTiles/InventoryTableViewTile';
+import { motion } from "framer-motion";
 
-interface Prop {
-    rawData: ProductProps[],
-    categoryData: CategoryModel[],
-}
-const ProductList = ({ rawData, categoryData }: Prop) => {
- 
+
+const ProductList = () => {
+
     const dispatch = useDispatch<AppDispatch>();
 
-    const { isListView, filterData, productsList } = useSelector((state: RootState) => state.inventorySlice);
-    const { categoryID, name, maxPrice, maxStock, minPrice, minStock, withBulkPricing, withDiscount, } = filterData;
+    const { isListView,
+        isLoading,
+        rawProductData,
+        filteredProductData,
+        isFiltering,
+        isError } = useSelector((state: RootState) => state.inventorySlice);
 
-    // generate a list based on filter data
-    useEffect(() => {
-        // Start with the raw (unfiltered) data
-        let currentFilteredList = rawData;
+    // display the raw data if filter data is empty
+    const displayList: ProductProps[] = useMemo(() => {
+        return isFiltering ? filteredProductData : rawProductData;
+    }, [rawProductData, filteredProductData, isFiltering]);
 
-        // Apply category filter if categoryID is present
-        if (categoryID) {
-            currentFilteredList = currentFilteredList.filter(p => p.categoryID === categoryID);
-        }
+    const handleSocketEvent = useCallback((data: any) => {
+        dispatch(inventoryCategoryEvent(data));
+    }, []);
 
-        // Apply name filter if name is present
-        // Make sure 'name' is trimmed and converted to lowercase for case-insensitive search
-        if (name) {
-            const lowerCaseName = name.toLowerCase().trim();
-            currentFilteredList = currentFilteredList.filter(p =>
-                p.name.toLowerCase().includes(lowerCaseName) // Use .includes() for "contains" search
-            );
-        }
-
-        // Set the state to the final filtered list
-        dispatch(setProductListData(currentFilteredList))
-
-    }, [categoryID, name, rawData]);
+    useSocketEvent("favorite_event", handleSocketEvent);
 
     // update product state based on socket event
     useEffect(() => {
         // reset initial inventory state 
-        dispatch(resetInventoryState())
+        dispatch(inventoryResetInventoryState())
 
-        // initially set product data to redux state
-        dispatch(setProductListData(rawData));
+        // fetched all product 
+        const fetch = async () => {
+
+            try {
+                dispatch(inventorySetLoadingState());
+                const result = await fetchAllProducts();
+                dispatch(inventorySetRawData(result));
+
+            } catch (e) {
+                dispatch(inventorySetErrorState(true));
+                dispatch(inventorySetLoadingState());
+            } finally {
+                dispatch(inventorySetLoadingState());
+            }
+        }
+
+        fetch();
+
     }, []);
 
-
-    useSocketEvent("favorite_event", (data: any) => {
-        const { id, isFavorite } = data;
-
-        const updatedProductList: ProductProps[] = productsList.map(pro => pro.id === id ? { ...pro, isFavorite } : pro);
-        dispatch(setProductListData(updatedProductList));
-    })
-
+    if (isError) return <InventoryErrorState />
 
     return (
-        <div className='flex-1 flex'>
-            <div className={`main-background-gradient flex-1 h-[calc(100vh-5rem)] overflow-auto gap-4 p-3.5 ${isListView ? "flex flex-col" : "grid grid-cols-5"} rounded-[11px]`}
+        <AnimatePresence>
+            {isLoading ? <InventoryLoadingState /> : <motion.div className='flex-1 flex'
+                initial={{
+                    opacity: 0
+                }}
+                animate={{
+                    opacity: 1
+                }}
+                exit={{
+                    opacity: 0,
+                }}
             >
-                <AnimatePresence>
-                    {productsList ? productsList.map((d, i) => <ProductTile key={i} data={d} />) : null}
-                </AnimatePresence>
-            </div>
-        </div>
+                <div className={`main-background-gradient flex-1 overflow-auto gap-4 p-3.5  rounded-[11px]`}
+                >
+                    {/** table header */}
+                    {isListView && <motion.div className='flex w-full h-[3rem] p-[0_0.5rem]'
+                        initial={{
+                            y: "-100%",
+                        }}
+                        animate={{
+                            y: "0%",
+                        }}
+                        exit={{
+                            y: "-100%"
+                        }}
+                    >
+                        <TableHeaderTile flex='flex-[1]' title='Image' />
+                        <TableHeaderTile flex='flex-[3]' title='Name' />
+                        <TableHeaderTile flex='flex-[2]' title='Stock' />
+                        <TableHeaderTile flex='flex-[2]' title='Stock Status' />
+                        <TableHeaderTile flex='flex-[2]' title='Price' />
+                        <TableHeaderTile flex='flex-[2]' title='Variant' />
+                        <TableHeaderTile flex='flex-[2]' title='Availability' />
+                        <TableHeaderTile flex='flex-[1]' title='Action' />
+                    </motion.div>}
+
+                    <div className='h-[.5rem]' />
+                    <div className={`flex-1 h-[calc(100vh-9rem)] overflow-auto ${isListView ? "flex flex-col" : "grid grid-cols-6"} gap-3`}>
+                        <AnimatePresence>
+                            {displayList.map((d) => isListView ? <InventoryTableViewTile key={d.id} data={d} /> :
+                                <GridTile key={d.id} data={d} />)}
+                        </AnimatePresence>
+                    </div>
+                </div>
+            </motion.div>}
+        </AnimatePresence>
     )
+}
+
+
+function TableHeaderTile({
+    flex, title,
+}:
+
+    { flex: string, title: string }) {
+    return <div className={`${flex} h-full border-[1px] border-[var(--color-brand-primary)] place-content-center grid font-semibold`}>
+        {title}
+    </div>
+
 }
 
 export default ProductList

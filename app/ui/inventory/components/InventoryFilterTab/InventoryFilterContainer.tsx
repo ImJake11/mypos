@@ -1,18 +1,17 @@
 'use client';
 
 import { FilterKeys } from '@/app/lib/constants/FilterKeys'
-import React, { useEffect, useState } from 'react'
 import CategoriesList from './InventoryCategoryList';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/lib/redux/store';
+import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { FilterModel } from '@/app/lib/models/filterModel';
-import { confirmFilterData, setFilterData, toggleFilterTab } from '@/app/lib/redux/inventorySlice';
-import { InventoryAction } from '@/app/lib/redux/utils/enums/inventoryActionEnums';
+import { inventorySetFilterData, inventoryToggleFilterTab } from '@/app/lib/redux/inventorySlice';
 import { motion } from "framer-motion";
 import { AnimatePresence } from 'framer-motion';
+import { inventoryServiceHandleFiltering } from '../../services/inventoryServiceFilterProduct';
 
 interface Prop {
     categories: CategoryModel[], // passed data from parent component (ssr)
@@ -20,11 +19,12 @@ interface Prop {
 
 const InventoryFilterContainer = ({ categories }: Prop) => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const { filterData, isFilterTabVisible } = useSelector((state: RootState) => state.inventorySlice);
 
     const { name, maxPrice, minPrice, maxStock, minStock, withDiscount, withBulkPricing } = filterData;
+
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -43,12 +43,12 @@ const InventoryFilterContainer = ({ categories }: Prop) => {
 
             if (isNan) return;
 
-            dispatch(setFilterData({ data: value, name: convertedKeys }));
+            dispatch(inventorySetFilterData({ data: value, name: convertedKeys }));
             return;
         }
 
 
-        dispatch(setFilterData({ data: value, name: convertedKeys }));
+        dispatch(inventorySetFilterData({ data: value, name: convertedKeys }));
 
     }
 
@@ -58,7 +58,7 @@ const InventoryFilterContainer = ({ categories }: Prop) => {
 
         const data = filterData[convertedKey];
 
-        dispatch(setFilterData({ name: convertedKey, data: !data }));
+        dispatch(inventorySetFilterData({ name: convertedKey, data: !data }));
     }
 
 
@@ -83,10 +83,10 @@ const InventoryFilterContainer = ({ categories }: Prop) => {
                     <motion.div className='absolute right-0 h-full w-[30vw] p-3 bg-[var(--main-bg-primary-dark)] flex flex-col'>
                         <span className='italic font-semibold flex w-full justify-between'>
                             Product Filter
-                            <FontAwesomeIcon icon={faClose} onClick={() => dispatch(toggleFilterTab(false))} />
+                            <FontAwesomeIcon icon={faClose} onClick={() => dispatch(inventoryToggleFilterTab(false))} />
                         </span>
                         <div className='min-h-[1.5rem]' />
-                        <CategoriesList data={categories} isDynamic={false} />
+                        <CategoriesList />
                         <div className='min-h-[1.5rem]' />
                         <div className='flex-1 flex flex-col overflow-y-auto scrollbar-hide'>
                             <div className='min-h-[2rem]' />
@@ -114,10 +114,11 @@ const InventoryFilterContainer = ({ categories }: Prop) => {
                             <div className='min-h-[3rem]' />
                             {/** actions */}
                             <div className='w-full flex gap-2 justify-end'>
-                                <button className='button-primary-gradient h-[3rem] w-fit p-[0px_15px] rounded-[7px]' onClick={() => dispatch(confirmFilterData({
-                                    context: InventoryAction.FILTERDATA,
-                                    payload: filterData,
-                                }))}>Filter Products</button>
+                                <button className='button-primary-gradient h-[3rem] w-fit p-[0px_15px] rounded-[7px]'
+                                    onClick={() => inventoryServiceHandleFiltering(
+                                        filterData,
+                                        dispatch,
+                                    )}>Filter Products</button>
                             </div>
                         </div>
 

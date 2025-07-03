@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
         // category params
         const categoryParam = searchParams.get("category_id");
-        if(categoryParam){
+        if (categoryParam) {
             filters.categoryID = categoryParam;
         }
 
@@ -53,7 +53,7 @@ export async function GET(req: NextRequest) {
             filters.maxStock = parsedMaxStock;
         }
 
-        const withDiscountParam = searchParams.get("with_discount");
+        const withDiscountParam = searchParams.get("with_discounts");
         if (withDiscountParam === 'true') {
             filters.withDiscount = true;
         } else if (withDiscountParam === 'false') {
@@ -98,7 +98,7 @@ export async function GET(req: NextRequest) {
         // If 'withBulkPricing' is true, filter for products where bulkEnabled is true.
         // If 'withBulkPricing' is false, filter for products where bulkEnabled is false.
         // If 'withBulkPricing' is undefined, don't filter by bulkEnabled.
-        if (filters.withBulkPricing !== undefined) {
+        if (filters.withBulkPricing) {
             whereConditions.bulkEnabled = filters.withBulkPricing;
         }
 
@@ -107,12 +107,14 @@ export async function GET(req: NextRequest) {
         // If withDiscount is true, find products with a promotionalDiscount where discountRate > 0.
         // If withDiscount is false, find products WITHOUT a promotionalDiscount where discountRate > 0.
         // If withDiscount is undefined, don't filter by discount.
-        if (filters.withDiscount === true) {
+        if (filters.withDiscount) {
             whereConditions.promotionalDiscount = {
                 discountRate: { gt: 0 }
             };
         } else if (filters.withDiscount === false) {
-            whereConditions.promotionalDiscount = null; // No linked promotionalDiscount record
+            whereConditions.promotionalDiscount = {
+                discountRate: { te: 0 }
+            }; // No linked promotionalDiscount record
         }
 
 
@@ -142,7 +144,7 @@ export async function GET(req: NextRequest) {
             }
         });
 
-        console.log("FETCHED DATA",products);
+        console.log("FETCHED DATA", products);
 
         return NextResponse.json({ products }, { status: 200 });
 

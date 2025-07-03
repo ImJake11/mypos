@@ -208,7 +208,6 @@ export async function GET() {
     try {
 
         const productData = await prisma.product.findMany({
-
             include: {
                 bulkTier: true,
                 category: true,
