@@ -1,3 +1,4 @@
+import { VATEnum } from "@/app/lib/enum/vatEnum";
 import { CartModel } from "../../../../../lib/models/cartModel";
 import { BulkTableProp, ProductProps, VariantsProps } from "../../../../../lib/models/productModel";
 
@@ -115,6 +116,7 @@ export default class ProductDetailsServices {
         const { imageUrl, productId } = this._cachedSelectedVariantData;
 
         const data: CartModel = {
+            vatStatus: this.selectedProductData.vatStatus?.settingKey!,
             details: this._cachedSelectedVariantData.details ?? "",
             variantID: this.selectedVariantID,
             variatName: this._cachedSelectedVariantData.name,

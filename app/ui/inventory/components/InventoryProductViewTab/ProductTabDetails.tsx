@@ -58,7 +58,7 @@ export default function ProductDetails({ category,
     </>
 
 
-    return <div className='flex-2 flex flex-col p-5 gap-6'>
+    return <div className='flex-2 flex flex-col p-[var(--form-section-padding)] gap-6'>
         {/** name & status */}
         <div className='flex flex-col gap-3 w-full'>
 

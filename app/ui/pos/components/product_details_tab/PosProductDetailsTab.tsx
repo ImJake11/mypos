@@ -1,7 +1,8 @@
 'use client';
+
+import React, { useMemo } from 'react'
 import { posAddProductToCart, posCloseProductDetails, posUpdateSelectedvariantQuantity } from '@/app/lib/redux/posSlice';
 import { RootState } from '@/app/lib/redux/store';
-import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import Variants from './component/Variants';
 import BulkTable from './component/BulkTiers';
@@ -9,13 +10,13 @@ import { openToas } from '@/app/lib/redux/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import ProductDetailsCalculator from './services/productDetailsServices';
 import CartHelpers from "../cart/services/cartHelper";
+import { ProductProps } from '@/app/lib/models/productModel';
 
-const ProductDetailsTab = () => {
+const PosProductDetailsTab = () => {
 
     const { isProductDetailsTabVisible, selectedProduct, selectedVariantID, quantity, cartItems } = useSelector((state: RootState) => state.posSlice);
 
     const dispatch = useDispatch();
-
 
     const productDetailsTabCalculator = useMemo(() => {
         return new ProductDetailsCalculator({
@@ -32,9 +33,6 @@ const ProductDetailsTab = () => {
             cartItems,
         })
     }, [cartItems]);
-    // current price of the product if the promotional discount is applied
-    // means the main price not the variants price
-    const discountedPrice = productDetailsTabCalculator.getDiscountedProductPrice();
 
     const { bulkTier,
         name,
@@ -42,11 +40,6 @@ const ProductDetailsTab = () => {
         sellingPrice,
         variants,
     } = selectedProduct;
-
-
-    const overallTotalPrice = productDetailsTabCalculator.computeOverallTotalPrice().toLocaleString('en-us');
-
-    const maxStock = productDetailsTabCalculator.getSelectedVariatMaxStock();
 
 
     //
@@ -75,7 +68,6 @@ const ProductDetailsTab = () => {
 
     // handle the plus minus button 
     const handleQuantity = (isPlus: boolean) => {
-
 
         if (isPlus) {
             // show toas message if user put a quantity that is equal or greater than  the variants current stock
@@ -118,6 +110,13 @@ const ProductDetailsTab = () => {
         // show toas message
         dispatch(openToas({ message: "Product added to cart", type: ToasEnum.DEFAULT }))
     }
+
+    // current price of the product if the promotional discount is applied
+    // means the main price not the variants price
+    const discountedPrice = productDetailsTabCalculator.getDiscountedProductPrice();
+    const overallTotalPrice = productDetailsTabCalculator.computeOverallTotalPrice().toLocaleString('en-us');
+    const maxStock = productDetailsTabCalculator.getSelectedVariatMaxStock();
+
 
     // return null if its not visible
     if (!isProductDetailsTabVisible) return null;
@@ -198,4 +197,4 @@ function StockActions({ isPlus, onClick }: StockActionProp) {
         {isPlus ? <i className="ri-add-fill" /> : <i className="ri-subtract-line"></i>}
     </div>
 }
-export default ProductDetailsTab
+export default PosProductDetailsTab

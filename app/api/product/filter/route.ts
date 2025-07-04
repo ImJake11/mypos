@@ -1,13 +1,28 @@
 import { FilterModel } from "@/app/lib/models/filterModel";
+import { ProductProps } from "@/app/lib/models/productModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
 
 
-export async function GET(req: NextRequest) {
+// Assuming necessary imports and prisma client are available
 
+export async function GET(req: NextRequest) {
     try {
         const searchParams = req.nextUrl.searchParams;
+
+        // Use a more specific type for filters, or define FilterModel
+        // For now, I'll assume it's like this:
+        interface FilterModel {
+            categoryID?: string;
+            name?: string;
+            maxPrice?: number;
+            minPrice?: number;
+            minStock?: number;
+            maxStock?: number;
+            withDiscount?: boolean;
+            withBulkPricing?: boolean;
+        }
 
         const filters: FilterModel = {};
 
@@ -16,7 +31,6 @@ export async function GET(req: NextRequest) {
         if (categoryParam) {
             filters.categoryID = categoryParam;
         }
-
 
         // filter name check if its string or not
         const nameParam = searchParams.get("name");
@@ -27,16 +41,13 @@ export async function GET(req: NextRequest) {
         // filter max price
         const maxPriceParam = searchParams.get("max_price");
         const parseMaxPriceParam = maxPriceParam ? parseFloat(maxPriceParam) : NaN;
-
         if (!isNaN(parseMaxPriceParam)) {
             filters.maxPrice = parseMaxPriceParam;
         }
 
-
         // filtered min price
         const minPriceParam = searchParams.get("min_price");
         const parseMinPriceParam = minPriceParam ? parseFloat(minPriceParam) : NaN;
-
         if (!isNaN(parseMinPriceParam)) {
             filters.minPrice = parseMinPriceParam;
         }
@@ -53,89 +64,96 @@ export async function GET(req: NextRequest) {
             filters.maxStock = parsedMaxStock;
         }
 
+        // CORRECTED: withDiscount handling
         const withDiscountParam = searchParams.get("with_discounts");
         if (withDiscountParam === 'true') {
             filters.withDiscount = true;
         } else if (withDiscountParam === 'false') {
             filters.withDiscount = false;
         }
+        // If withDiscountParam is null or anything else, filters.withDiscount remains undefined, which is correct.
 
+        // CORRECTED: withBulkPricing handling (similar to withDiscount)
         const withBulkPricingParam = searchParams.get("with_bulk");
         if (withBulkPricingParam === 'true') {
             filters.withBulkPricing = true;
         } else if (withBulkPricingParam === 'false') {
             filters.withBulkPricing = false;
         }
+        // If withBulkPricingParam is null or anything else, filters.withBulkPricing remains undefined.
 
 
-        const whereConditions: any = {};
+        // Build the Prisma 'where' clause dynamically
+        const whereClause: any = {}; // Use Prisma.ProductWhereInput if you import Prisma
 
-        // Name filter
         if (filters.name) {
-            whereConditions.name = {
+            whereClause.name = {
                 contains: filters.name,
                 mode: "insensitive",
             };
         }
 
-        // Category ID filter
         if (filters.categoryID) {
-            whereConditions.categoryID = filters.categoryID;
+            whereClause.categoryID = {
+                equals: filters.categoryID,
+            };
         }
 
-        // Stock filters
-        if (filters.minStock || filters.maxStock) {
-            whereConditions.stock = {};
-            if (filters.minStock) {
-                whereConditions.stock.gte = filters.minStock;
-            }
-            if (filters.maxStock) {
-                whereConditions.stock.lte = filters.maxStock;
-            }
-        }
-
-        // Bulk pricing filter
-        // If 'withBulkPricing' is true, filter for products where bulkEnabled is true.
-        // If 'withBulkPricing' is false, filter for products where bulkEnabled is false.
-        // If 'withBulkPricing' is undefined, don't filter by bulkEnabled.
-        if (filters.withBulkPricing) {
-            whereConditions.bulkEnabled = filters.withBulkPricing;
-        }
-
-
-        // Discount filter
-        // If withDiscount is true, find products with a promotionalDiscount where discountRate > 0.
-        // If withDiscount is false, find products WITHOUT a promotionalDiscount where discountRate > 0.
-        // If withDiscount is undefined, don't filter by discount.
-        if (filters.withDiscount) {
-            whereConditions.promotionalDiscount = {
-                discountRate: { gt: 0 }
+        // Promotional Discount Logic (based on your confirmation it's REQUIRED and 0 means no discount)
+        if (filters.withDiscount === true) {
+            whereClause.promotionalDiscount = {
+                discountRate: {
+                    not: 0, // Products with a discount (rate is not 0)
+                },
             };
         } else if (filters.withDiscount === false) {
-            whereConditions.promotionalDiscount = {
-                discountRate: { te: 0 }
-            }; // No linked promotionalDiscount record
+            whereClause.promotionalDiscount = {
+                discountRate: 0, // Products without a discount (rate is exactly 0)
+            };
+        }
+        // If filters.withDiscount is undefined, no condition is added for promotionalDiscount,
+        // meaning both discounted and non-discounted products are returned.
+
+
+        // Bulk Pricing Logic (similar to promotionalDiscount)
+        if (filters.withBulkPricing === true) {
+            whereClause.bulkEnabled = true; // Or { equals: true }
+        } else if (filters.withBulkPricing === false) {
+            whereClause.bulkEnabled = false; // Or { equals: false }
+        }
+        // If filters.withBulkPricing is undefined, no condition is added for bulkEnabled.
+
+
+        if (filters.minStock !== undefined) {
+            whereClause.stock = {
+                ...whereClause.stock, // Preserve existing stock conditions if any
+                gte: filters.minStock,
+            };
+        }
+        if (filters.maxStock !== undefined) {
+            whereClause.stock = {
+                ...whereClause.stock, // Preserve existing stock conditions if any
+                lte: filters.maxStock,
+            };
         }
 
-
-        // Variant price filters
-        // Use 'some' for "at least one variant matches the price range"
-        // Use 'every' for "ALL variants must match the price range" 
-        if (filters.minPrice || filters.maxPrice) {
-            whereConditions.variants = {
-                some: {
-                    price: {
-                        ...(filters.minPrice && { gte: filters.minPrice }),
-                        ...(filters.maxPrice && { lte: filters.maxPrice }),
-                    }
-                }
+        if (filters.minPrice !== undefined) {
+            whereClause.sellingPrice = {
+                ...whereClause.sellingPrice, // Preserve existing sellingPrice conditions if any
+                gte: filters.minPrice,
+            };
+        }
+        if (filters.maxPrice !== undefined) {
+            whereClause.sellingPrice = {
+                ...whereClause.sellingPrice, // Preserve existing sellingPrice conditions if any
+                lte: filters.maxPrice,
             };
         }
 
 
-        // 3. Execute Prisma Query 
+        // Execute Prisma Query
         const products = await prisma.product.findMany({
-            where: whereConditions,
+            where: whereClause, // Use the dynamically built whereClause
             include: {
                 variants: true,
                 bulkTier: true,
@@ -144,12 +162,10 @@ export async function GET(req: NextRequest) {
             }
         });
 
-        console.log("FETCHED DATA", products);
-
         return NextResponse.json({ products }, { status: 200 });
 
-
-    } catch (e) {
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    } catch (e: any) { // Catch the error to log it for debugging
+        console.error("Error in GET /api/product/filter:", e);
+        return NextResponse.json({ error: "Internal Server Error", details: e.message }, { status: 500 });
     }
 }

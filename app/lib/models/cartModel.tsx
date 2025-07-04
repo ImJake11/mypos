@@ -1,3 +1,4 @@
+import { VATEnum } from "../enum/vatEnum";
 
 
 
@@ -15,4 +16,5 @@ export interface CartModel {
     total: number,
     details: string,
     maxStock: number,
+    vatStatus: string,
 }

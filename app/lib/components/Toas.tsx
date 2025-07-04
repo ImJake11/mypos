@@ -128,7 +128,7 @@ const Toas = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit w-[40rem] right-3 bottom-3 box-border p-[15px_10px]`}
+            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit w-[40rem] left-3 bottom-3 box-border p-[15px_10px]`}
                 style={generateColorAttr()}
 
                 initial={{

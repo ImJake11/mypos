@@ -10,14 +10,19 @@ const OrderCompleteSummary = () => {
 
     const { cartItems } = useSelector((state: RootState) => state.posSlice);
 
+
+
     const paymentService = useMemo(() => {
         return new PaymentHelper({
             cart: cartItems,
+            vatValue: 12,
         });
     }, [cartItems]);
 
+    const { exempt, vat, zeroRated, taxableSale } = paymentService.getVatSalesBreakdown();
+
     return (
-        <div className='w-full h-fit bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5'>
+        <div className='w-full h-fit bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5 flex flex-col gap-2'>
             <span className='text-[1.5rem]'>Transaction Summary</span>
             <div className='h-[1rem]' />
             {/** items list */}
@@ -29,10 +34,17 @@ const OrderCompleteSummary = () => {
                 />)}
             </div>
             <div className='h-[3rem]' />
-            <div className='w-full h-[1px] bg-[var(--main-bg-secondary-dark)]' />
+            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary-dark)]' />
+            <span className='flex justify-between items-center'>VATable sales (Net) <span>₱ {taxableSale.toLocaleString('en-us')}</span></span>
+            <span className='flex justify-between items-center'>VAT Exempt sales <span>₱ {exempt.toLocaleString('en-us')}</span></span>
+            <span className='flex justify-between items-center'>Zero-rated sales <span>₱ {zeroRated.toLocaleString('en-us')}</span></span>
+            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary-dark)]' />
+            <span className='flex justify-between items-center'>Subtotal <span>₱ {paymentService.getCartSubTotal().toLocaleString('en-us')}</span></span>
+            <span className='flex justify-between items-center'>Total VAT (12%) <span>₱ {vat.toLocaleString('en-us')}</span></span>
+            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary-dark)]' />
             <span className='w-full flex justify-between m-[1.5rem_0] text-[1.5rem]'>
-                <span>Total:</span>
-                <span>₱ {paymentService.overallCartTotal().toLocaleString('en-us')}</span>
+                Total:
+                <span>₱ {paymentService.getCartNetTotal().toLocaleString('en-us')}</span>
             </span>
         </div>
     )

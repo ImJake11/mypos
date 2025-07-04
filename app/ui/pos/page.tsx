@@ -2,38 +2,15 @@
 import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
 import { PosProductList } from './components/PosProductList'
-import { CategoryModel } from '@/app/lib/models/categoryModel'
-import { ProductProps } from '@/app/lib/models/productModel'
-import ProductDetailsTab from './components/product_details_tab/ProductDetailsTab'
+import PosProductDetailsTab from './components/product_details_tab/PosProductDetailsTab'
 import Toas from '@/app/lib/components/Toas'
 import PosAppbar from './components/PosAppbar'
 import Cart from './components/cart/Cart'
+import FilterTab from '@/app/lib/components/FilterTab/FilterTab'
+import { PosActionEnum } from '@/app/lib/redux/utils/enums/posActionEnum'
 
-const page = async () => {
-  const protocol = process.env.WEBSITE_PROTOCOL;
-  const port = process.env.WEBSITE_PORT;
-  const host = process.env.WEBSITE_HOST;
+const page = () => {
 
-  const categoryUrl = `${protocol}://${host}:${port}/api/category`;
-  const productsUrl = `${protocol}://${host}:${port}/api/product`;
-
-  const categoryRes = await fetch(categoryUrl, {
-    method: "GET",
-  })
-
-  const productRes = await fetch(productsUrl, {
-    method: "GET",
-  })
-
-  if (!categoryRes.ok || !productRes.ok) return null;
-
-  const { categoryData } = await categoryRes.json();
-
-  const { productData } = await productRes.json();
-
-  const categories: CategoryModel[] = categoryData;
-
-  const products: ProductProps[] = productData;
 
   return (
     <div className='w-screen h-screen bg-[var(--main-bg-primary-dark)] flex relative overflow-hidden'>
@@ -42,11 +19,13 @@ const page = async () => {
         <PosAppbar />
         {/** body */}
         <div className='flex-1 flex bg-[var(--background)]'>
-          <PosProductList categories={categories} products={products} />
+          <PosProductList />
         </div>
       </div>
 
-      <ProductDetailsTab />
+      <PosProductDetailsTab />
+      <FilterTab onClearFilterContext={PosActionEnum.POST_CLEAR_FILTER_DATA}
+        onPrimaryButtonContext={PosActionEnum.POS_FILTER_DATA} />
       <Cart />
       <Toas />
     </div>

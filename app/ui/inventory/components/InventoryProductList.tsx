@@ -8,11 +8,13 @@ import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { AnimatePresence } from 'framer-motion';
 import { fetchAllProducts } from '@/app/lib/utils/api/product/productFetching';
-import InventoryErrorState from './InvetoryAltPages/InventoryErrorState';
-import InventoryLoadingState from './InvetoryAltPages/InventoryLoadingState';
+import InventoryErrorState from '../../../lib/components/PagesState/PageErrorState';
+import InventoryLoadingState from './InventoryLoadingState';
 import GridTile from './InventoryProductTiles/InventoryGridTile';
 import InventoryTableViewTile from './InventoryProductTiles/InventoryTableViewTile';
 import { motion } from "framer-motion";
+import InventoryNoDataFound from '../../../lib/components/PagesState/PageNoDataFoundPage';
+import { filterWebSocketFavoriteEvent } from '@/app/lib/redux/filterSlice';
 
 
 const ProductList = () => {
@@ -22,9 +24,10 @@ const ProductList = () => {
     const { isListView,
         isLoading,
         rawProductData,
-        filteredProductData,
         isFiltering,
         isError } = useSelector((state: RootState) => state.inventorySlice);
+
+    const filteredProductData = useSelector((state: RootState) => state.filterSlice.filteredData);
 
     // display the raw data if filter data is empty
     const displayList: ProductProps[] = useMemo(() => {
@@ -33,7 +36,11 @@ const ProductList = () => {
 
     const handleSocketEvent = useCallback((data: any) => {
         dispatch(inventoryCategoryEvent(data));
-    }, []);
+
+        if (isFiltering) {
+            dispatch(filterWebSocketFavoriteEvent(data))
+        }
+    }, [isFiltering]);
 
     useSocketEvent("favorite_event", handleSocketEvent);
 
@@ -49,7 +56,6 @@ const ProductList = () => {
                 dispatch(inventorySetLoadingState());
                 const result = await fetchAllProducts();
                 dispatch(inventorySetRawData(result));
-
             } catch (e) {
                 dispatch(inventorySetErrorState(true));
                 dispatch(inventorySetLoadingState());
@@ -80,7 +86,7 @@ const ProductList = () => {
                 <div className={`main-background-gradient flex-1 overflow-auto gap-4 p-3.5  rounded-[11px]`}
                 >
                     {/** table header */}
-                    {isListView && <motion.div className='flex w-full h-[3rem] p-[0_0.5rem]'
+                    {isListView && <motion.div className='flex w-full h-[3rem] p-[0_0.5rem] bg-[var(--main-bg-primary-dark)] rounded-tr-[12px] rounded-tl-[12px]'
                         initial={{
                             y: "-100%",
                         }}
@@ -100,14 +106,12 @@ const ProductList = () => {
                         <TableHeaderTile flex='flex-[2]' title='Availability' />
                         <TableHeaderTile flex='flex-[1]' title='Action' />
                     </motion.div>}
-
-                    <div className='h-[.5rem]' />
-                    <div className={`flex-1 h-[calc(100vh-9rem)] overflow-auto ${isListView ? "flex flex-col" : "grid grid-cols-6"} gap-3`}>
+                    {displayList.length <= 0 ? <InventoryNoDataFound /> : <div className={`flex-1 h-[calc(100vh-9rem)] overflow-auto ${isListView ? "flex flex-col" : "grid grid-cols-6"} gap-3`}>
                         <AnimatePresence>
                             {displayList.map((d) => isListView ? <InventoryTableViewTile key={d.id} data={d} /> :
                                 <GridTile key={d.id} data={d} />)}
                         </AnimatePresence>
-                    </div>
+                    </div>}
                 </div>
             </motion.div>}
         </AnimatePresence>
@@ -120,7 +124,7 @@ function TableHeaderTile({
 }:
 
     { flex: string, title: string }) {
-    return <div className={`${flex} h-full border-[1px] border-[var(--color-brand-primary)] place-content-center grid font-semibold`}>
+    return <div className={`${flex} h-full place-content-center grid font-semibold`}>
         {title}
     </div>
 

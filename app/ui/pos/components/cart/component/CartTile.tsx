@@ -1,5 +1,5 @@
 import { CartModel } from "@/app/lib/models/cartModel";
-import { posUpdateCartItemQuantity } from "@/app/lib/redux/posSlice";
+import { posRemoveVariant, posUpdateCartItemQuantity } from "@/app/lib/redux/posSlice";
 import { faClose, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
@@ -11,6 +11,7 @@ interface Prop {
 }
 
 export default React.memo(function CartTile({ data, index }: Prop) {
+    const dispatch = useDispatch();
 
     return <div className='flex items-center h-fit p-[7px_9px] w-full bg-[var(--main-bg-secondary-dark)] rounded-[7px] gap-2 text-center'>
 
@@ -33,7 +34,7 @@ export default React.memo(function CartTile({ data, index }: Prop) {
 
         {/** actions */}
         <div className='flex-1'>
-            <FontAwesomeIcon icon={faClose} />
+            <FontAwesomeIcon icon={faClose} onClick={() => dispatch(posRemoveVariant({ variantID: data.variantID }))} />
         </div>
     </div>
 });

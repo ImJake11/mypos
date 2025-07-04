@@ -44,6 +44,8 @@ model Product {
   createdAt           DateTime             @default(now())
   isActive            Boolean              @default(true)
   isFavorite          Boolean              @default(false)
+  vatStatus           Vat                  @relation(fields: [vatId], references: [id])
+  vatId               String                @default("48156bcc-e71b-48c6-8520-88b74b223676")
 }
 
 model Variants {
@@ -74,4 +76,13 @@ model PromotionalDiscount {
   description    String?
   product        Product @relation(fields: [productId], references: [id])
   productId      String  @unique
+}
+
+model Vat {
+  id           String    @id @unique @default(uuid())
+  settingKey   String
+  rate         Int
+  lastModified DateTime  @default(now())
+  description  String
+  Product      Product[]
 }

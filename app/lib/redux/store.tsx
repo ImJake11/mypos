@@ -6,10 +6,12 @@ import inventorySlice from "./inventorySlice";
 import appMiddlewareListner from "./listeners/applicationListener";
 import sidebarSlice from "./sidebarSlice";
 import posSlice from "./posSlice";
+import filterSlice from "./filterSlice";
 
 const store = configureStore({
     reducer: {
         productSlice,
+        filterSlice,
         processSlice,
         toasSlice,
         inventorySlice,

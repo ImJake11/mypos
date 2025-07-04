@@ -18,7 +18,7 @@ const Variants = () => {
 
 
     return (
-        <div className='flex flex-col w-full gap-3  rounded-[var(--form-section-border-radius)] p-[20px_10px] bg-[var(--main-bg-primary-dark)]'
+        <div className='flex flex-col w-full gap-3 rounded-[var(--form-section-border-radius)] p-[var(--form-section-padding)] bg-[var(--main-bg-primary-dark)]'
         >
             <ErrorMessage isShow={variants.length === 0} message='At least one variant is required' />
             <div className='flex w-full justify-between'>

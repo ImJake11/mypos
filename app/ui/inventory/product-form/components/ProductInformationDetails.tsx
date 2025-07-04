@@ -22,7 +22,7 @@ const ProductInformationDetails = () => {
   const { description, categoryID, name, highlights } = productSlice.data;
 
   return (
-    <div className=' flex flex-col w-full gap-3 p-[15px] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'>
+    <div className=' flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'>
       <div className='flex flex-col gap-2.5'>
         <ErrorMessage isShow={!name} message='Product Name is Required' />
 
@@ -71,7 +71,7 @@ const ProductInformationDetails = () => {
           </div>
 
           {/** textarea */}
-          <textarea  maxLength={500} value={highlights ?? ""} className='w-full min-h-[6rem] max-h-[10rem] p-2 tf-attr'
+          <textarea maxLength={500} value={highlights ?? ""} className='w-full min-h-[6rem] max-h-[10rem] p-2 tf-attr'
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               const { value } = e.target;
 

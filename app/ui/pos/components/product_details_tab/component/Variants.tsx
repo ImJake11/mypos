@@ -1,5 +1,5 @@
 import { VariantsProps } from "@/app/lib/models/productModel";
-import { posSelectVariant } from "@/app/lib/redux/posSlice";
+import { posRemoveVariant, posSelectVariant } from "@/app/lib/redux/posSlice";
 import { RootState } from "@/app/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -79,6 +79,11 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
                 border: "solid 1px var(--color-brand-primary)",
             }}
             onClick={() => {
+                if (isSelected) {
+                    dispatch(posSelectVariant(""));
+                    return;
+                }
+
                 dispatch(posSelectVariant(variant.id ?? ""));
             }}
         >

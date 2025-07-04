@@ -7,7 +7,8 @@ import Toas from '@/app/lib/components/Toas';
 import InventoryAppar from './components/InventoryAppar';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import ProcessDialog from '@/app/lib/components/ProcessDialog/ProcessDialog';
-import InventoryFilterContainer from './components/InventoryFilterTab/InventoryFilterContainer';
+import FilterTab from '../../lib/components/FilterTab/FilterTab';
+import { InventoryAction } from '@/app/lib/redux/utils/enums/inventoryActionEnums';
 
 export default async function Page() {
 
@@ -25,7 +26,10 @@ export default async function Page() {
                 {/** body */}
                 <ProductList />
             </div>
-            <InventoryFilterContainer categories={[]} />
+            <FilterTab
+                onPrimaryButtonContext={InventoryAction.INVENTORY_FILTER_DATA}
+                onClearFilterContext={InventoryAction.INVENTORY_CLEAR_FILTER_DATA}
+            />
             <ViewProductTab />
             <Toas />
             <ProcessDialog />

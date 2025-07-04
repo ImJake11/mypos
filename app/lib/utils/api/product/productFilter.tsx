@@ -25,13 +25,8 @@ export async function filterProduct(
     if (maxPrice !== undefined && maxPrice !== null) searchParams.append("max_price", String(maxPrice));
     if (minStock !== undefined && minStock !== null) searchParams.append("min_stock", String(minStock));
     if (maxStock !== undefined && maxStock !== null) searchParams.append("max_stock", String(maxStock));
-
-    // Booleans: Ensure these are correctly converted on the frontend
-    // If `withBulkPricing` is a boolean (true/false) from `filterData`, this is fine.
-    // If it was derived from `Boolean(searchParams.get("with_bulk"))` which is problematic,
-    // ensure `FilterModel` holds actual booleans derived safely.
-    searchParams.append("with_bulk", String(withBulkPricing));
-    searchParams.append("with_discounts", String(withDiscount));
+    if (withBulkPricing) searchParams.append("with_bulk", String(withBulkPricing));
+    if (withDiscount) searchParams.append("with_discounts", String(withDiscount));
 
     const param = `/api/product/filter?${searchParams.toString()}`;
 
@@ -39,6 +34,7 @@ export async function filterProduct(
 
         const res = await fetch(param, {
             method: "GET",
+            cache: "no-store"
         });
 
         if (!res.ok) {

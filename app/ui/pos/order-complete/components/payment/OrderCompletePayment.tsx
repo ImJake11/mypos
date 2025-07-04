@@ -52,12 +52,14 @@ const OrderCompletePayment = () => {
             <span>User payment</span>
             <span className='text-[1.3rem] font-semibold'>Exchange: ₱ {exchange.toLocaleString('en-us')}</span>
             <input type="text" value={input} className='tf-attr w-full h-[3rem] p-2'
-            onChange={handleInput}
+                onChange={handleInput}
             />
 
 
             <div className='h-[.5rem]' />
-            <button className='w-fit h-[3rem] button-primary-gradient rounded-[var(--button-border-radius)] p-[0_10px] place-self-end'>
+            <button className='w-fit h-[3rem] button-primary-gradient rounded-[var(--button-border-radius)] p-[0_10px] place-self-end'
+               
+            >
                 Finish Transaction
             </button>
 

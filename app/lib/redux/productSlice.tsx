@@ -34,6 +34,7 @@ const initialState: ProductSliceProp = {
         url: "",
     },
     data: {
+        vatId: "",
         discountEnabled: false,
         id: "",
         isActive: true,

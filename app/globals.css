@@ -48,23 +48,24 @@
 
   /* form section */
   --form-section-border-radius: 12px;
+  --form-section-padding: 1.5rem;
 
   /* sidebar */
   --sidebar-width: 15vw;
 
   /** stock status flag color */
   --stock-flag-sold-out: red;
-  --stock-flag-critical: rgb(203, 132, 2);
-  --stock-flag-near: rgb(230, 190, 11);
-  --stock-flag-safe: rgb(5, 174, 5);
-  --stock-flag-over-stock: rgb(2, 2, 225);
+  --stock-flag-critical: rgb(203, 132, 2, .7);
+  --stock-flag-near: rgb(230, 190, 11, .7);
+  --stock-flag-safe: rgb(5, 174, 5, .7);
+  --stock-flag-over-stock: rgb(2, 2, 225, .7);
 }
 
 
 body {
   background: var(--main-bg-primary-dark);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 

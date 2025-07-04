@@ -8,10 +8,15 @@ import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { formAddBulkTier, formToggleAutoComputeSellingPrice, formUpdateState } from '@/app/lib/redux/productSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
-import BulkTable from './ProductFormBulkTable'; 
+import BulkTable from './ProductFormBulkTable';
 import PromotionalDiscount from './ProductFormPromotionalDiscount';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { VatModel } from '@/app/lib/models/vatModel';
+import { fetchVats } from '@/app/lib/utils/api/vat/fetchVats';
+import { AnimatePresence, motion } from "framer-motion";
+import { InformationIcon } from '@/app/lib/icons/informationIcon';
+import { computeSellingPrice } from '../services/computeSellingPrice';
 
 const Prices = () => {
 
@@ -19,8 +24,23 @@ const Prices = () => {
 
     const productSlice = useSelector((state: RootState) => state.productSlice);
 
-    const { sellingPrice, costPrice, tax, bulkEnabled, promotionalDiscount, } = productSlice.data;
+    const { sellingPrice, costPrice, tax, bulkEnabled, promotionalDiscount, vatId } = productSlice.data;
 
+    const [vats, setVat] = useState<VatModel[]>([]);
+
+    useEffect(() => {
+
+        const fetch = async () => {
+            try {
+                const res = await fetchVats();
+                setVat(res);
+            } catch (e) {
+                throw new Error("Failed to fetch vats");
+            }
+        }
+        fetch();
+
+    }, []);
 
     const handleText = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -38,25 +58,31 @@ const Prices = () => {
     // auto computes selling price if its enable
     useEffect(() => {
 
+        const name = ProductKeys.sellingPrice as keyof ProductProps;
+
+        //  get the data of the current selected vat
+        const vatData = vats.find(vat => vat.id === vatId);
+
         if (productSlice.isAutoComputeSellingPrice) {
 
-            const name = ProductKeys.sellingPrice as keyof ProductProps;
-
-            // convert tax to decimal
-            const convertedTax = tax / 100;
-            // comput selling price
-            const total = costPrice * (1 + convertedTax);
+            const total = computeSellingPrice(
+                costPrice, tax, vatData?.rate ?? 0
+            )
 
             dispatch(formUpdateState({ name, data: total }))
         }
-    }, [costPrice, tax, productSlice.isAutoComputeSellingPrice]);
+    }, [costPrice, tax, productSlice.isAutoComputeSellingPrice, vatId]);
 
 
-    return <div className='flex w-full flex-col gap-3 p-[20px_10px] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'>
+    return <div className='flex w-full flex-col gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'>
         {/** auto compute selling price toggle toggle */}
-        <div className='flex gap-1.5'><span>Auto Compute Selling Price</span>
+        <div className='flex gap-1.5'>
+            <span>Auto Compute Selling Price</span>
             <CheckBox isChecked={productSlice.isAutoComputeSellingPrice} onClick={() => dispatch(formToggleAutoComputeSellingPrice())} />
         </div>
+
+        {/** vats options */}
+        <VatOptions vats={vats} selectedVat={vatId!} />
 
         {/** error messages */}
         <div className='w-full flex'>
@@ -95,6 +121,81 @@ const Prices = () => {
     </div>
 }
 
+function VatOptions({ vats, selectedVat }: { vats: VatModel[], selectedVat: string }) {
+    const [isDesctiptionVisible, setDescriptionVisible] = useState(false);
+
+    const dispatch = useDispatch();
+
+    const handleDescriptionToggle = () => {
+        setDescriptionVisible(!isDesctiptionVisible);
+    }
+
+    return <div className='flex flex-col w-full gap-1'>
+
+        <div className='flex w-full gap-2 items-center text-[var(--foreground-lighter)]'>
+            <div className='w-[1rem] h-[1rem] relative'>
+                <InformationIcon color='var(--foreground-lighter)' />
+            </div>
+            <span className='underline underline-offset-4' onClick={handleDescriptionToggle}>Learn about VAT</span>
+        </div>
+
+        {/** vat explanation */}
+        <AnimatePresence>
+            {isDesctiptionVisible && <motion.div className='w-[60%] flex flex-col p-3 gap-2 text-[var(--foreground-lighter)] ml-3'
+                initial={{
+                    opacity: 0
+                }}
+                animate={{
+                    opacity: 1
+                }}
+                exit={{
+                    opacity: 0,
+                }}
+            >
+
+                <span className='font-semibold'>Value-Added Tax (VAT) in the Philippines:</span>
+                <p>VAT is a 12% consumption tax levied on the sale of goods and services. While collected by businesses, it's ultimately paid by the consumer. Correctly classifying products as VAT Taxable, VAT Exempt, or Zero-Rated is crucial for accurate calculation and BIR compliance.
+                    <span className='underline underline-offset-4 italic ml-0.5' onClick={handleDescriptionToggle}>Hide description.</span>
+                </p>
+            </motion.div>}
+        </AnimatePresence>
+
+
+        {vats.map((v, i) => {
+
+            const isSelected = selectedVat === v.id;
+
+            // setting key is named by underscore
+            const settingKeyParts = v.settingKey.split("_");
+
+            return <div key={i} className='ml-6 w-full h-[2.5rem] flex gap-2 items-center cursor-pointer'
+                onClick={() => dispatch(formUpdateState({
+                    data: v.id,
+                    name: ProductKeys.vatId as keyof ProductProps,
+                }))}
+            >
+
+                {/** radio */}
+                <div className={`w-[1rem] h-[1rem] rounded-full border border-[var(--color-brand-primary)] p-0.5`}>
+                    {isSelected && <motion.div className='w-full h-full rounded-full button-primary-gradient'
+                        initial={{
+                            scale: 0,
+                        }}
+                        animate={{
+                            scale: 1,
+                        }}
+                        exit={{
+                            scale: 0,
+                        }}
+                    />}
+                </div>
+                <div className='w-full flex gap-2'>{settingKeyParts.map((part, i) => <span key={i}>{part}</span>)}
+                    <span className='text-[var(--foreground-lighter)]'>({v.rate}%)</span>
+                </div>
+            </div>
+        })}
+    </div>
+}
 
 
 interface CheckboxProps {

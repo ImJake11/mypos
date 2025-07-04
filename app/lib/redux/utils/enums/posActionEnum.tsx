@@ -1,0 +1,6 @@
+
+
+export enum PosActionEnum {
+    POS_FILTER_DATA = "POS_FILTER_DATA",
+    POST_CLEAR_FILTER_DATA = "POS_CLEAR_FILTER_DATA",
+}

@@ -1,52 +1,71 @@
 'use client'
 
-import React, { useMemo, useState } from 'react'
-import CategoryTile from './PosCategoryTile'
-import { CategoryModel } from '@/app/lib/models/categoryModel';
+import React, { useEffect, useMemo } from 'react'
 import PosProductTile from './PosProductTile';
-import { ProductProps } from '@/app/lib/models/productModel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/lib/redux/store';
+import { openToas } from '@/app/lib/redux/toastSlice';
+import ToasEnum from '@/app/lib/enum/toastEnum';
+import { posSetRawProductData, posToggleErrorState, posToggleLoadingState } from '@/app/lib/redux/posSlice';
+import { fetchAllProducts } from '@/app/lib/utils/api/product/productFetching';
+import PageNoDataFound from '@/app/lib/components/PagesState/PageNoDataFoundPage';
+import PageErrorState from '@/app/lib/components/PagesState/PageErrorState';
+import { ProductProps } from '@/app/lib/models/productModel';
+import PosLoadingState from './PosLoadingState';
 
-interface Prop {
-    categories: CategoryModel[],
-    products: ProductProps[],
-}
-export const PosProductList = ({ categories, products }: Prop) => {
 
-    const posSlice = useSelector((state: RootState) => state.posSlice);
+export const PosProductList = () => {
 
-    const { searchQuery, selectedCategoryID } = posSlice;
+    const dispatch = useDispatch();
 
-    const productList = useMemo(() => {
+    const { rawProductData, isFiltering, isLoading, isError } = useSelector((state: RootState) => state.posSlice);
 
-        let currentList: ProductProps[] = products;
+    const filteredData = useSelector((state: RootState) => state.filterSlice.filteredData);
 
-        if (selectedCategoryID) {
-            currentList = currentList.filter(pro => pro.categoryID === selectedCategoryID);
+    const displayList: ProductProps[] = useMemo(() => {
+        return isFiltering ? filteredData : rawProductData;
+    }, [isFiltering, filteredData, rawProductData]);
+
+
+    useEffect(() => {
+        const fetch = async () => {
+            try {
+
+                const result = await fetchAllProducts();
+
+                dispatch(posSetRawProductData(result));
+
+                dispatch(openToas({
+                    message: "Fetched products successfully",
+                    type: ToasEnum.SUCCESS,
+                }))
+
+            } catch (e) {
+                dispatch(posToggleErrorState(true));
+                dispatch(openToas({
+                    message: "Failed to load products",
+                    type: ToasEnum.ERROR,
+                }));
+                throw new Error("Failed to load product");
+            } finally {
+                dispatch(posToggleLoadingState(false));
+            }
         }
 
-        if (searchQuery) {
-            currentList = currentList.filter(pro => pro.name.toLowerCase().includes(searchQuery.toLowerCase()))
-        }
+        fetch();
 
-        return currentList;
+    }, []);
 
-    }, [searchQuery, selectedCategoryID, products]);
 
-    return (
-        <div className='w-[calc(100vw-var(--sidebar-width))] main-background-gradient flex flex-col overflow-hidden rounded-[11px] p-2 gap-3'>
-            {/** categories */}
-            <div className='w-[calc(100vw-var(--sidebar-width))] h-[10rem] flex gap-3 p-1.5 overflow-auto'>
-                <CategoryTile isSelected={!selectedCategoryID} />
-                {categories.map((cat, i) => <CategoryTile key={cat.id} data={cat} isSelected={cat.id === selectedCategoryID} />)}
-            </div>
+    if (isError) return <PageErrorState />;
 
-            {/** body */}
-            <div className='w-full h-[calc(100vh-16rem)] grid-cols-8 grid  overflow-auto gap-3'>
-                {productList.map((p) => <PosProductTile key={p.id} data={p} />)}
-            </div>
 
-        </div>
-    )
+    return isLoading ? <PosLoadingState /> : <div className='w-[calc(100vw-var(--sidebar-width))] main-background-gradient overflow-hidden rounded-[12px] p-2 gap-3'>
+
+        {/** body */}
+        {displayList.length <= 0 ? <PageNoDataFound /> : <div className='w-full h-[calc(100vh-4rem)] grid-cols-5 grid  overflow-auto gap-3 p-2 items-start'>
+            {displayList.map((p) => <PosProductTile key={p.id} data={p} />)}
+        </div>}
+
+    </div>
 }

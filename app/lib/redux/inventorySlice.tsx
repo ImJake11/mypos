@@ -1,48 +1,27 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ProductProps } from "../models/productModel"
-import { FilterModel } from "../models/filterModel";
 import ListenerPayload from "./utils/models/appListenerModel";
 
 interface Prop {
     productViewOpen: boolean,
     selectedProductDataForView: {},
     isListView: boolean,
-    filterData: FilterModel,
-    isFilterTabVisible: boolean,
     isLoading: boolean,
     isError: boolean,
     isFiltering: boolean,
     rawProductData: ProductProps[], // initially fetched product from api
-    filteredProductData: ProductProps[], // filtered products from api
-
 }
 
 
 const initialState: Prop = {
     isError: false,
     rawProductData: [],
-    filteredProductData: [],
     isFiltering: false,
     isLoading: false,
     productViewOpen: false,
     selectedProductDataForView: {},
     isListView: false,
-    isFilterTabVisible: false,
-    filterData: {
-        categoryID: undefined,
-        name: undefined,
-        maxPrice: undefined,
-        minPrice: undefined,
-        maxStock: undefined,
-        minStock: undefined,
-        withDiscount: false,
-        withBulkPricing: false
-    }
 }
-
-
-// listener middleware funcitons
-export const confirmFilterData = createAction<ListenerPayload>("inventory/filterData");
 
 
 const inventorySlice = createSlice({
@@ -58,13 +37,8 @@ const inventorySlice = createSlice({
         inventorySetRawData: (state, action: PayloadAction<ProductProps[]>) => {
             state.rawProductData = action.payload;
         },
-        inventorySetFilteredData: (state, action: PayloadAction<ProductProps[]>) => {
-            state.filteredProductData = action.payload;
-            state.isFiltering = true;
-        },
-        inventoryClearFilteredData: (state) => {
-            state.filteredProductData = []; // cleaer current filtered data
-            state.isFiltering = false; // set to false
+        inventoryToggleFiltering: (state, action: PayloadAction<boolean>) => {
+            state.isFiltering = action.payload;
         },
         inventoryCategoryEvent: (state, action: PayloadAction<{ id: any, isFavorite: any }>) => { // handle category event from web socket
 
@@ -86,27 +60,20 @@ const inventorySlice = createSlice({
         inventoryToggleInventoryListView: state => {
             state.isListView = !state.isListView;
         },
-        inventorySetFilterData: <K extends keyof FilterModel>(state: Prop, action: PayloadAction<{ name: K, data: FilterModel[K] }>) => {
-            const { name, data } = action.payload;
-
-            state.filterData[name] = data;
-        },
-        inventoryToggleFilterTab: (state, action: PayloadAction<boolean>) => {
-            state.isFilterTabVisible = action.payload;
-        },
         inventoryResetInventoryState: () => initialState,
     }
 });
 
+export const createdActionInventoryFiltering = createAction<ListenerPayload>("inventory_filtering");
+export const createdActionInventoryClearFilters = createAction<ListenerPayload>("inventory_clears_filter");
+
 export const { inventoryToggleProductView,
     inventoryResetInventoryState,
-    inventoryToggleFilterTab,
     inventoryToggleInventoryListView,
-    inventoryClearFilteredData,
     inventorySetErrorState,
     inventoryCategoryEvent,
-    inventorySetFilteredData,
     inventorySetLoadingState,
     inventorySetRawData,
-    inventorySetFilterData } = inventorySlice.actions;
+    inventoryToggleFiltering,
+} = inventorySlice.actions;
 export default inventorySlice.reducer;

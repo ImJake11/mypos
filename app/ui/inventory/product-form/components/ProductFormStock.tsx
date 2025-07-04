@@ -45,7 +45,7 @@ const Stock = () => {
     }, [variants]);
 
     return (
-        <div className='flex flex-col w-full gap-3  p-[20px_10px] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'
+        <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'
         >
             {/** error messages */}
             <div className='w-full flex'>

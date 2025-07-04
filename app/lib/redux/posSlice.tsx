@@ -1,13 +1,15 @@
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { CartModel } from "../models/cartModel"
 import { ProductProps } from "../models/productModel"
 import { PaymentMethod } from "../enum/paymentMethod";
+import ListenerPayload from "./utils/models/appListenerModel";
 
 
 interface SliceProp {
-    searchQuery: string,
-    selectedCategoryID: string,
+    isLoading: boolean,
+    isError: boolean,
+    isFiltering: boolean,
     cartItems: CartModel[],
     selectedProduct: ProductProps,
     isProductDetailsTabVisible: boolean,
@@ -16,17 +18,16 @@ interface SliceProp {
     paymenMethod: PaymentMethod,
     referenceID: string,
     isCartVisible: boolean,
+    rawProductData: ProductProps[],
 }
 
 const initialState: SliceProp = {
-    referenceID: "",
+    referenceID: "", // if user paid via e wallet
     paymenMethod: PaymentMethod.CASH,
-    searchQuery: "",
     isCartVisible: false,
-    selectedCategoryID: "", // --- category currently selected by user
     cartItems: [], // --- list of cart items
     selectedProduct: {
-        discountEnabled: false,
+        vatId: "",
         name: "",
         description: null,
         categoryID: "",
@@ -47,11 +48,16 @@ const initialState: SliceProp = {
         },
         highlights: "",
         isActive: false,
-        isFavorite: false
+        isFavorite: false,
+        discountEnabled: false
     },
     isProductDetailsTabVisible: false,
     selectedVariantID: "",
     quantity: 0,
+    isLoading: true,
+    isError: false,
+    isFiltering: false,
+    rawProductData: []
 }
 
 
@@ -68,9 +74,6 @@ const posSlice = createSlice({
         posTogglePaymentMethod: (state, action: PayloadAction<PaymentMethod>) => {
             state.paymenMethod = action.payload;
         },
-        posSearchQuery: (state, action: PayloadAction<string>) => {
-            state.searchQuery = action.payload
-        },
         posSelectProduct: (state, action: PayloadAction<ProductProps>) => {
             state.selectedProduct = action.payload;
             state.isProductDetailsTabVisible = true;
@@ -86,6 +89,7 @@ const posSlice = createSlice({
             state.selectedVariantID = "";
         },
         posSelectVariant: (state, action: PayloadAction<string>) => {
+            // if the passed payload is empty mean deselecting the variant;
             state.selectedVariantID = action.payload;
         },
         posUpdateSelectedvariantQuantity: (state, action: PayloadAction<{ isAddition?: boolean, quantity?: number }>) => {
@@ -140,25 +144,48 @@ const posSlice = createSlice({
                 total: newTotal,
             }
         },
-        posSelectCategoryID: (state, action: PayloadAction<string>) => {
-            state.selectedCategoryID = action.payload;
+        posToggleFiltering: (state, action: PayloadAction<boolean>) => {
+            state.isFiltering = action.payload;
         },
+        posToggleErrorState: (state, action: PayloadAction<boolean>) => {
+            state.isError = action.payload;
+        },
+        posToggleLoadingState: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        },
+        posSetRawProductData: (state, action: PayloadAction<ProductProps[]>) => {
+            state.rawProductData = action.payload;
+        },
+        posRemoveVariant: (state, action: PayloadAction<{ variantID: string }>) => {
 
+            const { variantID } = action.payload;
+
+            const indexFromList = state.cartItems.findIndex(item => item.variantID === variantID);
+
+            if (indexFromList !== -1) {
+                state.cartItems.splice(indexFromList, 1);
+            }
+        }
     }
 });
 
+export const createdActionPosFiltering = createAction<ListenerPayload>("pos_filtering");
+export const createdActionPosClearFilter = createAction<ListenerPayload>("pos_clear_filter");
 
 export const { posAddProductToCart,
+    posSetRawProductData,
     posSetReferenceID,
     posSelectProduct,
     posSelectVariant,
-    posSearchQuery,
     posToggleCartTab,
     posCloseProductDetails,
+    posToggleErrorState,
+    posToggleFiltering,
+    posToggleLoadingState,
     posTogglePaymentMethod,
+    posRemoveVariant,
     posUpdateSelectedvariantQuantity,
     posUpdateCartItemQuantity,
-    posSelectCategoryID,
 } = posSlice.actions;
 
 export default posSlice.reducer;

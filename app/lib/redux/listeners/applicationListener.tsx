@@ -1,14 +1,17 @@
 import { createListenerMiddleware, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { promptConfirmed } from "../toastSlice";
 import { formUpdateVariants } from "../productSlice";
-import { ProductProps, VariantsProps } from "../../models/productModel";
+import { VariantsProps } from "../../models/productModel";
 import ListenerPayload from "../utils/models/appListenerModel";
-import { VariantActionModel } from "../utils/models/productRelatedModel";
 import { ProductActionEnums } from "../utils/enums/productActionEnums";
-import { confirmFilterData, inventorySetFilteredData } from "../inventorySlice";
 import { InventoryAction } from "../utils/enums/inventoryActionEnums";
+import { middlewareInventoryClearFilter, middlewareInventoryFilter } from "../services/middlewareInventoryFilter";
 import { AppDispatch } from "../store";
-
+import { FilterModel } from "../../models/filterModel";
+import { createdActionInventoryClearFilters, createdActionInventoryFiltering } from "../inventorySlice";
+import { createdActionPosClearFilter, createdActionPosFiltering } from "../posSlice";
+import { PosActionEnum } from "../utils/enums/posActionEnum";
+import { middlewarePosClearFilters, middlewarePosFiltering } from "../services/middlewarePosFilter";
 
 const appMiddlewareListner = createListenerMiddleware();
 
@@ -20,7 +23,7 @@ appMiddlewareListner.startListening({
 
         const { context, payload } = action.payload;
 
-        // for updating variants
+        // for archving and archiving variants
         if (context === ProductActionEnums.UPDATE_VARIANT) {
 
             const { name, data, index } = payload;
@@ -32,11 +35,44 @@ appMiddlewareListner.startListening({
                 index,
             }));
 
-        } else if (context === InventoryAction.FILTERDATA) {
-            listenerApi.dispatch(inventorySetFilteredData(payload as ProductProps[]));
+        }
+
+
+        /// --- INVENTORY MIDDLEWARES --- ////
+        // inventory filtering
+        if (context === InventoryAction.INVENTORY_FILTER_DATA) {
+            middlewareInventoryFilter({
+                dispatch: listenerApi.dispatch as AppDispatch,
+                filterData: payload as FilterModel,
+            });
+        }
+
+        // clear filter data and set to false all state listening to filer slice
+        if (context === InventoryAction.INVENTORY_CLEAR_FILTER_DATA) {
+            middlewareInventoryClearFilter({ dispatch: listenerApi.dispatch as AppDispatch });
+        }
+
+        /// --- POS MIDDLEWARES --- ///
+        if (context === PosActionEnum.POS_FILTER_DATA) {
+            middlewarePosFiltering({
+                dispatch: listenerApi.dispatch as AppDispatch,
+                filterData: payload as FilterModel,
+            });
+        }
+
+        if (context === PosActionEnum.POST_CLEAR_FILTER_DATA) {
+            middlewarePosClearFilters({
+                dispatch: listenerApi.dispatch as AppDispatch,
+            })
         }
     },
-    matcher: isAnyOf(promptConfirmed, confirmFilterData),
+    matcher: isAnyOf(
+        promptConfirmed,
+        createdActionInventoryFiltering,
+        createdActionInventoryClearFilters,
+        createdActionPosClearFilter,
+        createdActionPosFiltering,
+    ),
 
 },)
 

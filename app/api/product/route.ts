@@ -15,6 +15,7 @@ export async function POST(req: NextRequest) {
 
         const { name,
             description,
+            vatId,
             categoryID,
             sellingPrice,
             costPrice,
@@ -46,6 +47,7 @@ export async function POST(req: NextRequest) {
                 categoryID,
                 costPrice,
                 coverImage,
+                vatId,
                 lowStock,
                 name,
                 sellingPrice,
@@ -102,6 +104,7 @@ export async function PUT(req: NextRequest) {
             coverImage,
             description,
             highlights,
+            vatId,
             isActive,
             isFavorite,
             lowStock,
@@ -123,6 +126,7 @@ export async function PUT(req: NextRequest) {
                 coverImage,
                 highlights,
                 description,
+                vatId,
                 isActive,
                 isFavorite,
                 lowStock,
@@ -211,6 +215,7 @@ export async function GET() {
             include: {
                 bulkTier: true,
                 category: true,
+                vatStatus: true,
                 promotionalDiscount: true,
                 variants: {
                     select: {

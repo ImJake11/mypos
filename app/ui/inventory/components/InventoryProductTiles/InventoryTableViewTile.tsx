@@ -21,15 +21,14 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
     }
 
     return (
-        <motion.div className='w-full h-fit relative flex bg-[var(--main-bg-primary-dark)] rounded-[12px]'
+        <motion.div className='w-full h-fit relative flex bg-[var(--main-bg-secondary-dark)] rounded-[4px]'
             layout
             initial={{
                 opacity: 0,
             }}
             animate={{
                 opacity: 1,
-                padding: isHover? "1rem" : ".5rem 0",
-                border: isHover? "solid 1px var(--color-brand-primary)" : "solid 1px transparent"
+                border: isHover ? "solid 1px var(--color-brand-primary)" : "solid 1px transparent"
             }}
 
             exit={{
@@ -39,19 +38,17 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
             onMouseLeave={handleMouseLeave}
         >
             {/** image container */}
-            <div className='flex-1 grid place-content-start  overflow-hidden'>
-                <motion.img src={data.coverImage ?? null} alt="" className='object-fill w-[4rem] h-[4rem] rounded-[12px] translate-x-2'
-                    animate={{
-                        scale: isHover ? 1.2 : 1,
-                    }}
-                />
+            <div className='flex-1 grid place-content-center'>
+                <div className='w-[3rem] h-[3rem] bg-[var(--main-bg-primary-dark)] rounded-[8px]  overflow-hidden'>
+                    <motion.img src={data.coverImage ?? null} alt="" className='object-fill w-full h-full' />
+                </div>
             </div>
 
             {/** name */}
             <TableCellTile content={data.name} flex='flex-[3]' />
 
             {/** stock */}
-            <TableCellTile content={data.stock} flex='flex-[2]' />
+            <TableCellTile content={stock(data.stock, data.lowStock)} flex='flex-[2]' />
 
             {/** stock status */}
             <TableCellTile content={stockStatus(generateStockStatusFlag(data.lowStock, data.stock))} flex='flex-[2]' />
@@ -74,13 +71,16 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
     )
 }
 
+const stock = (stock: number, lowStock: number) => {
+    return <span>{stock} / <span className='opacity-40'>{lowStock}</span></span>
+}
+
 const stockStatus = (status: StockStatusFlagProp) => {
-    return <div className='flex gap-1 items-center w-full'>
-        <div className={`w-[1rem] h-[1rem] rounded-full`}
-            style={{
-                backgroundColor: status.color,
-            }}
-        />
+    return <div className='flex gap-1 items-center w-full relative p-[2px_6px] rounded-[20px] text-[.8rem] tracking-wider'
+        style={{
+            backgroundColor: status.color,
+        }}
+    >
         {status.text}
     </div>
 }

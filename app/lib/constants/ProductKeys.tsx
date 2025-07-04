@@ -20,6 +20,7 @@ export const ProductKeys = {
    coverImage: "coverImage",
    photoSnapshots: "photoSnapshots",
    hightlighs: "highlights",
+   vatId: "vatId",
 }
 
 export const PromotionalDiscountKeys = {

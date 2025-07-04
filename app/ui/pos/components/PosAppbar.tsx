@@ -1,12 +1,12 @@
 'use client';
 
 import React from 'react'
-import SearchBar from './PosSearchBar'
 import CartIcon from '@/app/lib/icons/cartIcon'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/lib/redux/store';
-import { toggleCategoryTab } from '@/app/lib/redux/productSlice';
 import { posToggleCartTab } from '@/app/lib/redux/posSlice';
+import { FilterIcon } from '@/app/lib/icons/filterIcon';
+import { filterToggleFilterTab } from '@/app/lib/redux/filterSlice';
 
 const PosAppbar = () => {
 
@@ -15,11 +15,10 @@ const PosAppbar = () => {
     const cartItemsLength = useSelector((state: RootState) => state.posSlice.cartItems.length);
 
     return (
-        <div className='min-h-[4rem] w-full bg-[var(--main-bg-primary-dark)] flex items-center'>
-            <SearchBar />
-            <div className='flex-1' />
+        <div className='min-h-[3rem] w-full bg-[var(--main-bg-primary-dark)] flex justify-end items-center gap-.5 p-[0_10px]'>
+
             {/** cart icon */}
-            <div className='h-[2.5rem] w-[2.5rem] relative mr-3'
+            <div className='h-[2rem] w-[2rem] relative mr-3'
                 onClick={() => dispatch(posToggleCartTab())}
             >
                 <CartIcon />
@@ -31,6 +30,13 @@ const PosAppbar = () => {
                 </div>}
 
             </div>
+
+            {/** filter iconn */}
+            <button className='flex p-[5px_7px] rounded-[30px] button-primary-gradient gap-2 items-center'
+                onClick={() => dispatch(filterToggleFilterTab(true))}
+            >
+                Filter <div className='w-[1.3rem] h-[1.3rem]'><FilterIcon /></div>
+            </button>
         </div>
     )
 }

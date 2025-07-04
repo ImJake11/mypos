@@ -1,4 +1,5 @@
 import { CategoryModel } from "./categoryModel";
+import { VatModel } from "./vatModel";
 
 export interface ProductProps {
     id?: string,
@@ -21,7 +22,9 @@ export interface ProductProps {
     highlights: string,
     isActive: boolean,
     isFavorite: boolean,
-    discountEnabled: boolean,// for image file upload in firebase
+    discountEnabled: boolean,
+    vatId?: string,
+    vatStatus?: VatModel,
 }
 
 
