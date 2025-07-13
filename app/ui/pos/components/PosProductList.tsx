@@ -3,20 +3,21 @@
 import React, { useEffect, useMemo } from 'react'
 import PosProductTile from './PosProductTile';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/lib/redux/store';
+import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { posSetRawProductData, posToggleErrorState, posToggleLoadingState } from '@/app/lib/redux/posSlice';
-import { fetchAllProducts } from '@/app/lib/utils/api/product/productFetching';
 import PageNoDataFound from '@/app/lib/components/PagesState/PageNoDataFoundPage';
 import PageErrorState from '@/app/lib/components/PagesState/PageErrorState';
 import { ProductProps } from '@/app/lib/models/productModel';
 import PosLoadingState from './PosLoadingState';
+import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
+import { inventorySetErrorState, inventorySetLoadingState, inventorySetRawData } from '@/app/lib/redux/inventorySlice';
 
 
 export const PosProductList = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const { rawProductData, isFiltering, isLoading, isError } = useSelector((state: RootState) => state.posSlice);
 
@@ -26,46 +27,21 @@ export const PosProductList = () => {
         return isFiltering ? filteredData : rawProductData;
     }, [isFiltering, filteredData, rawProductData]);
 
-
-    useEffect(() => {
-        const fetch = async () => {
-            try {
-
-                const result = await fetchAllProducts();
-
-                dispatch(posSetRawProductData(result));
-
-                dispatch(openToas({
-                    message: "Fetched products successfully",
-                    type: ToasEnum.SUCCESS,
-                }))
-
-            } catch (e) {
-                dispatch(posToggleErrorState(true));
-                dispatch(openToas({
-                    message: "Failed to load products",
-                    type: ToasEnum.ERROR,
-                }));
-                throw new Error("Failed to load product");
-            } finally {
-                dispatch(posToggleLoadingState(false));
-            }
-        }
-
-        fetch();
-
-    }, []);
-
+    useFetchProductList({
+        onSuccess: (data: ProductProps[]) => dispatch(posSetRawProductData(data)),
+        onLoad: () => dispatch(posToggleLoadingState(true)),
+        onError: () => dispatch(posToggleErrorState(true)),
+        onFinal: () => dispatch(posToggleLoadingState(false)),
+    });
 
     if (isError) return <PageErrorState />;
 
-
-    return isLoading ? <PosLoadingState /> : <div className='w-[calc(100vw-var(--sidebar-width))] main-background-gradient overflow-hidden rounded-[12px] p-2 gap-3'>
+    return isLoading ? <PosLoadingState /> : <div className='flex-1 min-h-0 main-background-gradient overflow-auto rounded-[12px] p-2 gap-3'>
 
         {/** body */}
-        {displayList.length <= 0 ? <PageNoDataFound /> : <div className='w-full h-[calc(100vh-4rem)] grid-cols-5 grid  overflow-auto gap-3 p-2 items-start'>
+        {displayList.length <= 0 ? <PageNoDataFound /> : <ul className='w-full min-h-0 flex-1 grid-cols-6 grid gap-3 p-2 items-start overflow-auto'>
             {displayList.map((p) => <PosProductTile key={p.id} data={p} />)}
-        </div>}
+        </ul>}
 
     </div>
 }

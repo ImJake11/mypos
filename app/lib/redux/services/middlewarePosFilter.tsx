@@ -1,6 +1,6 @@
 import ToasEnum from "../../enum/toastEnum";
 import { FilterModel } from "../../models/filterModel";
-import { filterProduct } from "../../utils/api/product/productFilter";
+import { filterProduct } from "../../utils/data/fetchFilteredProduct";
 import { filterResetData, filterSetFilteredData, filterToggleFilterTab } from "../filterSlice";
 import { posToggleFiltering, posToggleLoadingState } from "../posSlice";
 import { AppDispatch } from "../store";
@@ -21,8 +21,6 @@ export async function middlewarePosFiltering({
 
         // -- fetch product
         const result = await filterProduct(filterData);
-
-        console.log("Pos filtered data", result);
         // -- pass data to redux state
         dispatch(filterSetFilteredData(result));
 

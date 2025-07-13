@@ -1,7 +1,7 @@
 
 
-export default function InventoryIcon() {
-    return <svg className="w-full h-full" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+export default function InventoryIcon({ size }: { size?: number }) {
+    return <svg height={size ?? 12} width={size ?? 12} viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
         <g id="SVGRepo_iconCarrier"> <path d="M18.8832 4.69719C19.2737 4.30667 19.9069 4.30667 20.2974 

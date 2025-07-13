@@ -13,23 +13,43 @@ export async function POST(req: NextRequest) {
         const rawVariants = variants as VariantsProps[];
 
 
-        await prisma.variants.createMany({
-            data: rawVariants.map(v => ({
-                isPositive: v.isPositive,
-                imageUrl: v.imageUrl,
-                name: v.name,
-                price: v.price,
-                productId: productID,
-                stock: v.stock,
-                details: v.details,
-            }))
-        });
+        for (const variant of rawVariants) {
 
+            if (variant.id) {
+                await prisma.variants.update({
+                    where: {
+                        id: variant.id,
+                    },
+                    data: {
+                        details: variant.details,
+                        imageUrl: variant.imageUrl,
+                        isArchived: variant.isArchived,
+                        isPositive: variant.isPositive,
+                        name: variant.name,
+                        price: variant.price,
+                        stock: variant.stock,
+                    }
+                })
+            } else {
+                await prisma.variants.create({
+                    data: {
+                        imageUrl: variant.imageUrl,
+                        name: variant.name,
+                        price: variant.price,
+                        stock: variant.stock,
+                        details: variant.details ?? "",
+                        isArchived: variant.isArchived,
+                        productId: productID,
+                        isPositive: variant.isPositive,
+                    },
+                })
+            }
+        }
 
         return NextResponse.json({ message: "Successfully addedd the product variant" }, { status: 200 })
 
     } catch (e) {
-        console.log(e);
+
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }

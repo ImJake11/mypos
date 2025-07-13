@@ -1,13 +1,15 @@
 "use client";
 
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import CategoriesIcon from '@/app/lib/icons/CategoriesIcon';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { formToggleCategoryTab, formUpdateState } from '@/app/lib/redux/productSlice';
+import { formUpdateState } from '@/app/lib/redux/productSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { faAdd, faCircleExclamation, faEdit, faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -15,14 +17,11 @@ interface ButtonTileProp {
     isSelected: boolean,
     data: CategoryModel,
     onClose: () => void,
-
-
 }
-
 
 const Category = () => {
 
-    const dispatch = useDispatch();
+    const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
     const [mainData, setData] = useState<CategoryModel[]>([]);
@@ -60,19 +59,6 @@ const Category = () => {
 
     }, []);
 
-    const categoryEventHandler = useCallback((eventData: { payload: CategoryModel, type: string }) => {
-        const { type, payload } = eventData;
-        if (type === "CREATE") {
-            setData(prev => [...prev, payload]);
-        }
-        else if (type === "UPDATE") {
-            setData(prev => prev.map(cat => cat.id === payload.id ? { ...cat, ...payload } : cat));
-        }
-    }, []);
-
-
-    useSocketEvent("category_event", categoryEventHandler);
-
 
     function ReturnBody() {
 
@@ -109,7 +95,7 @@ const Category = () => {
 
                 {/** create button */}
                 <button className='button-primary-gradient flex w-full min-h-[3rem]  items-center gap-3 p-3.5'
-                    onClick={() => dispatch(formToggleCategoryTab(null))}
+                    onClick={() => router.push("ui/settings/categories")}
                 >
                     <span className='font-semibold italic'>Create </span><FontAwesomeIcon icon={faAdd} />
                 </button>
@@ -147,9 +133,7 @@ function ButtonTile({ isSelected, data, onClose }: ButtonTileProp) {
                 </div>
                 <span>{data.content}</span>
             </button>
-            <FontAwesomeIcon icon={faEdit} className='text-gray-500'
-                onClick={() => dispatch(formToggleCategoryTab(data))}
-            />
+            <CategoriesIcon size={24} color='var(--border-default-dark)' />
         </div>
     )
 }

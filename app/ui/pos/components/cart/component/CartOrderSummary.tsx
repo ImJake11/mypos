@@ -1,15 +1,32 @@
+import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import PayIcon from '@/app/lib/icons/payIcon';
+import { CartCacheModel } from '@/app/lib/models/cartModel';
 import { posToggleCartTab } from '@/app/lib/redux/posSlice';
-import { toggleCategoryTab } from '@/app/lib/redux/productSlice';
+
 import { useRouter } from 'next/navigation';
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux';
 
-const CartOrderSummary = ({ overallCartTotal }: { overallCartTotal: number }) => {
+const CartOrderSummary = ({ overallCartTotal }:
+    {
+        overallCartTotal: number
+    }) => {
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const router = useRouter();
 
     const dispatch = useDispatch();
+
+
+    const handlePay = async () => {
+        setIsLoading(true);
+
+        setTimeout(() => {
+            router.push("/ui/pos/order-complete");
+        }, 2500);
+    }
+
 
     return (
         <div className='bg-[var(--main-bg-secondary-dark)] flex-1 rounded-br-[20px] rounded-bl-[20px] flex flex-col p-5 gap-5 '>
@@ -29,12 +46,13 @@ const CartOrderSummary = ({ overallCartTotal }: { overallCartTotal: number }) =>
 
                 {/** pay icon */}
                 <button className='button-primary-gradient h-[3rem] items-center gap-2 w-fit p-[0_10px] rounded-[7px] rounded-br-[15px] flex'
-                    onClick={() => router.push("/ui/pos/order-complete")}
+                    onClick={handlePay}
                 >
-                    <div className='w-[1.5rem] h-[1.5rem]'>
-                        <PayIcon />
-                    </div>
-                    Pay
+                    {isLoading ? <CircularLoadingIndicator size={30} /> :
+                        <> <div className='w-[1.5rem] h-[1.5rem]'>
+                            <PayIcon />
+                        </div>
+                            Pay</>}
                 </button>
             </div>
         </div>

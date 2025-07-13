@@ -1,138 +1,152 @@
 import { VATEnum } from "@/app/lib/enum/vatEnum";
 import { CartModel } from "../../../../../lib/models/cartModel";
 import { BulkTableProp, ProductProps, VariantsProps } from "../../../../../lib/models/productModel";
+import store from "@/app/lib/redux/store";
+import { checkDiscountExpiration } from "@/app/lib/utils/services/checkDiscountExpirationDate";
 
-interface ClassProp {
-    productData: ProductProps,
-    variantID: string,
-    quantity: number,
-}
 
+/**
+ * This class handles product pricing logic including:
+ * - variant price adjustments
+ * - promotional discounts
+ * - bulk pricing
+ * - and preparing cart-ready product data
+ */
 export default class ProductDetailsServices {
-    private selectedProductData: ProductProps;
-    private selectedVariantID: string;
-    private quantity: number;
+
+    private posSlice = store.getState().posSlice;
+
+    public selectedProductData: ProductProps = this.posSlice.selectedProduct;
+    private selectedVariantID: string = this.posSlice.selectedVariantID;
+    private quantity: number = this.posSlice.quantity;
+
+    // Cache the selected variant data for reuse
     private _cachedSelectedVariantData: VariantsProps | undefined;
-    private _bulkTierData: BulkTableProp | undefined; // returs the tier meet by the quatity
 
-    constructor({ productData, variantID, quantity }: ClassProp) {
-        this.selectedProductData = productData;
-        this.selectedVariantID = variantID;
-        this.quantity = quantity;
+    // If a bulk tier matches the quantity, this will hold the matching tier data
+    private _bulkTierData: BulkTableProp | undefined;
+
+    constructor() {
+        // Find the variant by ID
         this._cachedSelectedVariantData = this.selectedProductData.variants.find(variant => variant.id === this.selectedVariantID);
-        this._bulkTierData = this.selectedProductData.bulkTier && this.selectedProductData.bulkTier.findLast(tier => this.quantity >= tier.quantity)
+
+        // Find the highest bulk tier that matches the quantity
+        this._bulkTierData = this.selectedProductData.bulkTier?.findLast(tier => this.quantity >= tier.quantity);
     }
 
-    // return the data of selected variant
-    private getSelectedVariantData(): VariantsProps | undefined {
-        return this._cachedSelectedVariantData;
-    }
-
-
-    /// -- computes the selling price if the product has discount
+    /**
+     * Calculates the discounted product price based on the promotional discount
+     */
     public getDiscountedProductPrice(): number {
 
         const { promotionalDiscount, sellingPrice } = this.selectedProductData;
 
-        const { discountRate } = promotionalDiscount;
+        if (!promotionalDiscount) return this.selectedProductData.sellingPrice;
 
-        // -- 1. convert discount to decimal value
-        const discountInPercentage = discountRate / 100;
+        if (!checkDiscountExpiration(promotionalDiscount.expirationDate)) return this.selectedProductData.sellingPrice;
 
-        // 2. -- get the discounted value based on price
-        const priceDiscount = sellingPrice * discountInPercentage;
 
-        // 3. -- deduct the discount to sellingPrice 
-        const total = sellingPrice - priceDiscount;
+        const discountDecimal = promotionalDiscount.discountRate / 100;
+        const discountValue = sellingPrice * discountDecimal;
+        const finalPrice = sellingPrice - discountValue;
 
-        return total;
+        return finalPrice;
     }
 
-    // -- computes the selectedVariant price;
-    // -- the price adjustmets also applied
+    /**
+     * Computes the price of the selected variant
+     * - Applies price adjustment (positive or negative) to base selling price
+     */
     public computeVariantPrice(): number {
-        const variantData = this.getSelectedVariantData();
+        const variantData = this._cachedSelectedVariantData;
 
-        if (variantData === undefined) return 0;
+        if (!variantData) return 0;
 
+        let sellingPrice: number = this.getDiscountedProductPrice();
 
-        // calculate price adjustment
-        const priceAdjustmentInDecimal = variantData.price / 100;
+        const adjustmentDecimal = variantData.price / 100;
+        const adjustmentValue = adjustmentDecimal * sellingPrice;
 
-        // -- is the variant price is positive it means the total value the calculated based on base price
-        // will be added to it, but if it false it means deduct the total price adjustmet to its base price
-        const adjusmentValue = priceAdjustmentInDecimal * this.selectedProductData.sellingPrice;
-
-        let total: number;
+        let finalPrice: number;
 
         if (variantData.isPositive) {
-            total = this.selectedProductData.sellingPrice + adjusmentValue;
+            finalPrice = sellingPrice + adjustmentValue;
         } else {
-            total = this.selectedProductData.sellingPrice - adjusmentValue;
+            finalPrice = sellingPrice - adjustmentValue;
         }
-        return total;
+
+        return finalPrice;
     }
 
-
-    // -- computes the total price of the product that will be added to cart
-    // -- variant price adjustment is applied
-    // -- if it meets the bulk pricing it will applied too
+    /**
+     * Computes the total price based on:
+     * - selected variant's unit price
+     * - quantity
+     * - bulk discount if applicable
+     */
     public computeOverallTotalPrice(): number {
-
         const variantUnitPrice = this.computeVariantPrice();
-
         let total = variantUnitPrice * this.quantity;
 
-        // deduct the discount to total if discount is greater than zero
         const applicableTierDiscount = this._bulkTierData;
 
-        if (applicableTierDiscount !== undefined) {
-            total = total - this.applyBulkPricingInTotal(total, applicableTierDiscount.discount);
+        if (applicableTierDiscount) {
+            const discountAmount = this.applyBulkPricingInTotal(total, applicableTierDiscount.discount);
+            total -= discountAmount;
         }
 
         return total;
     }
 
-    // compute the total wh a bulk tier pricing is applied
-    private applyBulkPricingInTotal(total: number, discount: number) {
-
-        // get the percentage total
-        const percentageTotal = total * (discount / 100);
-
-        return percentageTotal;
+    /**
+     * Calculates discount amount based on a percentage
+     * @param total - total before discount
+     * @param discount - percentage discount
+     */
+    private applyBulkPricingInTotal(total: number, discount: number): number {
+        return total * (discount / 100);
     }
 
-    // return selected variant current quatity
+    /**
+     * Returns the available stock for the selected variant
+     */
     public getSelectedVariatMaxStock() {
         return this._cachedSelectedVariantData?.stock;
     }
 
-    // generate the data of the product that will add to cart
+    /**
+     * Generates a full cart-ready object from the selected product and variant
+     */
     public generateDataForCart(): CartModel | null {
+        if (!this._cachedSelectedVariantData) return null;
 
-        if (this._cachedSelectedVariantData === undefined) return null;
-
-        // desctructure selected variant data
-        const { imageUrl, productId } = this._cachedSelectedVariantData;
+        const { promotionalDiscount, vatStatus } = this.selectedProductData;
+        const { imageUrl,
+            productId,
+            isPositive,
+            details,
+            name,
+            stock,
+        } = this._cachedSelectedVariantData;
 
         const data: CartModel = {
+            isPositive: isPositive,
             vatStatus: this.selectedProductData.vatStatus?.settingKey!,
-            details: this._cachedSelectedVariantData.details ?? "",
+            details: details ?? "",
             variantID: this.selectedVariantID,
-            variatName: this._cachedSelectedVariantData.name,
-            productID: productId ?? "",
+            variantName: name,
+            productID: productId!,
             variantPhotoUrl: imageUrl,
             quantity: this.quantity,
             variantUnitPrice: this.computeVariantPrice(),
             total: this.computeOverallTotalPrice(),
             bulkPricingID: this._bulkTierData?.id ?? "",
-            promotionalDiscountID: this.selectedProductData.promotionalDiscount.id ?? "",
+            promotionalDiscountID: promotionalDiscount ? promotionalDiscount.id : "",
             bulkQuantityTier: this._bulkTierData?.quantity ?? 0,
-            promotionalDiscountRate: this.selectedProductData.promotionalDiscount.discountRate ?? 0,
-            maxStock: this._cachedSelectedVariantData.stock,
-        }
+            promotionalDiscountRate: promotionalDiscount ? promotionalDiscount.discountRate : 0,
+            maxStock: stock,
+        };
 
         return data;
     }
-
 }

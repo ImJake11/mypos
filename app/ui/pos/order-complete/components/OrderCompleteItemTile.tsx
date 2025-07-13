@@ -1,7 +1,7 @@
 
-import ItemIcon from '@/app/lib/icons/itemIcon';
 import { CartModel } from '@/app/lib/models/cartModel'
 import { posUpdateCartItemQuantity } from '@/app/lib/redux/posSlice';
+import { calculatePriceAdjustment } from '@/app/lib/utils/services/priceCalculations/calculatePriceAdjusment';
 import React from 'react'
 import { useDispatch } from 'react-redux';
 
@@ -13,7 +13,14 @@ export default React.memo(function OrderCompleteItemTile({ data, index }:
     }
 ) {
 
-    const { details, quantity, variantUnitPrice, variatName, variantPhotoUrl, } = data;
+    const { details,
+        quantity,
+        variantUnitPrice,
+        variantName,
+        variantPhotoUrl,
+        isPositive,
+        promotionalDiscountRate,
+    } = data;
 
     // get details parts
     const detailsParts: string[] = details ? details.split(",") : [];
@@ -28,7 +35,7 @@ export default React.memo(function OrderCompleteItemTile({ data, index }:
 
             {/** detaills */}
             <div className='flex flex-col flex-1 gap-2'>
-                <span className='text-[1.5rem]'>{variatName}</span>
+                <span className='text-[1.5rem]'>{variantName}</span>
                 {detailsParts.map((detail, i) => <span key={i} className='text-[var(--foreground-lighter)]'>
                     {detail}
                 </span>)}
@@ -36,7 +43,7 @@ export default React.memo(function OrderCompleteItemTile({ data, index }:
 
             {/** price && quantity action */}
             <div className='h-full flex justify-between flex-col items-end'>
-                <span className='text-[1.5rem]'>₱ {variantUnitPrice.toLocaleString('en-us')}</span>
+                <span className='text-[1.5rem]'><span>₱ {variantUnitPrice.toLocaleString('en-us')}</span></span>
                 <div className='flex-1' />
                 <QuantityAction index={index} quantity={quantity} />
             </div>

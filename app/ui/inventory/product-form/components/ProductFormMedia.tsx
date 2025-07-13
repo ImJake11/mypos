@@ -38,6 +38,7 @@ const UploadMedia = () => {
 
         reader.readAsDataURL(file);
     }
+    
     return (
         <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[11px] bg-[var(--main-bg-primary-dark)]'
         >

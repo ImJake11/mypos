@@ -2,17 +2,16 @@
 
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/lib/redux/store';
+import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import CartTile from './component/CartTile';
 import CartHelpers from './services/cartHelper';
 import CartOrderSummary from './component/CartOrderSummary';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClose } from '@fortawesome/free-solid-svg-icons';
 import CartIcon from '@/app/lib/icons/cartIcon';
+import { useFetchCart } from '@/app/ui/pos/services/useFetchCart';
 
 const Cart = () => {
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
 
     const posSlice = useSelector((state: RootState) => state.posSlice);
 
@@ -23,6 +22,8 @@ const Cart = () => {
             cartItems: cartData,
         })
     }, [cartData]);
+
+    useFetchCart({});
 
     if (!posSlice.isCartVisible) return null;
 
@@ -55,11 +56,12 @@ const Cart = () => {
                     {cartData.length === 0 ? <div className='w-full h-full grid place-content-center'>
                         No items
                     </div> :
-                        cartData.map((data, i) => <CartTile key={i} index={i} data={data} />)}
+                        cartData.map((data, i) => <CartTile key={i} cartHelper={cartHelper} index={i} data={data} />)}
                 </div>
 
                 {/** summary */}
-                <CartOrderSummary overallCartTotal={cartHelper.computeOverAllTotalCartItems()} />
+                <CartOrderSummary
+                    overallCartTotal={cartHelper.computeOverAllTotalCartItems()} />
             </div>
         </div>
     )

@@ -21,8 +21,8 @@ const processSlice = createSlice({
     initialState,
     name: "process slice",
     reducers: {
-        toggleProcessDialog: (state) => {
-            state.isOpen = !state.isOpen;
+        toggleProcessDialog: (state, action: PayloadAction<boolean>) => {
+            state.isOpen = action.payload;
         },
         updaterPocessDialogMessage: (state, action: PayloadAction<string>) => {
             state.message = action.payload;

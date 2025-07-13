@@ -15,6 +15,8 @@ import ProductDetails from './ProductTabDetails';
 import VariantsTable from './ProductTabVariants';
 import BulkTable from './ProductTabBulkTable';
 import ImageContainer from './ProductTabImageContainer';
+import { openToas } from '@/app/lib/redux/toastSlice';
+import ToasEnum from '@/app/lib/enum/toastEnum';
 
 const ViewProductTab = () => {
 
@@ -24,7 +26,24 @@ const ViewProductTab = () => {
 
   const { selectedProductDataForView, productViewOpen } = useSelector((state: RootState) => state.inventorySlice);
 
+  const cartItems = useSelector((state: RootState) => state.posSlice.cartItems);
+
   const data: ProductProps = selectedProductDataForView as ProductProps;
+
+
+  const handleUpdate = () => {
+    const isExisiting = cartItems.find(item => item.productID === data.id);
+
+    if (isExisiting) {
+      dispatch(openToas({
+        message: "This item is already in the cart and cannot be update",
+        type: ToasEnum.ERROR,
+      }))
+    } else {
+      dispatch(formSetProductDataForUpdate(data));
+      router.push("/ui/inventory/product-form")
+    }
+  }
 
   return (
     <AnimatePresence>
@@ -66,7 +85,6 @@ const ViewProductTab = () => {
           }}
         >
           <ImageContainer url={data.coverImage} />
-
           <ProductDetails
             isActive={data.isActive}
             isFavorite={data.isFavorite}
@@ -76,7 +94,6 @@ const ViewProductTab = () => {
             description={data.description ?? ""}
             category={data.category!}
           />
-
           {data?.highlights && <KeyFeatures data={data.highlights} />}
           <div className='h-[1rem]' />
           <VariantsTable variants={data.variants} lowStock={data.lowStock} />
@@ -100,18 +117,10 @@ const ViewProductTab = () => {
 
             {/** update */}
             <button className='button-primary-gradient p-[10px_15px] rounded-[7px] flex items-center gap-2'
-              onClick={() => {
-                dispatch(formSetProductDataForUpdate(data));
-                router.push("/ui/inventory/product-form")
-              }}
+              onClick={handleUpdate}
             >
               <FontAwesomeIcon icon={faEdit} />
               <span>Update</span>
-            </button>
-
-            <button className='button-primary-gradient p-[10px_15px] rounded-[7px] flex items-center gap-2'>
-              <FontAwesomeIcon icon={faLock} />
-              <span>Deactivate Product</span>
             </button>
           </div>
 

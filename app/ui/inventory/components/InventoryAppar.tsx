@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FilterIcon } from '@/app/lib/icons/filterIcon';
 import { filterToggleFilterTab } from '@/app/lib/redux/filterSlice';
+import CartIndicator from '@/app/lib/components/CartIndicator';
 
 const InventoryAppar = () => {
 
@@ -27,17 +28,17 @@ const InventoryAppar = () => {
         }))
     }
     return (
-        <div className='flex w-full min-h-[3rem] h-[3rem] justify-between items-center p-[0_20px]'
+        <div className='flex w-full min-h-[5rem] h-[5rem] justify-between items-end p-[10_20px]'
             style={{
                 backgroundColor: "var(--background)"
             }}
         >
-            <label className='italic font-semibold'>Inventory</label >
+            <label className='italic font-semibold text-[1.3rem]'>Inventory</label >
             <div className='flex gap-3'>
-
+                <CartIndicator />
                 {/** filter button */}
                 <AnimatePresence>
-                    {!isFilterTabVisible && <motion.div className='button-primary-gradient p-[0_15px] flex items-center gap-1 rounded-[7px] h-[2rem] w-fit'
+                    {!isFilterTabVisible && <motion.div className='border border-[var(--main-bg-secondary-dark)] p-[0_15px] flex items-center gap-1 rounded-[7px] h-[2.5rem] w-fit'
                         onClick={() => dispatch(filterToggleFilterTab(true))}
                         initial={{
                             y: "-5rem",
@@ -62,8 +63,8 @@ const InventoryAppar = () => {
                 </AnimatePresence>
 
                 {/** tile type button */}
-                <motion.div className='flex border h-[2rem] border-[var(--color-brand-primary)] rounded-[4px] overflow-hidden relative' layout>
-                    <motion.div className='w-[2.5rem] h-[2.5rem] absolute button-primary-gradient'
+                <motion.div className='flex border h-[2.5rem] border-[var(--main-bg-secondary-dark)] rounded-[4px] overflow-hidden relative' layout>
+                    <motion.div className='w-[2.5rem] h-[2.5rem] absolute button-primary-gradient opacity-80'
                         animate={{
                             transform: isListView ? "translateX(100%)" : "translateX(0%)"
                         }}

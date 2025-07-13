@@ -7,8 +7,6 @@
 
   --main-bg-primary-dark: #141313;
   --main-bg-secondary-dark: #201e1e;
-  --main-bg-primary-light: rgb(236, 230, 230);
-  --main-bg-secondary-light: #d4cdcd;
 
   /*border*/
   --border-focused: var(--color-brand-primary);

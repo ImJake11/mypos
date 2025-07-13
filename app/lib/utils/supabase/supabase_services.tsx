@@ -7,8 +7,7 @@ export async function supabaseUploadAndGetIMageDownloadUrl( // Make the function
     const supabase = createClient();
 
     try {
-        console.log("uploading image");
-
+     
         const { data, error: uploadError } = await supabase.storage.from("mypos.bucket").upload(filePath, file, {
             contentType: file.type || undefined,
             upsert: true,
@@ -28,7 +27,6 @@ export async function supabaseUploadAndGetIMageDownloadUrl( // Make the function
             throw new Error("Failed to get public image URL from Supabase.");
         }
 
-        console.log("Image uploaded succesfully", publicUrlData);
         return publicUrlData.publicUrl; // Return the actual URL
 
     } catch (e) {

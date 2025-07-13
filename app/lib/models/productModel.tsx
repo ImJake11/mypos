@@ -18,7 +18,8 @@ export interface ProductProps {
     coverImageId?: string,
     photoSnapshots: string[]
     bulkTier: BulkTableProp[],
-    promotionalDiscount: PromotionalDiscountProp,
+    promotionalDiscountID?: string,
+    promotionalDiscount?: PromotionalDiscountProp,
     highlights: string,
     isActive: boolean,
     isFavorite: boolean,

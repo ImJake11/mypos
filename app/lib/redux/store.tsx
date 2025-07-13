@@ -7,16 +7,20 @@ import appMiddlewareListner from "./listeners/applicationListener";
 import sidebarSlice from "./sidebarSlice";
 import posSlice from "./posSlice";
 import filterSlice from "./filterSlice";
+import transaction from "./transactionSlice";
+import datePickerSlice from "./datePickerSlice";
 
 const store = configureStore({
     reducer: {
         productSlice,
+        datePickerSlice,
         filterSlice,
         processSlice,
         toasSlice,
         inventorySlice,
         sidebarSlice,
         posSlice,
+        transaction,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(appMiddlewareListner.middleware)

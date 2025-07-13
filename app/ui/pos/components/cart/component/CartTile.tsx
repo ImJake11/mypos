@@ -1,17 +1,36 @@
 import { CartModel } from "@/app/lib/models/cartModel";
 import { posRemoveVariant, posUpdateCartItemQuantity } from "@/app/lib/redux/posSlice";
-import { faClose, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import React from "react";
-import { useDispatch } from "react-redux";
+import React, { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import CartHelpers from "../services/cartHelper";
+import store, { AppDispatch, RootState } from "@/app/lib/redux/store";
+import { useDeleteCartCache } from "@/app/ui/pos/services/deleteCartCache";
+import { cartCacheSave } from "../../../services/saveCartCache";
 
 interface Prop {
     data: CartModel,
     index: number,
+    cartHelper: CartHelpers,
 }
 
-export default React.memo(function CartTile({ data, index }: Prop) {
-    const dispatch = useDispatch();
+export default React.memo(function CartTile({ data, index, cartHelper }: Prop) {
+    const dispatch = useDispatch<AppDispatch>();
+
+
+    const handleDelete = () => {
+        if (data.cartId !== undefined) {
+            useDeleteCartCache({
+                cartHelper,
+                dispatch,
+                id: data.cartId,
+                userId: "tempo"
+            })
+        }
+
+        dispatch(posRemoveVariant({ variantID: data.variantID }));
+    }
 
     return <div className='flex items-center h-fit p-[7px_9px] w-full bg-[var(--main-bg-secondary-dark)] rounded-[7px] gap-2 text-center'>
 
@@ -20,9 +39,8 @@ export default React.memo(function CartTile({ data, index }: Prop) {
             <div className='h-[3rem] w-[3rem] bg-[var(--background)] rounded-[3px] overflow-hidden'>
                 <img src={data.variantPhotoUrl} alt="i" className="h-full w-full object-cover" />
             </div>
-            <span>{data.variatName}</span>
+            <span>{data.variantName}</span>
         </div>
-
 
 
         {/** price */}
@@ -34,23 +52,37 @@ export default React.memo(function CartTile({ data, index }: Prop) {
 
         {/** actions */}
         <div className='flex-1'>
-            <FontAwesomeIcon icon={faClose} onClick={() => dispatch(posRemoveVariant({ variantID: data.variantID }))} />
+            <FontAwesomeIcon icon={faClose} onClick={handleDelete} />
         </div>
     </div>
 });
 
 
-interface QuantityProp {
-    quantity: number,
-    index: number,
-}
-const QuantityAction = ({ quantity, index }: QuantityProp) => {
+
+const QuantityAction = ({ quantity, index }:
+    { quantity: number, index: number }
+) => {
+
+    const debounceRef = useRef<NodeJS.Timeout | null>(null)
 
     const dispatch = useDispatch();
 
-    const handlePlusMinus = (isAddition: boolean) => {
+    const handlePlusMinus = async (isAddition: boolean) => {
 
-        dispatch(posUpdateCartItemQuantity({ index, isAddition }))
+        dispatch(posUpdateCartItemQuantity({ index, isAddition }));
+
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(async () => {
+
+            const cartItems = store.getState().posSlice.cartItems;
+
+            const cartHelper = new CartHelpers({ cartItems });
+
+            await cartCacheSave(cartHelper.generateCartCacheData(cartItems[index]));
+        }, 2000);
     }
 
     return <div className="flex-2">

@@ -18,7 +18,7 @@ const page = () => {
       <div className='flex-1 flex flex-col'>
         <PosAppbar />
         {/** body */}
-        <div className='flex-1 flex bg-[var(--background)]'>
+        <div className='flex-1 flex bg-[var(--background)] min-h-0'>
           <PosProductList />
         </div>
       </div>

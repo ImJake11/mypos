@@ -17,6 +17,7 @@ export const ProductKeys = {
    stock: "stock",
    lowStock: "lowStock",
    variants: "variants",
+   isActive: "isActive",
    coverImage: "coverImage",
    photoSnapshots: "photoSnapshots",
    hightlighs: "highlights",

@@ -1,7 +1,7 @@
 'use client';
 
 import TextInputField from '@/app/ui/inventory/product-form/components/ProductFormTextInputField'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import ErrorMessage from './ProductFormErrorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
@@ -9,11 +9,10 @@ import { formAddBulkTier, formToggleAutoComputeSellingPrice, formUpdateState } f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import BulkTable from './ProductFormBulkTable';
-import PromotionalDiscount from './ProductFormPromotionalDiscount';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 import { VatModel } from '@/app/lib/models/vatModel';
-import { fetchVats } from '@/app/lib/utils/api/vat/fetchVats';
+import { fetchVats } from '@/app/lib/utils/data/fetchVats';
 import { AnimatePresence, motion } from "framer-motion";
 import { InformationIcon } from '@/app/lib/icons/informationIcon';
 import { computeSellingPrice } from '../services/computeSellingPrice';
@@ -109,15 +108,6 @@ const Prices = () => {
         {bulkEnabled && <BulkTable data={productSlice.data} />}
         {/** tier button */}
         {bulkEnabled && <button className='button-primary-gradient rounded-[var(--button-border-radius)] h-[3rem] p-[10px_15px w-[8rem]' onClick={() => dispatch(formAddBulkTier())}>Add tier</button>}
-
-
-        {/** promotional discount */}
-        <div className='flex gap-1.5'><span>Promotional Discount</span><CheckBox isChecked={productSlice.data.discountEnabled} onClick={() => dispatch(formUpdateState({
-            data: !productSlice.data.discountEnabled,
-            name: ProductKeys.discountEnabled as keyof ProductProps,
-        }))} /></div>
-        {/** show only if promotional discount is enabled */}
-        {productSlice.data.discountEnabled && <PromotionalDiscount data={promotionalDiscount} dispatch={dispatch} />}
     </div>
 }
 

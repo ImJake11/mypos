@@ -1,19 +1,21 @@
 "use client";
 
-import { IconProp } from '@fortawesome/fontawesome-svg-core';
-import { faArrowRight, faBarChart, faChartPie, faCircleDot, faCreditCard, faList, faMaximize, faMinimize, faNewspaper, faTableColumns, faTableList, faTentArrowLeftRight, faTruck, faUser } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useEffect } from 'react'
+import React from 'react'
 import UserProfile from './UserProfile';
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { toggleSidebar } from '../../redux/sidebarSlice';
 import PosIcon from '../../icons/posIcon';
 import InventoryIcon from '../../icons/inventoryIcon';
-
+import { TransactionIcon } from '../../icons/transactionIcon';
+import { usePathname, useRouter } from 'next/navigation';
+import ArrowToRight from '../../icons/arrowToRight';
 
 const Sidebar = () => {
+
+    const pathName = usePathname();
+
+    const urlParts = pathName.split("/");
 
     return (
         <motion.div className='h-screen flex flex-col overflow-hidden min-w-[var(--sidebar-width)] w-[var(--sidebar-width)]'
@@ -26,8 +28,19 @@ const Sidebar = () => {
 
             </div>
             <div className='w-full flex-1 flex flex-col p-2.5 overflow-auto '>
-                <ButtonTile icon={<PosIcon />} name='POS' />
-                <ButtonTile icon={<InventoryIcon />} name='Inventory' />
+                <ButtonTile icon={<PosIcon size={22} />} name='POS' isSelected={urlParts[2] == 'pos'} url='/ui/pos' />
+
+                {/** inventory button */}
+                <div className='w-full flex flex-col '>
+                    <ButtonTile icon={<InventoryIcon size={22} />} name='Inventory' isSelected={urlParts[2] === 'inventory'} url='/ui/inventory' />
+
+                    {/** sub buttons */}
+                    <ButtonTile icon={<ArrowToRight size={12} color='var(--foreground)' />} name='Create Product' isSelected={urlParts[2] === 'inventory'} url='/ui/inventory' width='w-[90%]' />
+
+                </div>
+
+                {/** trnasaction */}
+                <ButtonTile icon={<TransactionIcon size={24} />} name='Transaction' isSelected={urlParts[2] === 'transaction'} url='/ui/transaction' />
             </div>
             {/** profile container */}
             <UserProfile />
@@ -37,17 +50,17 @@ const Sidebar = () => {
 
 interface ButtonProps {
     name: string,
-    icon: any,
+    icon: React.JSX.Element,
+    url: string,
+    width?: string,
+    isSelected: boolean
 }
-const ButtonTile = ({ name, icon }: ButtonProps) => {
+const ButtonTile = ({ name, icon, url, isSelected, width }: ButtonProps) => {
+    const router = useRouter();
 
-    const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
+    const pathName = usePathname();
 
-    // for development only
-    const isSelected = name.toLowerCase() === "inventory";
-
-
-    return <motion.button className={`w-full h-[3rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
+    return <motion.button className={`${width ?? "w-full"} place-self-end h-[3rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
         style={{
             backgroundSize: "200% 100%",
             backgroundPosition: "0% 0%",
@@ -62,23 +75,11 @@ const ButtonTile = ({ name, icon }: ButtonProps) => {
             repeat: Infinity,
             repeatType: "reverse",
         }}
+        onClick={() => router.push(url)}
     >
-        <motion.div
-            animate={{
-                x: isSidebarMinimize ? ".6rem" : "0rem",
-            }}>
-            <div className='w-[1.5rem] h-[1.5rem]'>{icon}</div>
-        </motion.div>
-        {!isSidebarMinimize && <p>{name}</p>}
+        {icon}
+        <p>{name}</p>
     </motion.button>
-}
-
-function SubButton({ name, }: { name: string }) {
-    return <div className='w-[80%] h-[3rem] rounded-[3px] bg-[var(--tertiary)] p-2 flex items-center gap-2 place-self-end'
-    >
-        <i className="ri-arrow-right-s-fill"></i>
-        {name}
-    </div>
 }
 
 

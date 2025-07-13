@@ -15,67 +15,72 @@ datasource db {
 }
 
 model Category {
-  id      String    @id @unique @default(uuid())
-  content String
-  product Product[]
-  url     String?
-  imageId String
+  id         String    @id @unique @default(uuid())
+  content    String
+  product    Product[]
+  url        String?
+  imageId    String
+  isArchived Boolean   @default(false)
 }
 
 model Product {
-  id                  String               @id @unique @default(uuid())
-  name                String               @default("")
-  description         String?
-  categoryID          String
-  category            Category             @relation(fields: [categoryID], references: [id])
-  sellingPrice        Int
-  costPrice           Int
-  coverImageId        String
-  tax                 Int
-  bulkEnabled         Boolean              @default(false)
-  highlights          String?
-  stock               Int
-  lowStock            Int
-  variants            Variants[]
-  coverImage          String
-  photoSnapshots      String[]
-  bulkTier            BulkTire[]
-  promotionalDiscount PromotionalDiscount?
-  createdAt           DateTime             @default(now())
-  isActive            Boolean              @default(true)
-  isFavorite          Boolean              @default(false)
-  vatStatus           Vat                  @relation(fields: [vatId], references: [id])
-  vatId               String                @default("48156bcc-e71b-48c6-8520-88b74b223676")
+  id                    String               @id @unique @default(uuid())
+  name                  String               @default("")
+  description           String?
+  categoryID            String
+  category              Category             @relation(fields: [categoryID], references: [id])
+  sellingPrice          Int
+  costPrice             Int
+  coverImageId          String
+  tax                   Int
+  bulkEnabled           Boolean              @default(false)
+  highlights            String?
+  stock                 Int
+  lowStock              Int
+  variants              Variants[]
+  coverImage            String
+  photoSnapshots        String[]
+  bulkTier              BulkTire[]
+  promotionalDiscountID String?
+  promotionalDiscount   PromotionalDiscount? @relation(fields: [promotionalDiscountID], references: [id])
+  createdAt             DateTime             @default(now())
+  isActive              Boolean              @default(true)
+  isFavorite            Boolean              @default(false)
+  vatStatus             Vat                  @relation(fields: [vatId], references: [id])
+  vatId                 String               @default("48156bcc-e71b-48c6-8520-88b74b223676")
+  CartCache             CartCache[]
 }
 
 model Variants {
-  id         String  @id @unique @default(uuid())
+  id         String      @id @unique @default(uuid())
   name       String
   price      Int
   stock      Int
   imageUrl   String
-  isPositive Boolean @default(false)
-  product    Product @relation(fields: [productId], references: [id])
+  isPositive Boolean     @default(false)
+  product    Product     @relation(fields: [productId], references: [id])
   productId  String
-  isArchived Boolean @default(false)
+  isArchived Boolean     @default(false)
   details    String?
+  CartCache  CartCache[]
 }
 
 model BulkTire {
-  id        String  @id @unique @default(uuid())
-  product   Product @relation(fields: [productId], references: [id])
+  id        String      @id @unique @default(uuid())
+  product   Product     @relation(fields: [productId], references: [id])
   productId String
   quantity  Int
   discount  Int
+  CartCache CartCache[]
 }
 
 model PromotionalDiscount {
-  id             String  @id @unique @default(uuid())
+  id             String      @id @unique @default(uuid())
   expirationDate String
   discountRate   Float
   description    String?
-  product        Product @relation(fields: [productId], references: [id])
-  productId      String  @unique
+  CartCache      CartCache[]
+  Product        Product[]
 }
 
 model Vat {
@@ -85,4 +90,49 @@ model Vat {
   lastModified DateTime  @default(now())
   description  String
   Product      Product[]
+}
+
+model TransactionDetails {
+  transactionId   String             @id @unique @default(uuid())
+  date            DateTime           @default(now())
+  userid          String
+  taxablSales     Decimal
+  totalValSales   Decimal
+  nonTaxableSales Decimal
+  exemptSales     Decimal
+  netTotal        Decimal
+  amountPaid      Decimal
+  changeGiven     Decimal
+  paymentMethod   String
+  discountID      String?
+  purchasedItems  TransactionItems[]
+  referenceId     BigInt             @default(0)
+  status          String
+}
+
+model TransactionItems {
+  id            String             @id @unique @default(uuid())
+  transactionId String
+  transaction   TransactionDetails @relation(fields: [transactionId], references: [transactionId])
+  productId     String
+  quantity      Int
+  unitPrice     Int
+  vatStatus     String
+}
+
+model CartCache {
+  cartId                String               @id @unique @default(uuid())
+  productId             String
+  mainProduct           Product              @relation(fields: [mainProductID], references: [id])
+  mainProductID         String
+  product               Variants             @relation(fields: [productId], references: [id])
+  quantity              Int
+  variantUnitPrice      Int
+  total                 Int
+  promotionalDiscount   PromotionalDiscount? @relation(fields: [promotionalDiscountID], references: [id])
+  promotionalDiscountID String?
+  bulkPricing           BulkTire?            @relation(fields: [bulkPricingID], references: [id])
+  bulkPricingID         String?
+  userId                String
+  vatStatus             String
 }

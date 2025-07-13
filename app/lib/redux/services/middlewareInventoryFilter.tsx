@@ -1,6 +1,6 @@
 import ToasEnum from "../../enum/toastEnum";
 import { FilterModel } from "../../models/filterModel";
-import { filterProduct } from "../../utils/api/product/productFilter";
+import { filterProduct } from "../../utils/data/fetchFilteredProduct";
 import { filterSetFilteredData, filterToggleFilterTab } from "../filterSlice";
 import { inventorySetLoadingState, inventoryToggleFiltering } from "../inventorySlice";
 import { AppDispatch } from "../store";
@@ -49,7 +49,7 @@ export async function middlewareInventoryFilter(
 
 }
 
-export function middlewareInventoryClearFilter({dispatch}:{
+export function middlewareInventoryClearFilter({ dispatch }: {
     dispatch: AppDispatch
 }) {
     // -- display loading state
@@ -57,7 +57,7 @@ export function middlewareInventoryClearFilter({dispatch}:{
 
     dispatch(inventoryToggleFiltering(false));
 
-    setTimeout(()=> {
+    setTimeout(() => {
         dispatch(inventorySetLoadingState());
-    },800);
+    }, 800);
 }

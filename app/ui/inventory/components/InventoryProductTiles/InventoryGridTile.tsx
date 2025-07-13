@@ -9,6 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useDispatch } from 'react-redux';
 import { motion } from "framer-motion";
 import { inventoryServiceUpdateProductFavorite } from '../../services/inventoryServiceAddProductToFavorite';
+import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
 
 interface Prop {
     data: ProductProps,
@@ -21,7 +22,6 @@ const InventoryGridTile = ({
     const dispatch = useDispatch<AppDispatch>();
 
     const [isHover, setIsHover] = useState(false);
-    const [isChangingLayout, setIsChangingLayout] = useState(false);
 
     const handleMouseEnter = () => {
         setIsHover(true);
@@ -30,6 +30,7 @@ const InventoryGridTile = ({
     const handleMouseLeave = () => {
         setIsHover(false);
     }
+
 
     return (
         <motion.div className='w-full h-[300px] bg-[var(--product-card-bg)] flex-col rounded-[var(--product-card-border-radius)] flex p-4 gap-2 relative'
@@ -57,7 +58,7 @@ const InventoryGridTile = ({
                     data
                 ))}
             >
-                {data.coverImage ? <motion.img src={data.coverImage ?? null} alt="cover photo" className='object-fill w-full h-full'
+                {data.coverImage ? <motion.img src={data.coverImage} loading='lazy' alt="cover photo" className='object-fill w-full h-full'
                     animate={{
                         scale: isHover ? 1.2 : 1,
                     }}
@@ -114,9 +115,8 @@ const InventoryGridTile = ({
                 </motion.div>
 
             </div>
-
             {/** promotional discount is conditional */}
-            {data.promotionalDiscount && data.promotionalDiscount.discountRate > 0 && <Discount rate={data.promotionalDiscount.discountRate} />}
+            {data.promotionalDiscount && checkDiscountExpiration(data.promotionalDiscount.expirationDate) && <Discount rate={data.promotionalDiscount.discountRate} />}
         </motion.div>
     )
 

@@ -1,7 +1,8 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ProductProps, BulkTableProp, PromotionalDiscountProp, VariantsProps } from "../models/productModel";
 import { ProductKeys, VariantKeys } from "../constants/ProductKeys";
 import { CategoryModel } from "../models/categoryModel";
+import ListenerPayload from "./utils/models/appListenerModel";
 
 // update bulk tire data prop
 interface UpdateBulkTireProp {
@@ -14,29 +15,18 @@ interface UpdateBulkTireProp {
 // for main ui flag 
 interface ProductSliceProp {
     data: ProductProps,
-    isDatePickerOpen: boolean,
     isAutoComputeSellingPrice: boolean,
-    showCategoryTab: boolean,
-    categoryUpdateData: CategoryModel,
     isForUpdate: boolean,
 
 }
 
 const initialState: ProductSliceProp = {
-    showCategoryTab: false,
-    isDatePickerOpen: false,
     isAutoComputeSellingPrice: false,
     isForUpdate: false,
-    categoryUpdateData: {
-        content: "",
-        id: "",
-        imageId: "",
-        url: "",
-    },
     data: {
         vatId: "",
         discountEnabled: false,
-        id: "",
+        id: undefined,
         isActive: true,
         isFavorite: false,
         highlights: "",
@@ -86,8 +76,6 @@ const productSlice = createSlice({
                 }
 
             }
-
-
             const currentData = state.data;
 
             currentData[name] = data;
@@ -150,44 +138,8 @@ const productSlice = createSlice({
 
             state.data.bulkTier.splice(actions.payload, 1);
         },
-        formToggleDatePicker: (state) => {
-            state.isDatePickerOpen = !state.isDatePickerOpen;
-        },
         formToggleAutoComputeSellingPrice: (state) => {
             state.isAutoComputeSellingPrice = !state.isAutoComputeSellingPrice;
-        },
-
-        formUpdatePromotionalDiscount: <K extends keyof PromotionalDiscountProp>(state: ProductSliceProp, action: PayloadAction<{ name: K, data: PromotionalDiscountProp[K] }>) => {
-
-            const { name, data } = action.payload;
-
-            if (name === "discountRate" && typeof data === "string") {
-                throw Error("Gago naka string ka dapat number tong discount rate bobo")
-            }
-
-            state.data.promotionalDiscount[name] = data;
-        },
-        formToggleCategoryTab: (state, action: PayloadAction<CategoryModel | null>) => {
-
-            if (action.payload) {
-
-                const { content, id, url, imageId } = action.payload;
-
-                state.categoryUpdateData = {
-                    content, id, url, imageId
-                }
-
-                state.showCategoryTab = true;
-                return;
-            } else {
-                state.categoryUpdateData = {
-                    content: "",
-                    id: "",
-                    imageId: "",
-                    url: ""
-                }
-                state.showCategoryTab = !state.showCategoryTab;
-            }
         },
         // for updating the product, this will set the whole data therefore the page can see the data based on user wants to update
         formSetProductDataForUpdate: (state, action: PayloadAction<ProductProps>) => {
@@ -201,18 +153,14 @@ const productSlice = createSlice({
     }
 });
 
-
 export const { formUpdateState,
     formAddBulkTier,
     formUpdateBulkTier,
     formDeleteBulkTire,
-    formToggleDatePicker,
     formToggleAutoComputeSellingPrice,
     formUpdateVariants,
     formAddVariant,
     formResetProductState,
     formDeleteVariant,
-    formSetProductDataForUpdate,
-    formToggleCategoryTab,
-    formUpdatePromotionalDiscount } = productSlice.actions;
+    formSetProductDataForUpdate } = productSlice.actions;
 export default productSlice.reducer;

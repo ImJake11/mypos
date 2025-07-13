@@ -7,7 +7,7 @@ import { RootState } from '@/app/lib/redux/store';
 import React, { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from "framer-motion";
-import { fetchAllCategory } from '@/app/lib/utils/api/cateogry/categoryFetching';
+import { fetchAllCategory } from '@/app/lib/utils/data/fetchCategories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
 import { filterUpdateData } from '@/app/lib/redux/filterSlice';

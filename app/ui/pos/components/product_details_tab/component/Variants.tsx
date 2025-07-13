@@ -1,7 +1,10 @@
 import { VariantsProps } from "@/app/lib/models/productModel";
-import { posRemoveVariant, posSelectVariant } from "@/app/lib/redux/posSlice";
+import { posSelectVariant, posUpdateSelectedvariantQuantity } from "@/app/lib/redux/posSlice";
 import { RootState } from "@/app/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
+import ProductDetailsServices from "../services/productDetailsServices";
+import { calculatePriceAdjustment } from "@/app/lib/utils/services/priceCalculations/calculatePriceAdjusment";
+import { PromotionalDiscount } from "@/app/generated/prisma";
 
 interface Prop {
     variants: VariantsProps[],
@@ -24,6 +27,7 @@ interface VariantTileProp {
 }
 
 const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
+    const detailsServices = new ProductDetailsServices();
 
     const dispatch = useDispatch();
 
@@ -35,8 +39,7 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
 
     const isSelected = selectedVariantID === id;
 
-    const variantPrice = getVariantPrice(sellingPrice, variant.price, variant.isPositive
-    ).toLocaleString('en-us');
+    const variantPrice = calculatePriceAdjustment(sellingPrice, price, isPositive);
 
     return <div className={`w-full bg-[var(--main-bg-secondary-dark)] h-fit flex flex-col p-4 gap-4 rounded-[11px] ${isArchived ? "text-gray-500" : "text-white"}`}
         style={{
@@ -54,7 +57,7 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
                 <span className="font-semibold">{name}</span>
                 <span>In Stock: {stock}</span>
                 <span>Price Adjustment: {isPositive ? "+" : "-"} {price}%</span>
-                <span className="font-semibold">Php {variantPrice}</span>
+                <span className="font-semibold">Php {variantPrice.toLocaleString('en-us')}</span>
             </div>
         </div>
 
@@ -84,21 +87,15 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
                     return;
                 }
 
+                // reset the current quantity to avoid bypassing the current stock
+                dispatch(posUpdateSelectedvariantQuantity({
+                    isAddition: false,
+                    quantity: 1,
+                }));
                 dispatch(posSelectVariant(variant.id ?? ""));
             }}
         >
             {isSelected ? "Cancel" : "Select Variant"}
         </div>}
     </div>;
-}
-
-function getVariantPrice(sellingPrice: number, priceAdjustment: number, isPositive: boolean) {
-
-    const totalValue = (priceAdjustment / 100) * sellingPrice;
-
-    if (isPositive) {
-        return sellingPrice + totalValue;
-    } else {
-        return sellingPrice - totalValue;
-    }
 }

@@ -10,49 +10,51 @@ export async function POST(req: NextRequest) {
 
     try {
 
-        const body = await req.json();
+        const { data } = await req.json();
 
+        const rawdata: ProductProps = data;
 
-        const { name,
-            description,
-            vatId,
+        const rawBulkTier = rawdata.bulkTier as BulkTableProp[];
+
+        const promotionalDiscount = rawdata.promotionalDiscount;
+
+        const { bulkEnabled,
             categoryID,
-            sellingPrice,
             costPrice,
-            tax,
-            stock,
-            lowStock,
-            variants,
             coverImage,
-            photoSnapshots,
-            promotionalDiscount,
+            description,
+            discountEnabled,
             highlights,
-            bulkTier,
+            isActive,
+            isFavorite,
+            lowStock,
+            name,
+            photoSnapshots,
+            sellingPrice,
+            stock,
+            tax,
             coverImageId,
-            bulkEnabled, } = body;
-
-
-        if (!name || !categoryID || !sellingPrice || !costPrice || !tax || !stock || !lowStock) {
-            console.log("Some fields are empty");
-            return NextResponse.json({ error: "Some field left empty" }, { status: 404 });
-        }
-
-        const rawBulkTier = bulkTier as BulkTableProp[];
-
+            vatId,
+        } = rawdata;
 
         const { id } = await prisma.product.create({
             data: {
-                coverImageId,
-                highlights,
-                categoryID,
                 costPrice,
                 coverImage,
-                vatId,
+                coverImageId: coverImageId!,
                 lowStock,
-                name,
                 sellingPrice,
                 stock,
                 tax,
+                bulkEnabled,
+                categoryID,
+                description,
+                highlights,
+                isActive,
+                isFavorite,
+                name,
+                photoSnapshots,
+                vatId,
                 bulkTier: rawBulkTier ? {
                     create: rawBulkTier.map(v => ({
                         discount: v.discount,
@@ -60,27 +62,16 @@ export async function POST(req: NextRequest) {
                     }))
                 } : undefined,
                 variants: undefined, // set to undefined because later we will update it once all photo url are retrieved
-                photoSnapshots,
-                description,
-                bulkEnabled,
-                promotionalDiscount: promotionalDiscount ? {
-                    create: {
-                        discountRate: promotionalDiscount.discountRate,
-                        expirationDate: promotionalDiscount.expirationDate,
-                        description: promotionalDiscount.description,
-                    }
-                } : undefined,
             },
             select: {
                 id: true,
             }
         });
 
-        return NextResponse.json({ productID: id }, { status: 200 })
+        return NextResponse.json({ id }, { status: 200 })
 
     } catch (e) {
-        console.log("Prisma error", e);
-        return NextResponse.json({ error: "Error nga ni" }, { status: 500 })
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }
 
@@ -89,12 +80,9 @@ export async function PUT(req: NextRequest) {
 
     try {
 
-        const { updatedRawData } = await req.json();
+        const { data } = await req.json();
 
-
-        const newData: ProductProps = updatedRawData;
-
-        console.log(newData);
+        const newData: ProductProps = data;
 
         const {
             bulkEnabled,
@@ -114,7 +102,6 @@ export async function PUT(req: NextRequest) {
             sellingPrice,
             stock,
             tax,
-            variants,
             id,
         } = newData;
 
@@ -135,24 +122,6 @@ export async function PUT(req: NextRequest) {
                 stock,
                 tax,
                 name,
-                promotionalDiscount: {
-                    upsert: {
-                        create: {
-                            discountRate: promotionalDiscount.discountRate,
-                            expirationDate: promotionalDiscount.expirationDate,
-                            description: promotionalDiscount.description,
-                        },
-                        update: {
-                            description: promotionalDiscount.description,
-                            discountRate: promotionalDiscount.discountRate,
-                            expirationDate: promotionalDiscount.expirationDate,
-
-                        },
-                        where: {
-                            id: promotionalDiscount.id,
-                        }
-                    }
-                },
                 bulkTier: bulkTier.length > 0 ? {
                     upsert: bulkTier.map(tier => ({
                         create: {
@@ -169,41 +138,18 @@ export async function PUT(req: NextRequest) {
                         }
                     }))
                 } : undefined,
-                variants: {
-                    upsert: variants.map(v => ({
-                        create: {
-                            isArchived: v.isArchived,
-                            imageUrl: v.imageUrl,
-                            name: v.name,
-                            price: v.price,
-                            stock: v.stock,
-                            isPositive: v.isPositive,
-                            details: v.details,
-                        },
-                        update: {
-                            isArchived: v.isArchived,
-                            imageUrl: v.imageUrl,
-                            name: v.name,
-                            price: v.price,
-                            stock: v.stock,
-                            details: v.details,
-                            isPositive: v.isPositive,
-                        },
-                        where: {
-                            id: v.id
-                        }
-                    }))
-                }
+                variants: undefined,
             }, where: {
                 id: id!,
-            }
+            },
         });
 
-        return NextResponse.json({ message: "Product updated successfully" }, { status: 200 });
+        console.log(name.toUpperCase(), coverImage)
+        return NextResponse.json({ id }, { status: 200 });
 
     } catch (e) {
         console.log(e);
-        return NextResponse.json({ error: "Internal Server Error" });
+        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
 
@@ -212,6 +158,9 @@ export async function GET() {
     try {
 
         const productData = await prisma.product.findMany({
+            orderBy: {
+                stock: 'desc'
+            },
             include: {
                 bulkTier: true,
                 category: true,
@@ -233,6 +182,11 @@ export async function GET() {
                 },
             }
         });
+
+        productData.map(p => {
+
+            console.log(p.coverImage)
+        })
 
         return NextResponse.json({ productData }, { status: 200 });
     } catch (e) {

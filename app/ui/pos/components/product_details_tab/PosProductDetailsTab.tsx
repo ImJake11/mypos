@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useMemo } from 'react'
+import React, { useMemo, useState } from 'react'
 import { posAddProductToCart, posCloseProductDetails, posUpdateSelectedvariantQuantity } from '@/app/lib/redux/posSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,25 +10,24 @@ import { openToas } from '@/app/lib/redux/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import ProductDetailsCalculator from './services/productDetailsServices';
 import CartHelpers from "../cart/services/cartHelper";
-import { ProductProps } from '@/app/lib/models/productModel';
+import { AnimatePresence, motion } from "framer-motion";
+import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
+import { cartCacheSave } from '../../services/saveCartCache';
+import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
 
 const PosProductDetailsTab = () => {
+    const [isLaoding, setIsLoading] = useState(false);
 
     const { isProductDetailsTabVisible, selectedProduct, selectedVariantID, quantity, cartItems } = useSelector((state: RootState) => state.posSlice);
 
     const dispatch = useDispatch();
 
     const productDetailsTabCalculator = useMemo(() => {
-        return new ProductDetailsCalculator({
-            productData: selectedProduct,
-            quantity,
-            variantID: selectedVariantID,
-        });
+        return new ProductDetailsCalculator();
     }, [isProductDetailsTabVisible, quantity, selectedProduct, quantity]);
 
 
-    const posCartServices = useMemo(() => {
-
+    const cartHelper = useMemo(() => {
         return new CartHelpers({
             cartItems,
         })
@@ -85,28 +84,33 @@ const PosProductDetailsTab = () => {
         }
     }
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async () => {
 
+        setIsLoading(true);
         const data = productDetailsTabCalculator.generateDataForCart();
 
         if (!data) return;
 
-        const isExisiting = posCartServices.isProductExisingInCart(data?.variantID);
+        const isExisiting = cartHelper.isProductExisingInCart(data?.variantID);
 
         if (isExisiting) {
             dispatch(openToas({
                 message: "Product is currently existing in the list",
                 type: ToasEnum.ERROR,
             }));
+            setIsLoading(false);
             return;
         }
 
         // save variant to cart
         dispatch(posAddProductToCart(data));
 
+        // save new data to database as cache
+        await cartCacheSave(cartHelper.generateCartCacheData(data));
+
+        setIsLoading(false);
         // close the tab
         dispatch(posCloseProductDetails())
-
         // show toas message
         dispatch(openToas({ message: "Product added to cart", type: ToasEnum.DEFAULT }))
     }
@@ -116,7 +120,7 @@ const PosProductDetailsTab = () => {
     const discountedPrice = productDetailsTabCalculator.getDiscountedProductPrice();
     const overallTotalPrice = productDetailsTabCalculator.computeOverallTotalPrice().toLocaleString('en-us');
     const maxStock = productDetailsTabCalculator.getSelectedVariatMaxStock();
-
+    const hasDiscount = promotionalDiscount && checkDiscountExpiration(promotionalDiscount.expirationDate);
 
     // return null if its not visible
     if (!isProductDetailsTabVisible) return null;
@@ -136,7 +140,7 @@ const PosProductDetailsTab = () => {
 
                 {/** discount and aname */}
                 <div className='flex w-full gap-2'>
-                    {promotionalDiscount !== undefined && promotionalDiscount.discountRate > 0 && <div className='w-fit h-[2rem] linear-bg-40 grid place-content-center p-3 rounded-[7px]'>
+                    {hasDiscount && <div className='w-fit h-[2rem] button-primary-gradient grid place-content-center p-3 rounded-[7px]'>
                         <span>{promotionalDiscount?.discountRate}% OFF</span>
                     </div>}
                     <span className='text-[1.5rem] italic font-semibold'>{name}</span>
@@ -144,10 +148,10 @@ const PosProductDetailsTab = () => {
 
                 {/** price */}
                 <span className='text-[1.5rem] font-semibold'>--- Php {discountedPrice} ---
-                    {promotionalDiscount?.discountRate! > 0 && <span className='text-gray-400'> (Original: Php {sellingPrice})</span>}
+                    {hasDiscount && <span className='text-gray-400'> (Original: Php {sellingPrice})</span>}
                 </span>
 
-                <Variants variants={variants!} sellingPrice={sellingPrice!} />
+                <Variants variants={variants!} sellingPrice={discountedPrice} />
                 <BulkTable data={bulkTier ?? []} quantity={quantity ?? 0} />
                 <div className='flex-1' />
 
@@ -179,10 +183,33 @@ const PosProductDetailsTab = () => {
                 </div>
 
             </div>
+            <AnimatePresence>
+                {isLaoding && <LoadinIndicator />}
+            </AnimatePresence>
         </div>
     )
 }
 
+function LoadinIndicator() {
+    return <motion.div className='w-[60vw] h-[90vh] absolute grid place-content-center left-1/2 top-1/2  -translate-x-1/2 -translate-y-1/2'
+        style={{
+            backgroundColor: "rgb(0,0,0,.7)",
+        }}
+        initial={{
+            opacity: 0,
+        }}
+        animate={{
+            opacity: 1,
+        }}
+        exit={{
+            opacity: 0
+        }}
+    >
+        <div className='w-[200px] aspect-square rounded-[12px] bg-[var(--main-bg-primary-dark)] grid place-content-center'>
+            <CircularLoadingIndicator size={50} />
+        </div>
+    </motion.div>
+}
 
 interface StockActionProp {
     isPlus: boolean,

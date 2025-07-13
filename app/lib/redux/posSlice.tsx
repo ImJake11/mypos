@@ -53,7 +53,7 @@ const initialState: SliceProp = {
     },
     isProductDetailsTabVisible: false,
     selectedVariantID: "",
-    quantity: 0,
+    quantity: 1,
     isLoading: true,
     isError: false,
     isFiltering: false,
@@ -79,7 +79,6 @@ const posSlice = createSlice({
             state.isProductDetailsTabVisible = true;
         },
         posAddProductToCart: (state, action: PayloadAction<CartModel>) => {
-
             state.cartItems.push(action.payload);
             state.isProductDetailsTabVisible = false;
         },
@@ -165,7 +164,11 @@ const posSlice = createSlice({
             if (indexFromList !== -1) {
                 state.cartItems.splice(indexFromList, 1);
             }
-        }
+        },
+        posSetCartItemsFromAPI: (state, action: PayloadAction<CartModel[]>) => {
+            state.cartItems = action.payload;
+        },
+        posResetPosState: () => initialState,
     }
 });
 
@@ -180,11 +183,13 @@ export const { posAddProductToCart,
     posToggleCartTab,
     posCloseProductDetails,
     posToggleErrorState,
+    posSetCartItemsFromAPI,
     posToggleFiltering,
     posToggleLoadingState,
     posTogglePaymentMethod,
     posRemoveVariant,
     posUpdateSelectedvariantQuantity,
+    posResetPosState,
     posUpdateCartItemQuantity,
 } = posSlice.actions;
 

@@ -6,10 +6,9 @@ import Stock from './components/ProductFormStock'
 import Variants from './components/ProductFormVariants'
 import UploadMedia from './components/ProductFormMedia'
 import Actions from './components/ProductFormActions'
-import DatePicker from '@/app/lib/components/DatePicker/DatePicker'
 import Toas from '@/app/lib/components/Toas'
-import NewCategoryTab from './components/ProductFormNewCategoryTab'
 import ProcessDialog from '@/app/lib/components/ProcessDialog/ProcessDialog'
+import ProductFormStatus from './components/ProductFormStatus'
 
 
 const page = () => {
@@ -27,6 +26,7 @@ const page = () => {
                 {/** body */}
                 <div className='gap-5 flex flex-col flex-1 rounded-[11px] m-1.5 p-3 overflow-auto bg-[var(--main-bg-secondary-dark)]'
                 >
+                    <ProductFormStatus />
                     <ProductInformationDetails />
                     <Prices />
                     <Stock />
@@ -35,8 +35,6 @@ const page = () => {
                     <Actions />
                 </div>
             </div>
-            <NewCategoryTab />
-            <DatePicker />
             <Toas />
             <ProcessDialog />
         </div>

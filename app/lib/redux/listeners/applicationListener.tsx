@@ -1,7 +1,7 @@
 import { createListenerMiddleware, isAnyOf, PayloadAction } from "@reduxjs/toolkit";
 import { promptConfirmed } from "../toastSlice";
-import { formUpdateVariants } from "../productSlice";
-import { VariantsProps } from "../../models/productModel";
+import { formUpdateState, formUpdateVariants } from "../productSlice";
+import { ProductProps, VariantsProps } from "../../models/productModel";
 import ListenerPayload from "../utils/models/appListenerModel";
 import { ProductActionEnums } from "../utils/enums/productActionEnums";
 import { InventoryAction } from "../utils/enums/inventoryActionEnums";
@@ -12,6 +12,7 @@ import { createdActionInventoryClearFilters, createdActionInventoryFiltering } f
 import { createdActionPosClearFilter, createdActionPosFiltering } from "../posSlice";
 import { PosActionEnum } from "../utils/enums/posActionEnum";
 import { middlewarePosClearFilters, middlewarePosFiltering } from "../services/middlewarePosFilter";
+import { ProductKeys } from "../../constants/ProductKeys";
 
 const appMiddlewareListner = createListenerMiddleware();
 
@@ -19,10 +20,11 @@ appMiddlewareListner.startListening({
 
     effect: async (action: PayloadAction<ListenerPayload>, listenerApi) => {
 
-        if (!action.payload) return;
-
         const { context, payload } = action.payload;
 
+        if (typeof action.payload === undefined) return;
+
+        ///--- PRODUCT MIDDLEWARES---///
         // for archving and archiving variants
         if (context === ProductActionEnums.UPDATE_VARIANT) {
 
@@ -35,6 +37,14 @@ appMiddlewareListner.startListening({
                 index,
             }));
 
+        }
+
+        if (context === ProductActionEnums.CONFIRM_PRODUCT_DEACTIVATION) {
+
+            listenerApi.dispatch(formUpdateState({
+                data: payload.data,
+                name: ProductKeys.isActive as keyof ProductProps,
+            }))
         }
 
 

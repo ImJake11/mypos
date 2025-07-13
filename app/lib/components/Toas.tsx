@@ -94,10 +94,8 @@ const Toas = () => {
         return { icon, color }
     }
 
-
-
     const handleConfirmationn = () => {
-        if (context && payload) {
+        if (context !== undefined) {
             dispatch(promptConfirmed({
                 context,
                 payload,
@@ -111,15 +109,22 @@ const Toas = () => {
     }
 
 
-
     // close toas after 5 seconds
     useEffect(() => {
 
+        let timeOut: NodeJS.Timeout;
+
         if (type !== ToasEnum.CONFIRMATION) {
 
-            setTimeout(() => {
+            timeOut = setTimeout(() => {
                 dispatch(closeToas())
-            }, 5000);
+            }, 3000);
+        }
+
+        return () => {
+            if (timeOut) {
+                clearTimeout(timeOut);
+            }
         }
 
 

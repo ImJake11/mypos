@@ -1,6 +1,5 @@
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { getSocket } from "@/app/lib/utils/socket/socket";
 import io from "socket.io-client";
 
 

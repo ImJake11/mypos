@@ -1,12 +1,12 @@
 "use client";
 
 import React, { useState } from 'react'
-import monthsName from '../../data/MonthsList';
+import monthsName from '../../constants/MonthsList';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
-import { formToggleDatePicker, formUpdatePromotionalDiscount } from '../../redux/productSlice';
 import { PromotionalDiscountKeys } from '../../constants/ProductKeys';
 import { PromotionalDiscountProp } from '../../models/productModel';
+import { AnimatePresence, motion } from "framer-motion";
+import { RootState } from '../../redux/store';
 
 interface DateProp {
     month: number,
@@ -17,7 +17,7 @@ const DatePicker = () => {
 
     const dispatch = useDispatch();
 
-    const { isDatePickerOpen } = useSelector((state: RootState) => state.productSlice);
+    const { isVisible } = useSelector((state: RootState) => state.datePickerSlice);
 
     const today = new Date();
 
@@ -38,8 +38,6 @@ const DatePicker = () => {
 
         const name = PromotionalDiscountKeys.expirationDate as keyof PromotionalDiscountProp;
 
-        dispatch(formUpdatePromotionalDiscount({ name: name, data: joinedDates }));
-        dispatch(formToggleDatePicker())
     }
 
     const handleDateUpdate = (name: string, data: any) => {
@@ -56,57 +54,56 @@ const DatePicker = () => {
         } else {
             setDate({ ...date, [name]: data })
         }
-
     }
 
-    if (!isDatePickerOpen) return null;
-
-
-
     return (
-        <div className='w-screen h-screen absolute grid place-content-center backdrop-blur-[2px]'
-            style={{
-                backgroundColor: "rgb(0, 0, 0, .8)"
+       <AnimatePresence>
+        {isVisible?  <motion.div className='w-full h-full rounded-[11px] flex flex-col p-[20px_25px] bg-[var(--main-bg-primary-dark)]'
+
+            initial={{
+                scale: 0
+            }}
+
+            animate={{
+                scale: 1,
+            }}
+
+            exit={{
+                scale: 0
             }}
         >
+            <span className='italic font-semibold'>Pick Date</span>
+            {/** header */}
+            <div className='flex w-full mt-2.5'>
+                {header("Month")}
+                {header("Day")}
+                {header("Year")}
+            </div>
+            {/** data */}
+            <div className='flex-1 flex overflow-hidden'>
+                {/** month */}
+                <ul className='flex-1 overflow-y-auto scrollbar-hide'>
+                    {Array.from({ length: months }).map((d, i) => <Tile key={i} isSelected={date.month === i} value={monthsName[i]} name='month' onClick={handleDateUpdate} />)}
+                </ul>
+                {/** days */}
+                <ul className='flex-1 overflow-y-auto scrollbar-hide'>
+                    {Array.from({ length: days }).map((d, i) => <Tile key={i} isSelected={date.day === i} value={i + 1} name='day' onClick={handleDateUpdate} />)}
+                </ul>
 
-            <div className=' w-[500px] h-[70vh] rounded-[11px] flex flex-col
-                            md:w-[40vw] p-[20px_25px] bg-[var(--main-bg-primary-dark)]'
-            >
-
-                <span className='text-[1.5rem] italic font-semibold'>Pick Date</span>
-                {/** header */}
-                <div className='flex w-full mt-2.5'>
-                    {header("Month")}
-                    {header("Day")}
-                    {header("Year")}
-                </div>
-                {/** data */}
-                <div className='flex-1 flex overflow-hidden'>
-                    {/** month */}
-                    <ul className='flex-1 overflow-y-auto scrollbar-hide'>
-                        {Array.from({ length: months }).map((d, i) => <Tile key={i} isSelected={date.month === i} value={monthsName[i]} name='month' onClick={handleDateUpdate} />)}
-                    </ul>
-                    {/** days */}
-                    <ul className='flex-1 overflow-y-auto scrollbar-hide'>
-                        {Array.from({ length: days }).map((d, i) => <Tile key={i} isSelected={date.day === i} value={i + 1} name='day' onClick={handleDateUpdate} />)}
-                    </ul>
-
-                    {/** years */}
-                    <ul className='flex-1 overflow-y-auto scrollbar-hide'>
-                        {Array.from({ length: yearLength }).map((_, i) => <Tile key={i} isSelected={date.year === today.getFullYear() + i} value={today.getFullYear() + i} name='year' onClick={handleDateUpdate} />)}
-                    </ul>
-                </div>
-
-                <div className='flex justify-end gap-3 mt-6'>
-                    <button className='border border-gray-400 rounded-[7px] p-[10px_15px]' onClick={() => {
-                        dispatch(formToggleDatePicker());
-                    }}>Cancel</button>
-                    <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_15px]' onClick={handleSave}>Save</button>
-                </div>
+                {/** years */}
+                <ul className='flex-1 overflow-y-auto scrollbar-hide'>
+                    {Array.from({ length: yearLength }).map((_, i) => <Tile key={i} isSelected={date.year === today.getFullYear() + i} value={today.getFullYear() + i} name='year' onClick={handleDateUpdate} />)}
+                </ul>
             </div>
 
-        </div>
+            <div className='flex justify-end gap-3 mt-6'>
+                <button className='border border-gray-400 rounded-[7px] p-[10px_15px]' onClick={() => {
+
+                }}>Cancel</button>
+                <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_15px]' onClick={handleSave}>Save</button>
+            </div>
+        </motion.div> : null}
+       </AnimatePresence>
     )
 }
 
@@ -127,9 +124,9 @@ function Tile({ isSelected, value, onClick, name }: TileProp) {
         <span>{value}</span></div>
 }
 
-const header = (name: string) => <div className='flex-1 border grid place-content-center h-[3rem]  italic font-semibold'
+const header = (name: string) => <div className='flex-1 border grid place-content-center h-[3rem] bg-[var(--main-bg-secondary-dark)] italic font-semibold'
     style={{
-        border: "solid 2px var(--main-bg-secondary-dark)"
+        border: "solid 2px var(--main-bg-primary-dark)"
     }}
 >
     <span>{name}</span>

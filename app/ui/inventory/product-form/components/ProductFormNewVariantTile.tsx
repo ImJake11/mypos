@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductKeys, VariantKeys } from '@/app/lib/constants/ProductKeys';
+import { VariantKeys } from '@/app/lib/constants/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { VariantsProps } from '@/app/lib/models/productModel';
 import { formDeleteVariant, formUpdateVariants } from '@/app/lib/redux/productSlice';
@@ -147,7 +147,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }:
 
 
             {/** price adjustment */}
-            <div className={`flex-1 relative grid h-[3rem] border ${generateBorderColor(price > 0)} rounded-[7px]`}>
+            <div className={`flex-1 relative grid h-[3rem] border ${generateBorderColor(price >= 0)} rounded-[7px]`}>
                 <input type="text" maxLength={3} className='border-none h-full w-full p-[0_30px] outline-none'
                     inputMode='numeric'
                     value={String(price)}

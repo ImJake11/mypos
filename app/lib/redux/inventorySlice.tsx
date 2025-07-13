@@ -1,6 +1,7 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { ProductProps } from "../models/productModel"
 import ListenerPayload from "./utils/models/appListenerModel";
+import { Payload } from "@/app/generated/prisma/runtime/library";
 
 interface Prop {
     productViewOpen: boolean,
@@ -31,8 +32,8 @@ const inventorySlice = createSlice({
         inventorySetErrorState: (state, action: PayloadAction<boolean>) => {
             state.isError = action.payload;
         },
-        inventorySetLoadingState: (state) => {
-            state.isLoading = !state.isLoading;
+        inventorySetLoadingState: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
         },
         inventorySetRawData: (state, action: PayloadAction<ProductProps[]>) => {
             state.rawProductData = action.payload;

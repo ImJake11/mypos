@@ -21,27 +21,27 @@ export function generateStockStatusFlag(
 
     const value = lowStockTreshold / stock;
 
-    if (value <= HIGH_STOCK_RATIO) {
-        stockStatus = {
-            color: "var(--stock-flag-over-stock)",
-            text: "Over stock"
-        }
-    } else if (value >= NEAR_LOW_RATIO) {
-        stockStatus = {
-            color: "var(--stock-flag-near)",
-            text: "Low stock"
-        }
-    } else if (value >= LOW_STOCK) {
-        stockStatus = {
-            color: "var(--stock-flag-critcal)",
-            text: "Critically low",
-        }
-    } else if (value >= OUT_OF_STOCK) {
+    if (stock === 0) {
         stockStatus = {
             color: "var(--stock-flag-sold-out)",
             text: "Out of stock"
         }
-    }
+    } else if (value <= HIGH_STOCK_RATIO) {
+            stockStatus = {
+                color: "var(--stock-flag-over-stock)",
+                text: "Over stock"
+            }
+        } else if (value >= NEAR_LOW_RATIO) {
+            stockStatus = {
+                color: "var(--stock-flag-near)",
+                text: "Low stock"
+            }
+        } else if (value >= LOW_STOCK) {
+            stockStatus = {
+                color: "var(--stock-flag-critcal)",
+                text: "Critically low",
+            }
+        }
 
     return stockStatus;
 

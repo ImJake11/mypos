@@ -1,6 +1,7 @@
 import { CategoryModel } from "@/app/lib/models/categoryModel";
 import { PromotionalDiscountProp } from "@/app/lib/models/productModel";
-import { extractPromotionalDiscountExpirationDate } from "@/app/lib/utils/services/extractPromitionalDiscountExpDate";
+import { checkDiscountExpiration } from "@/app/lib/utils/services/checkDiscountExpirationDate";
+import { extractPromotionalDiscountExpirationDate } from "@/app/lib/utils/services/priceCalculations/extractPromitionalDiscountExpDate";
 import { faFilter, faCircle, faTag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -18,15 +19,16 @@ interface ProductDetailsProp {
 
 export default function ProductDetails({ category,
     name,
-    isActive,
     description,
+    isActive,
     sellingPrice,
-    promotionalDiscount,
-    isFavorite }:
+    promotionalDiscount }:
     ProductDetailsProp
 ) {
 
     const { discountRate, expirationDate } = promotionalDiscount;
+
+    const hasDiscount = checkDiscountExpiration(expirationDate);
 
     // compute total price if product has discount
     function computeTotalPrice(): number {
@@ -41,17 +43,17 @@ export default function ProductDetails({ category,
             <div className='p-2'>
                 <FontAwesomeIcon icon={faTag} style={{ color: "var(--color-brand-primary)" }} />
             </div>
-            <span>Php {discountRate !== 0 ? computeTotalPrice() : sellingPrice}</span>
+            <span>Php {hasDiscount ? computeTotalPrice() : sellingPrice}</span>
 
             {/** show only if product has discount */}
-            {discountRate !== 0 && <span className='line-through text-gray-400'>~ Php {sellingPrice}</span>}
+            {hasDiscount && <span className='line-through text-gray-400'>~ Php {sellingPrice}</span>}
         </div>
 
 
     </>
 
     const discount = <>
-        {discountRate !== 0 && <div className='button-primary-gradient w-fit h-[3rem] flex gap-1.5 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
+        {hasDiscount && <div className='button-primary-gradient w-fit h-[3rem] flex gap-1.5 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
             <i className="ri-discount-percent-fill"></i>
             <span>{discountRate}% OFF ( Valid until: {extractPromotionalDiscountExpirationDate(expirationDate)} )</span>
         </div>}
@@ -63,13 +65,13 @@ export default function ProductDetails({ category,
         <div className='flex flex-col gap-3 w-full'>
 
             <div className='flex gap-1.5'>
-                <span className='italic text-3xl'>{name}</span>
+                <span className='italic text-1xl'>{name}</span>
                 <div className="flex-1" />
                 <div className='button-primary-gradient rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
                     <FontAwesomeIcon icon={faFilter} /><span>{category.content}</span>
                 </div>
-                <div className='button-primary-gradient rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
-                    <FontAwesomeIcon icon={faCircle} /><span>Active</span>
+                <div className={`${isActive? "button-primary-gradient" : "bg-linear-90 from-gray-400 to-gray-300"} rounded-[7px] max-h-[2rem] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center`}>
+                    <FontAwesomeIcon icon={faCircle} /><span>{isActive ? "Active" : "InActive"}</span>
                 </div>
             </div>
         </div>

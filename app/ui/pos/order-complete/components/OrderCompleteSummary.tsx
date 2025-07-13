@@ -8,16 +8,17 @@ import PaymentHelper from './payment/services/paymentHelper';
 
 const OrderCompleteSummary = () => {
 
-    const { cartItems } = useSelector((state: RootState) => state.posSlice);
+    const posSlice = useSelector((state: RootState) => state.posSlice);
 
-
+    const {cartItems} = posSlice;
 
     const paymentService = useMemo(() => {
+  
         return new PaymentHelper({
-            cart: cartItems,
             vatValue: 12,
         });
-    }, [cartItems]);
+
+    }, [posSlice]);
 
     const { exempt, vat, zeroRated, taxableSale } = paymentService.getVatSalesBreakdown();
 
@@ -28,7 +29,7 @@ const OrderCompleteSummary = () => {
             {/** items list */}
             <div className='flex flex-col w-full gap-3'>
                 {cartItems.map((item, i) => <OrderTile key={i}
-                    name={item.variatName}
+                    name={item.variantName}
                     quantity={item.quantity}
                     total={item.total}
                 />)}
