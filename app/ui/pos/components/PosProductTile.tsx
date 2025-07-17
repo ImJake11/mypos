@@ -1,7 +1,7 @@
 'use client';
 
 import { ProductProps } from '@/app/lib/models/productModel'
-import { posSelectProduct } from '@/app/lib/redux/posSlice';
+import { posSelectProduct } from '@/app/lib/redux/slice/posSlice';
 import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
 import Image from 'next/image';
 import React from 'react'

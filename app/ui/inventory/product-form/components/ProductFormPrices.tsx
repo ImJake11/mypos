@@ -5,12 +5,12 @@ import React, { useEffect, useState } from 'react'
 import ErrorMessage from './ProductFormErrorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { formAddBulkTier, formToggleAutoComputeSellingPrice, formUpdateState } from '@/app/lib/redux/productSlice';
+import { formAddBulkTier, formToggleAutoComputeSellingPrice, formUpdateState } from '@/app/lib/redux/slice/productSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import BulkTable from './ProductFormBulkTable';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import { VatModel } from '@/app/lib/models/vatModel';
 import { fetchVats } from '@/app/lib/utils/data/fetchVats';
 import { AnimatePresence, motion } from "framer-motion";

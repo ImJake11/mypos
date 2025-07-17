@@ -8,7 +8,7 @@ import {
   inventorySetErrorState,
   inventorySetLoadingState,
   inventorySetRawData
-} from '@/app/lib/redux/inventorySlice';
+} from '@/app/lib/redux/slice/inventorySlice';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -17,7 +17,7 @@ import InventoryLoadingState from './InventoryLoadingState';
 import GridTile from './InventoryProductTiles/InventoryGridTile';
 import InventoryTableViewTile from './InventoryProductTiles/InventoryTableViewTile';
 import InventoryNoDataFound from '../../../lib/components/PagesState/PageNoDataFoundPage';
-import { filterWebSocketFavoriteEvent } from '@/app/lib/redux/filterSlice';
+import { filterWebSocketFavoriteEvent } from '@/app/lib/redux/slice/filterSlice';
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
 
 const ProductList = () => {
@@ -63,7 +63,7 @@ const ProductList = () => {
         <InventoryLoadingState />
       ) : (
         <motion.div
-          className='flex-1 flex min-h-0' 
+          className='flex-1 flex min-h-0'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}

@@ -1,6 +1,6 @@
 import ToasEnum from "@/app/lib/enum/toastEnum";
 import { AppDispatch } from "@/app/lib/redux/store";
-import { openToas } from "@/app/lib/redux/toastSlice";
+import { openToas } from "@/app/lib/redux/slice/toastSlice";
 
 
 export async function inventoryServiceUpdateProductFavorite({

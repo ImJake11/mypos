@@ -3,7 +3,7 @@
 import NewVariantTile from './ProductFormNewVariantTile'
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { formAddVariant } from '@/app/lib/redux/productSlice';
+import { formAddVariant } from '@/app/lib/redux/slice/productSlice';
 import ErrorMessage from './ProductFormErrorMessage';
 
 

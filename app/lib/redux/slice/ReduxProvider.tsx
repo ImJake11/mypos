@@ -2,8 +2,8 @@
 
 import { ReactNode, useEffect } from "react";
 import { Provider } from "react-redux";
-import store from "./store";
-import { disconnectSocket, getSocket } from "../utils/socket/socket";
+import store from "../store";
+import { disconnectSocket, getSocket } from "../../utils/socket/socket";
 
 interface ReduxProviderProps {
     children: ReactNode;

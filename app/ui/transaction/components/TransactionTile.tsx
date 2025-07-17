@@ -1,4 +1,6 @@
 
+import { gcashIcon, mastercartIcon, mayaIcon } from '@/app/lib/constants/IconLink'
+import { PaymentMethod, PaymentProvider } from '@/app/lib/enum/paymentMethod'
 import ArrowToRight from '@/app/lib/icons/arrowToRight'
 import { TransactionIcon } from '@/app/lib/icons/transactionIcon'
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
@@ -13,19 +15,47 @@ const TransactionTile = ({
 
     const date = data.date;
 
+    const getProviderIcon = (): string => {
+        if (!data.paymentProvider) return "";
+
+        switch (data.paymentProvider) {
+            case PaymentProvider.GCASH:
+                return gcashIcon;
+            case PaymentProvider.MAYA:
+                return mayaIcon;
+            default:
+                return mastercartIcon;
+        }
+    }
+
     return (
-        <div className='w-full flex min-h-[4rem] bg-[var(--main-bg-primary-dark)] border-b-[var(--main-bg-secondary-dark)] border-b p-2 justify-center items-start'>
-            <TransactionIcon size={22} opacity={.2} />
-            <div className='flex-1 h-full flex flex-col gap-2 ml-5'>
-                <div className='w-[8rem]'>{useFormatDateOnly(date!)}</div>
-                <div className='flex opacity-40 pl-4'>
-                    <span className='w-[1rem] grid place-content-center'>-</span>
-                    <div className='w-[8rem]'>{useFormatTime(date!)}</div>
-                </div>
+        <div className='w-full flex items-center min-h-[3rem]  bg-[var(--main-bg-primary-dark)] border-b-[var(--main-bg-secondary-dark)] border-b text-[.9rem] relative'>
+
+
+            {/** date */}
+            <span className='flex-1 justify-center flex gap-2 items-center'>{useFormatDateOnly(date!)}</span>
+
+            {/** id */}
+            <span className='text-[var(--foreground-lighter)] flex-2 text-center'>{data.transactionId}</span>
+
+            {/** amount */}
+            <span className='flex-1 text-center'>₱ {data.netTotal.toLocaleString("en-us", {
+                style: "currency"
+            })}</span>
+
+            {/** status */}
+            <span className='flex-1 text-center'>{data.status}</span>
+
+            {/** method */}
+            <div className='flex-1 grid place-content-center'>
+                {data.paymentProvider ? <img src={getProviderIcon()} width={25} alt="icon" /> : "Cash"}
             </div>
-            <div className='w-[9rem] flex items-center justify-between h-full'>
-                <span className='flex gap-5'>₱ {data.netTotal.toLocaleString('en-us')}</span>
-                <ArrowToRight color='var(--main-bg-secondary-dark)' size={16} />
+
+            <span className='flex-1 underline underline-offset-4 text-[var(--color-brand-primary)] text-center'>Details</span>
+
+
+            <div className='absolute left-2'>
+                <TransactionIcon size={18} opacity={.2} />
             </div>
         </div>
     )

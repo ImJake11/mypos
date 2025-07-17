@@ -4,9 +4,9 @@ import { useEffect } from "react";
 import CartHelpers from "@/app/ui/pos/components/cart/services/cartHelper";
 import ToasEnum from "@/app/lib/enum/toastEnum";
 import { CartModel } from "@/app/lib/models/cartModel";
-import { posSetCartItemsFromAPI } from "@/app/lib/redux/posSlice";
+import { posSetCartItemsFromAPI } from "@/app/lib/redux/slice/posSlice";
 import store, { AppDispatch } from "@/app/lib/redux/store";
-import { openToas } from "@/app/lib/redux/toastSlice";
+import { openToas } from "@/app/lib/redux/slice/toastSlice";
 import { useDispatch } from "react-redux";
 
 /**

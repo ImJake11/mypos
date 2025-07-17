@@ -1,6 +1,6 @@
 "use client";
 import { BulkTableProp, ProductProps } from "@/app/lib/models/productModel";
-import { formDeleteBulkTire, formUpdateBulkTier } from "@/app/lib/redux/productSlice";
+import { formDeleteBulkTire, formUpdateBulkTier } from "@/app/lib/redux/slice/productSlice";
 import { AppDispatch } from "@/app/lib/redux/store";
 import { faArrowRight, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

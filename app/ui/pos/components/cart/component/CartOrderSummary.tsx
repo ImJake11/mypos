@@ -1,7 +1,7 @@
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import PayIcon from '@/app/lib/icons/payIcon';
 import { CartCacheModel } from '@/app/lib/models/cartModel';
-import { posToggleCartTab } from '@/app/lib/redux/posSlice';
+import { posToggleCartTab } from '@/app/lib/redux/slice/posSlice';
 
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'

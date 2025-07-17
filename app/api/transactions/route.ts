@@ -35,7 +35,6 @@ export async function POST(req: NextRequest) {
 
         const { transactionData } = await req.json();
 
-        console.log(typeof transactionData.amountPaid)
 
         if (transactionData === undefined) {
             return NextResponse.json({ error: "Transaction data is undefined" }, { status: 400 });
@@ -43,7 +42,10 @@ export async function POST(req: NextRequest) {
 
         const details: TransactionDetailsModel = transactionData
 
+        console.log(typeof details.referenceId)
+
         const { transactionId } = await prisma.transactionDetails.create({
+
             data: {
                 status: details.status,
                 amountPaid: details.amountPaid,
@@ -51,10 +53,11 @@ export async function POST(req: NextRequest) {
                 exemptSales: details.exemptSales,
                 netTotal: details.netTotal,
                 nonTaxableSales: details.nonTaxableSales,
+                paymentProvider: details.paymentProvider,
                 paymentMethod: details.paymentMethod,
                 taxablSales: details.taxablSales,
                 totalValSales: details.totalValSales,
-                referenceId: details.referenceId,
+                referenceId: details.referenceId ?? undefined,
                 userid: details.userid,
                 discountID: details.discountID,
             },

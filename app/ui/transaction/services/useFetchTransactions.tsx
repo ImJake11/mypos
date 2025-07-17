@@ -1,4 +1,4 @@
-import { transactionSetData, transactionSetError, transactionSetLoading } from "@/app/lib/redux/transactionSlice";
+import { transactionSetData, transactionSetError, transactionSetLoading } from "@/app/lib/redux/slice/transactionSlice";
 import { useEffect } from "react"
 import { useDispatch } from "react-redux";
 

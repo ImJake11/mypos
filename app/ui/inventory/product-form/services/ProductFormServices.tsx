@@ -14,10 +14,10 @@ import { convertDataUrlToWebP } from "@/app/lib/utils/services/convertDataUrlToW
 import { supabaseUploadAndGetIMageDownloadUrl } from "@/app/lib/utils/supabase/supabase_services";
 import { isBase64Image } from "@/app/lib/utils/services/isBase64Image";
 import store, { AppDispatch } from "@/app/lib/redux/store";
-import { toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from "@/app/lib/redux/processSlice";
+import { toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from "@/app/lib/redux/slice/processSlice";
 import { v4 as uuid } from "uuid";
-import { formResetProductState } from "@/app/lib/redux/productSlice";
-import { openToas } from "@/app/lib/redux/toastSlice";
+import { formResetProductState } from "@/app/lib/redux/slice/productSlice";
+import { openToas } from "@/app/lib/redux/slice/toastSlice";
 import ToasEnum from "@/app/lib/enum/toastEnum";
 
 interface Props {

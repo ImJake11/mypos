@@ -1,5 +1,5 @@
 import { useDispatch } from "react-redux";
-import { openToas } from "../../redux/toastSlice";
+import { openToas } from "../../redux/slice/toastSlice";
 import ToasEnum from "../../enum/toastEnum";
 import { error } from "console";
 import { resolve } from "path";

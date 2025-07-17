@@ -1,6 +1,6 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import ToasEnum from "../enum/toastEnum";
-import ListenerPayload from "./utils/models/appListenerModel";
+import ToasEnum from "../../enum/toastEnum";
+import ListenerPayload from "../utils/models/appListenerModel";
 
 interface ToasProp {
     type: ToasEnum,

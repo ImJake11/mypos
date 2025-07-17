@@ -1,11 +1,11 @@
 "use client";
 
-import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { formUpdateState } from '@/app/lib/redux/productSlice';
+import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
 import { RootState } from '@/app/lib/redux/store';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorMessage from './ProductFormErrorMessage';
@@ -38,7 +38,7 @@ const UploadMedia = () => {
 
         reader.readAsDataURL(file);
     }
-    
+
     return (
         <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[11px] bg-[var(--main-bg-primary-dark)]'
         >

@@ -1,6 +1,5 @@
 "use client";
 
-import { FilterKeys } from '@/app/lib/constants/FilterKeys';
 import { CategoryModel } from '@/app/lib/models/categoryModel'
 import { FilterModel } from '@/app/lib/models/filterModel';
 import { RootState } from '@/app/lib/redux/store';
@@ -10,7 +9,8 @@ import { AnimatePresence, motion } from "framer-motion";
 import { fetchAllCategory } from '@/app/lib/utils/data/fetchCategories';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretDown } from '@fortawesome/free-solid-svg-icons';
-import { filterUpdateData } from '@/app/lib/redux/filterSlice';
+import { filterUpdateData } from '@/app/lib/redux/slice/filterSlice';
+import { FilterKeys } from '../../constants/FilterKeys';
 
 const CategoriesList = () => {
 
@@ -28,7 +28,7 @@ const CategoriesList = () => {
 
     const displayList: CategoryModel[] = useMemo(() => {
         return searchQuery && categories.length > 0 ? categories.filter(prev => prev.content.toLowerCase().includes(searchQuery.toLowerCase())) : categories
-    }, [searchQuery,categories]);
+    }, [searchQuery, categories]);
 
     const handleChangeCategory = (id: string) => {
         dispatch(filterUpdateData({

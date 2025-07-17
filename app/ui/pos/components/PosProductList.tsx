@@ -4,15 +4,15 @@ import React, { useEffect, useMemo } from 'react'
 import PosProductTile from './PosProductTile';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
-import { posSetRawProductData, posToggleErrorState, posToggleLoadingState } from '@/app/lib/redux/posSlice';
+import { posSetRawProductData, posToggleErrorState, posToggleLoadingState } from '@/app/lib/redux/slice/posSlice';
 import PageNoDataFound from '@/app/lib/components/PagesState/PageNoDataFoundPage';
 import PageErrorState from '@/app/lib/components/PagesState/PageErrorState';
 import { ProductProps } from '@/app/lib/models/productModel';
 import PosLoadingState from './PosLoadingState';
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
-import { inventorySetErrorState, inventorySetLoadingState, inventorySetRawData } from '@/app/lib/redux/inventorySlice';
+import { inventorySetErrorState, inventorySetLoadingState, inventorySetRawData } from '@/app/lib/redux/slice/inventorySlice';
 
 
 export const PosProductList = () => {

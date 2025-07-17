@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { ProductProps } from '@/app/lib/models/productModel'
-import { inventoryToggleProductView } from '@/app/lib/redux/inventorySlice';
+import { inventoryToggleProductView } from '@/app/lib/redux/slice/inventorySlice';
 import { AppDispatch } from '@/app/lib/redux/store';
 import { faCartPlus, faHeart, faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'

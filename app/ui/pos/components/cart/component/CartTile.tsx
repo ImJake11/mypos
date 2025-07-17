@@ -1,5 +1,5 @@
 import { CartModel } from "@/app/lib/models/cartModel";
-import { posRemoveVariant, posUpdateCartItemQuantity } from "@/app/lib/redux/posSlice";
+import { posRemoveVariant, posUpdateCartItemQuantity } from "@/app/lib/redux/slice/posSlice";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useRef } from "react";

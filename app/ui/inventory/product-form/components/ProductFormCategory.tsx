@@ -1,10 +1,10 @@
 "use client";
 
-import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import CategoriesIcon from '@/app/lib/icons/CategoriesIcon';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { formUpdateState } from '@/app/lib/redux/productSlice';
+import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { faAdd, faCircleExclamation, faEdit, faImage } from '@fortawesome/free-solid-svg-icons';

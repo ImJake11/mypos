@@ -1,16 +1,16 @@
 
 
 export interface TransactionFilterModel {
-    month?: number,
-    day?: number,
-    year?: number,
-    minimun?: number,
-    maximum?: number,
-    
-    items?: number,
+    startDate?: string,
+    endDate?: string,
+    minimunNetTotal?: number,
+    maximumNetTotal?: number,
     productName?: string,
-    vatable: boolean,
-    zeroRated: boolean,
-    exempt: boolean,
-
+    vatableTran?: boolean,
+    zeroRatedTran?: boolean,
+    exemptTran?: boolean,
+    mixedTran?: boolean,
+    transactionStatus?: string,
+    paymentOption?: string,
+    providedPayment?: string,
 }

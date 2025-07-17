@@ -5,15 +5,15 @@ import { RootState } from '@/app/lib/redux/store';
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux';
 import PaymentHelper from './payment/services/paymentHelper';
+import { BulkTableProp } from '@/app/lib/models/productModel';
 
 const OrderCompleteSummary = () => {
 
     const posSlice = useSelector((state: RootState) => state.posSlice);
 
-    const {cartItems} = posSlice;
+    const { cartItems } = posSlice;
 
     const paymentService = useMemo(() => {
-  
         return new PaymentHelper({
             vatValue: 12,
         });
@@ -32,6 +32,7 @@ const OrderCompleteSummary = () => {
                     name={item.variantName}
                     quantity={item.quantity}
                     total={item.total}
+                    bulkTierApplied={item.bulkPricing}
                 />)}
             </div>
             <div className='h-[3rem]' />
@@ -52,22 +53,45 @@ const OrderCompleteSummary = () => {
 }
 
 function OrderTile({
-    total, quantity, name,
+    total,
+    quantity,
+    name,
+    bulkTierApplied,
 }:
     {
         total: number,
         quantity: number,
         name: string,
+        bulkTierApplied?: BulkTableProp,
     }) {
-    return <div className='flex w-full gap-4'>
-        {/** icon */}
-        <div className='w-[1.5rem] h-[1.5rem]'>
-            <ItemIcon />
+
+    const getItemTotal = (): React.JSX.Element => {
+
+        const currentTotal = total.toLocaleString('en-us');
+
+        if (bulkTierApplied) {
+
+            // when no bulk pricing applied
+            const originalTotal = total + (total * (bulkTierApplied.discount / 100));
+
+            return <span>
+                <span className='line-through text-[var(--foreground-lighter)]'>₱ {originalTotal.toLocaleString('en-us')}
+                </span> ~ ₱ {currentTotal}
+            </span>;
+        }
+
+        return <span>₱ {currentTotal}</span>;
+    }
+
+    return <div className='w-full flex flex-col gap-0.5'>
+        {bulkTierApplied && <span className='text-[.7rem] ml-8 italic'>Bulk pricing applied({bulkTierApplied.discount}%)</span>}
+        <div className='flex w-full gap-4 items-center'>
+            {/** icon */}
+            {ItemIcon(20)}
+            <span className='flex-1.5'>{name}</span>
+            <span>x{quantity}</span>
+            <span className='flex-1 grid place-content-end'>{getItemTotal()}</span>
         </div>
-        <span className='flex-1.5'>{name}</span>
-        <div className='flex-1' />
-        <span>x{quantity}</span>
-        <span className='w-[8rem] grid place-content-end'>₱ {total.toLocaleString("en-us")}</span>
     </div>
 }
 

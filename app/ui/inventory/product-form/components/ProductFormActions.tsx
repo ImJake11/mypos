@@ -1,9 +1,9 @@
 "use client";
 
 import ToasEnum from '@/app/lib/enum/toastEnum';
-import { toggleProcessDialog } from '@/app/lib/redux/processSlice';
+import { toggleProcessDialog } from '@/app/lib/redux/slice/processSlice';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import SaveNewProduct from '@/app/ui/inventory/product-form/services/ProductFormServices';
 import { useRouter } from 'next/navigation';
 import React, { useMemo } from 'react'
@@ -50,7 +50,7 @@ const Actions = () => {
                 style={{
                     border: "solid 1px"
                 }}
-                onClick={()=> router.back()}
+                onClick={() => router.back()}
             >Cancel</button>
 
             {!productSlice.isForUpdate &&

@@ -2,7 +2,7 @@
 
 import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
-import TransactionBody from './components/TransactionBody'
+import TransactionBody from './components/TransactionFilter/components/TransactionBody'
 import TransactionFilterTab from './components/TransactionFilter/TransactionFilterTab'
 
 const page = () => {

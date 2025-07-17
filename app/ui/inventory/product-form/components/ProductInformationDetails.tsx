@@ -7,11 +7,11 @@ import Category from './ProductFormCategory';
 import ErrorMessage from './ProductFormErrorMessage';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { formUpdateState } from '@/app/lib/redux/productSlice';
+import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 
 const ProductInformationDetails = () => {
 

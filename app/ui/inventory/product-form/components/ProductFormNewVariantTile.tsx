@@ -1,11 +1,11 @@
 "use client";
 
-import { VariantKeys } from '@/app/lib/constants/ProductKeys';
+import { VariantKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { VariantsProps } from '@/app/lib/models/productModel';
-import { formDeleteVariant, formUpdateVariants } from '@/app/lib/redux/productSlice';
+import { formDeleteVariant, formUpdateVariants } from '@/app/lib/redux/slice/productSlice';
 import { AppDispatch } from '@/app/lib/redux/store';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import { ProductActionEnums } from '@/app/lib/redux/utils/enums/productActionEnums';
 import { generateImageStringUrl } from '@/app/lib/utils/services/convertImageFileToString';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';

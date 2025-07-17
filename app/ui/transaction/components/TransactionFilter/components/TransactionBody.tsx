@@ -2,12 +2,12 @@
 
 import FilterIconTwo from '@/app/lib/icons/filter_icon_two'
 import React from 'react'
-import TransactionTile from './TransactionTile'
+import TransactionTile from '../../TransactionTile'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/lib/redux/store'
 import { useFetchTransactions } from '@/app/ui/transaction/services/useFetchTransactions'
 import Image from 'next/image'
-import { transactionToggleFilterTab } from '@/app/lib/redux/transactionSlice'
+import { transactionToggleFilterTab } from '@/app/lib/redux/slice/transactionSlice'
 
 const TransactionBody = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -23,11 +23,25 @@ const TransactionBody = () => {
     return (
         <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary-dark)] rounded-[8px] p-3 flex flex-col'>
             <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary-dark)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
+
+                {/** filter icon and title */}
                 <div className='flex w-full justify-between items-center min-h-0'>
                     <span>Recent transactions</span>
                     <button onClick={() => dispatch(transactionToggleFilterTab())}><FilterIconTwo size={26} /></button>
                 </div>
+
                 <div className='h-[1rem] min-h-0' />
+
+                {/** headers */}
+                <div className='w-full flex'>
+                    <HeaderTile name='Date' />
+                    <HeaderTile name='Transaction ID' flex='flex-2' />
+                    <HeaderTile name='Amount' />
+                    <HeaderTile name='Status' />
+                    <HeaderTile name='Method' />
+                    <HeaderTile name='Action' />
+                </div>
+
                 {transactionsData.length <= 0 ? <NoData /> :
                     <ul className='overflow-auto flex-1 min-h-0 flex flex-col'>
                         {transactionsData.map((data) => (
@@ -40,6 +54,15 @@ const TransactionBody = () => {
     )
 }
 
+function HeaderTile({ name, flex }: {
+    name: string,
+    flex?: string
+}) {
+
+    return <div className={`flex-1 h-[2rem] grid place-content-center bg-[var(--main-bg-secondary-dark)] ${flex ?? "flex-1"}`}>
+        {name}
+    </div>
+}
 
 function NoData() {
     return <div className='flex-1 flex flex-col justify-center items-center gap-4'>

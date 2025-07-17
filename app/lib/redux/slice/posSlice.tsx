@@ -1,9 +1,9 @@
 
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { CartModel } from "../models/cartModel"
-import { ProductProps } from "../models/productModel"
-import { PaymentMethod } from "../enum/paymentMethod";
-import ListenerPayload from "./utils/models/appListenerModel";
+import { CartModel } from "../../models/cartModel"
+import { ProductProps } from "../../models/productModel"
+import { PaymentMethod, PaymentProvider } from "../../enum/paymentMethod";
+import ListenerPayload from "../utils/models/appListenerModel";
 
 
 interface SliceProp {
@@ -19,6 +19,8 @@ interface SliceProp {
     referenceID: string,
     isCartVisible: boolean,
     rawProductData: ProductProps[],
+    paymentProvider: string,
+    transactionIDLength: number,
 }
 
 const initialState: SliceProp = {
@@ -57,7 +59,9 @@ const initialState: SliceProp = {
     isLoading: true,
     isError: false,
     isFiltering: false,
-    rawProductData: []
+    rawProductData: [],
+    paymentProvider: "",
+    transactionIDLength: 10,
 }
 
 
@@ -73,6 +77,9 @@ const posSlice = createSlice({
         },
         posTogglePaymentMethod: (state, action: PayloadAction<PaymentMethod>) => {
             state.paymenMethod = action.payload;
+        },
+        posTogglePaymentProvider: (state, action: PayloadAction<PaymentProvider>) => {
+            state.paymentProvider = action.payload;
         },
         posSelectProduct: (state, action: PayloadAction<ProductProps>) => {
             state.selectedProduct = action.payload;
@@ -184,6 +191,7 @@ export const { posAddProductToCart,
     posCloseProductDetails,
     posToggleErrorState,
     posSetCartItemsFromAPI,
+    posTogglePaymentProvider,
     posToggleFiltering,
     posToggleLoadingState,
     posTogglePaymentMethod,

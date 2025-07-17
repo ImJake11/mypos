@@ -1,12 +1,12 @@
 'use client';
 
 import React, { useMemo, useState } from 'react'
-import { posAddProductToCart, posCloseProductDetails, posUpdateSelectedvariantQuantity } from '@/app/lib/redux/posSlice';
+import { posAddProductToCart, posCloseProductDetails, posUpdateSelectedvariantQuantity } from '@/app/lib/redux/slice/posSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import Variants from './component/Variants';
 import BulkTable from './component/BulkTiers';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import ProductDetailsCalculator from './services/productDetailsServices';
 import CartHelpers from "../cart/services/cartHelper";

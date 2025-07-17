@@ -1,6 +1,6 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { ProductProps } from "../models/productModel"
-import ListenerPayload from "./utils/models/appListenerModel";
+import { ProductProps } from "../../models/productModel"
+import ListenerPayload from "../utils/models/appListenerModel";
 import { Payload } from "@/app/generated/prisma/runtime/library";
 
 interface Prop {

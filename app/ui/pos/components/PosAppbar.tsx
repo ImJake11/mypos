@@ -4,9 +4,9 @@ import React from 'react'
 import CartIcon from '@/app/lib/icons/cartIcon'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/lib/redux/store';
-import { posToggleCartTab } from '@/app/lib/redux/posSlice';
+import { posToggleCartTab } from '@/app/lib/redux/slice/posSlice';
 import { FilterIcon } from '@/app/lib/icons/filterIcon';
-import { filterToggleFilterTab } from '@/app/lib/redux/filterSlice';
+import { filterToggleFilterTab } from '@/app/lib/redux/slice/filterSlice';
 import CartIndicator from '@/app/lib/components/CartIndicator';
 
 const PosAppbar = () => {

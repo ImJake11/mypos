@@ -1,16 +1,16 @@
 'use client';
 
 import React from 'react'
-import { inventoryToggleInventoryListView } from '@/app/lib/redux/inventorySlice';
+import { inventoryToggleInventoryListView } from '@/app/lib/redux/slice/inventorySlice';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from "framer-motion";
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFilter } from '@fortawesome/free-solid-svg-icons';
 import { FilterIcon } from '@/app/lib/icons/filterIcon';
-import { filterToggleFilterTab } from '@/app/lib/redux/filterSlice';
+import { filterToggleFilterTab } from '@/app/lib/redux/slice/filterSlice';
 import CartIndicator from '@/app/lib/components/CartIndicator';
 
 const InventoryAppar = () => {

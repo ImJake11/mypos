@@ -1,9 +1,9 @@
 import { TransactionDetailsModel } from "@/app/lib/models/transactionModel";
-import { posResetPosState } from "@/app/lib/redux/posSlice";
-import { toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from "@/app/lib/redux/processSlice";
+import { posResetPosState } from "@/app/lib/redux/slice/posSlice";
+import { toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from "@/app/lib/redux/slice/processSlice";
 import { AppDispatch } from "@/app/lib/redux/store";
 import { useDeleteCartCachedItems } from "./deleteCartCachedtems";
-import { openToas } from "@/app/lib/redux/toastSlice";
+import { openToas } from "@/app/lib/redux/slice/toastSlice";
 import ToasEnum from "@/app/lib/enum/toastEnum";
 
 export const saveTransaction = async ({
@@ -49,7 +49,7 @@ export const saveTransaction = async ({
             type: ToasEnum.SUCCESS,
         }));
 
-        
+
     } catch (e) {
         const err = "Failed to save transaction. Please try again.";
 

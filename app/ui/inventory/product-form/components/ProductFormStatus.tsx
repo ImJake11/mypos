@@ -4,12 +4,12 @@ import React from 'react'
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/lib/redux/store';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { ProductActionEnums } from '@/app/lib/redux/utils/enums/productActionEnums';
-import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { formUpdateState } from '@/app/lib/redux/productSlice';
+import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
 
 const ProductFormStatus = () => {
     const dispatch = useDispatch();

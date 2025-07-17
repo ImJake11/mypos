@@ -10,11 +10,12 @@ export interface TransactionDetailsModel {
     exemptSales: number;
     netTotal: number;
     amountPaid: number;
+    paymentProvider?: string,
     changeGiven: number;
     paymentMethod: string;
     discountID?: string;
     purchasedItems: TransactionItemModel[];
-    referenceId?: number,
+    referenceId?: string,
     status: string,
 }
 

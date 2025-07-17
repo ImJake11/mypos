@@ -1,10 +1,10 @@
 import ToasEnum from "../../enum/toastEnum";
 import { FilterModel } from "../../models/filterModel";
 import { filterProduct } from "../../utils/data/fetchFilteredProduct";
-import { filterResetData, filterSetFilteredData, filterToggleFilterTab } from "../filterSlice";
-import { posToggleFiltering, posToggleLoadingState } from "../posSlice";
+import { filterResetData, filterSetFilteredData, filterToggleFilterTab } from "../slice/filterSlice";
+import { posToggleFiltering, posToggleLoadingState } from "../slice/posSlice";
 import { AppDispatch } from "../store";
-import { openToas } from "../toastSlice";
+import { openToas } from "../slice/toastSlice";
 
 
 

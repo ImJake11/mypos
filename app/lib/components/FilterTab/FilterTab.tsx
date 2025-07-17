@@ -1,6 +1,5 @@
 'use client';
 
-import { FilterKeys } from '@/app/lib/constants/FilterKeys'
 import CategoriesList from './FilterTabCategoryList';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faClose } from '@fortawesome/free-solid-svg-icons';
@@ -10,15 +9,16 @@ import { FilterModel } from '@/app/lib/models/filterModel';
 import { motion } from "framer-motion";
 import { AnimatePresence } from 'framer-motion';
 import React from 'react';
-import { filterResetData, filterToggleFilterTab, filterUpdateData } from '@/app/lib/redux/filterSlice';
+import { filterResetData, filterToggleFilterTab, filterUpdateData } from '@/app/lib/redux/slice/filterSlice';
 import { InventoryAction } from '@/app/lib/redux/utils/enums/inventoryActionEnums';
 import {
     createdActionInventoryClearFilters,
     createdActionInventoryFiltering
-} from '@/app/lib/redux/inventorySlice';
+} from '@/app/lib/redux/slice/inventorySlice';
 import { FilterActionEnums } from '../../redux/utils/enums/filterActionEnums';
 import { PosActionEnum } from '../../redux/utils/enums/posActionEnum';
-import { createdActionPosClearFilter, createdActionPosFiltering } from '../../redux/posSlice';
+import { createdActionPosClearFilter, createdActionPosFiltering } from '../../redux/slice/posSlice';
+import { FilterKeys } from '../../constants/FilterKeys';
 
 interface Prop {
     onPrimaryButtonContext: string,  // onPrimaryButtonContext that is uses for middleware listener
@@ -88,7 +88,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
 
 
     const handleFilter = () => {
-        
+
         // inventory filter data
         if (onPrimaryButtonContext === InventoryAction.INVENTORY_FILTER_DATA) {
             dispatch(createdActionInventoryFiltering({
@@ -98,7 +98,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
         }
 
         // pos
-        if(onPrimaryButtonContext === PosActionEnum.POS_FILTER_DATA){
+        if (onPrimaryButtonContext === PosActionEnum.POS_FILTER_DATA) {
             dispatch(createdActionPosFiltering({
                 context: onPrimaryButtonContext,
                 payload: filterData,

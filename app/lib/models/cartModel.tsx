@@ -13,6 +13,7 @@ export interface CartModel {
     promotionalDiscountID?: string,
     promotionalDiscountRate?: number,
     bulkPricingID?: string,
+    bulkPricing?: BulkTableProp,
     bulkQuantityTier?: number,
     total: number,
     details: string,

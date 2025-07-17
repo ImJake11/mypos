@@ -1,8 +1,8 @@
 import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { ProductProps, BulkTableProp, PromotionalDiscountProp, VariantsProps } from "../models/productModel";
-import { ProductKeys, VariantKeys } from "../constants/ProductKeys";
-import { CategoryModel } from "../models/categoryModel";
-import ListenerPayload from "./utils/models/appListenerModel";
+import { ProductProps, BulkTableProp, PromotionalDiscountProp, VariantsProps } from "../../models/productModel";
+import { CategoryModel } from "../../models/categoryModel";
+import ListenerPayload from "../utils/models/appListenerModel";
+import { ProductKeys, VariantKeys } from "../../constants/ProductKeys";
 
 // update bulk tire data prop
 interface UpdateBulkTireProp {

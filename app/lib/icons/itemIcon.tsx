@@ -1,5 +1,5 @@
-export default function ItemIcon() {
-    return <svg className="w-full h-full" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+export default function ItemIcon(size?: number) {
+    return <svg height={size ?? 12} width={size ?? 12} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
         <g id="SVGRepo_iconCarrier"> <path d="M10 14.3C10.5207 14.7686 10.8126 15.0314 11.3333 

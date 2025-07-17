@@ -104,9 +104,10 @@ model TransactionDetails {
   amountPaid      Decimal
   changeGiven     Decimal
   paymentMethod   String
+  paymentProvider String?
   discountID      String?
   purchasedItems  TransactionItems[]
-  referenceId     BigInt             @default(0)
+  referenceId     String?
   status          String
 }
 

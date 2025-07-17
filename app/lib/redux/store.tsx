@@ -1,14 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
-import productSlice from "./productSlice";
-import toasSlice from "./toastSlice";
-import processSlice from "./processSlice";
-import inventorySlice from "./inventorySlice";
+import productSlice from "./slice/productSlice";
+import toasSlice from "./slice/toastSlice";
+import processSlice from "./slice/processSlice";
+import inventorySlice from "./slice/inventorySlice";
 import appMiddlewareListner from "./listeners/applicationListener";
-import sidebarSlice from "./sidebarSlice";
-import posSlice from "./posSlice";
-import filterSlice from "./filterSlice";
-import transaction from "./transactionSlice";
-import datePickerSlice from "./datePickerSlice";
+import sidebarSlice from "./slice/sidebarSlice";
+import posSlice from "./slice/posSlice";
+import filterSlice from "./slice/filterSlice";
+import transaction from "./slice/transactionSlice";
+import datePickerSlice from "./slice/datePickerSlice";
 
 const store = configureStore({
     reducer: {

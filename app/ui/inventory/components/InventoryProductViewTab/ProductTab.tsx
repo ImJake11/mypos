@@ -2,8 +2,8 @@
 
 import React from 'react';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { inventoryToggleProductView } from '@/app/lib/redux/inventorySlice';
-import { formSetProductDataForUpdate } from '@/app/lib/redux/productSlice';
+import { inventoryToggleProductView } from '@/app/lib/redux/slice/inventorySlice';
+import { formSetProductDataForUpdate } from '@/app/lib/redux/slice/productSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { faCartPlus, faClose, faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -15,7 +15,7 @@ import ProductDetails from './ProductTabDetails';
 import VariantsTable from './ProductTabVariants';
 import BulkTable from './ProductTabBulkTable';
 import ImageContainer from './ProductTabImageContainer';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 
 const ViewProductTab = () => {

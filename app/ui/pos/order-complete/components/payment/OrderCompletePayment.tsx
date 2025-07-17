@@ -9,11 +9,13 @@ import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { AnimatePresence } from 'framer-motion';
 import { motion } from "framer-motion";
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { useRouter } from 'next/navigation';
 import { decimalValidation } from '@/app/lib/utils/services/decimalValidation';
 import { saveTransaction } from '../../../services/saveTransaction';
+import CashIcon from '@/app/lib/icons/CashIcon';
+import EWalletIcon from '@/app/lib/icons/EWalletIcon';
 
 const OrderCompletePayment = () => {
 
@@ -24,7 +26,7 @@ const OrderCompletePayment = () => {
 
     const posSlice = useSelector((state: RootState) => state.posSlice);
 
-    const { cartItems, paymenMethod } = posSlice;
+    const { cartItems, paymenMethod, transactionIDLength } = posSlice;
 
     const isCashMethod = paymenMethod === PaymentMethod.CASH;
 
@@ -115,31 +117,37 @@ const OrderCompletePayment = () => {
             <span>Payment option</span>
 
             <div className='flex flex-col flex-1 gap-4'>
-                <PaymentButton name={PaymentMethod.CASH} icon={""} />
-                <PaymentButton name={PaymentMethod.E_WALLET} icon={<EWalletIcons />} />
+                <PaymentButton name={PaymentMethod.CASH} icon={CashIcon(20)} />
+                <PaymentButton name={PaymentMethod.E_WALLET} icon={EWalletIcon(24)} />
             </div>
 
-            <InputTitl title={isCashMethod ? "Customer payment" : "Transaction reference id"} />
-            <AnimatePresence>
-                {isCashMethod && <motion.span className='text-[1.3rem] font-semibold'
+            <AnimatePresence mode='wait'>
+                {isCashMethod ? <motion.span className='text-[1.3rem] font-semibold' key="exchange"
                     initial={{
-                        x: "50%",
                         opacity: 0,
                     }}
                     animate={{
-                        x: "0%",
                         opacity: 1
                     }}
                     exit={{
-                        x: "50%",
                         opacity: 0,
                         transition: {
                             ease: "linear"
                         }
                     }}
-                >Exchange: ₱ {exchange.toLocaleString('en-us')}</motion.span>}
+                >Exchange: ₱ {exchange.toLocaleString('en-us')}</motion.span> : <motion.span className='text-[1.3rem] font-semibold' key={"transaction id"}
+                    initial={{
+                        opacity: 0
+                    }}
+                    animate={{
+                        opacity: 1
+                    }}
+                    exit={{
+                        opacity: 0
+                    }}
+                >Transaction/Reference ID</motion.span>}
             </AnimatePresence>
-            <input type="text" maxLength={13} value={input} className='tf-attr w-full h-[3rem] p-2'
+            <input type="text" maxLength={20} value={input} className='tf-attr w-full h-[3rem] p-2'
                 onChange={isCashMethod ? handleExchangeInput : handleReferenceInput}
             />
             <div className='h-[.5rem]' />
@@ -152,31 +160,6 @@ const OrderCompletePayment = () => {
     )
 }
 
-function InputTitl({ title }: { title: string }) {
-    return <motion.span
-        key={title}
-        initial={{
-            opacity: 0,
-            y: "50%",
-        }}
-        animate={{
-            opacity: 1,
-            y: "0%",
-        }}
-        exit={{
-            opacity: 0,
-            y: "-50%",
-        }}
-    >{title}</motion.span>;
-}
-
-const EWalletIcons = () => {
-    return (
-        <div className='flex gap-1'>
-            {generateImageIcon("https://cdn.brandfetch.io/idoxgeC6I9/theme/dark/logo.svg?c=1bxid64Mup7aczewSAYMX&t=1744350528543")}
-        </div>
-    )
-}
 // -- returns image icon
 function generateImageIcon(link: string) {
     return <div className='w-[3rem] h-[2rem] rounded-[5px] p-1.5'>

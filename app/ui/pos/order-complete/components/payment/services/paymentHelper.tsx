@@ -2,6 +2,7 @@ import { PaymentMethod } from "@/app/lib/enum/paymentMethod";
 import { TransactionStatus } from "@/app/lib/enum/transactionStatus";
 import { VATEnum } from "@/app/lib/enum/vatEnum";
 import { CartModel } from "@/app/lib/models/cartModel";
+import { BulkTableProp } from "@/app/lib/models/productModel";
 import { TransactionDetailsModel, TransactionItemModel } from "@/app/lib/models/transactionModel";
 import store from "@/app/lib/redux/store";
 
@@ -106,7 +107,6 @@ export default class PaymentHelper {
                 taxableSales += taxableValue;
                 vatTotal += totalValue;
 
-                console.log(taxableSales);
             }
 
             else {
@@ -147,11 +147,12 @@ export default class PaymentHelper {
             nonTaxableSales: zeroRated,
             exemptSales: exempt,
             netTotal: total,
+            paymentProvider: this.posSlice.paymentProvider ?? undefined,
             amountPaid: this.paymentMethod === PaymentMethod.CASH ? dynamicInput : 0,
             changeGiven: this.paymentMethod === PaymentMethod.CASH ? this.calculateExchange(dynamicInput) : 0,
             paymentMethod: this.paymentMethod,
             purchasedItems: this.purchasedItems,
-            referenceId: this.paymentMethod === PaymentMethod.E_WALLET ? dynamicInput : 0
+            referenceId: this.paymentMethod === PaymentMethod.E_WALLET ? dynamicInput.toString() : undefined,
         };
 
         return newData;

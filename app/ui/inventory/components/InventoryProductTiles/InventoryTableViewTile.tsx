@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import React, { useState } from 'react'
 import { generateStockStatusFlag, StockStatusFlagProp } from '../../services/generateStockStatusFlag';
 import { useDispatch } from 'react-redux';
-import { inventoryToggleProductView } from '@/app/lib/redux/inventorySlice';
+import { inventoryToggleProductView } from '@/app/lib/redux/slice/inventorySlice';
 
 const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
 

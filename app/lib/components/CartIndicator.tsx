@@ -1,7 +1,7 @@
 
 import React from 'react'
 import CartIcon from '../icons/cartIcon'
-import { posToggleCartTab } from '../redux/posSlice'
+import { posToggleCartTab } from '../redux/slice/posSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
 

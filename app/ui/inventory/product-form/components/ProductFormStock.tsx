@@ -1,9 +1,9 @@
 "use client"
 
 import TextInputField from '@/app/ui/inventory/product-form/components/ProductFormTextInputField'
-import { ProductKeys } from '@/app/lib/constants/ProductKeys'
+import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys'
 import { ProductProps } from '@/app/lib/models/productModel'
-import { formUpdateState } from '@/app/lib/redux/productSlice'
+import { formUpdateState } from '@/app/lib/redux/slice/productSlice'
 import { RootState } from '@/app/lib/redux/store'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'

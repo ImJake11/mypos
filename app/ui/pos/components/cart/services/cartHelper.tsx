@@ -102,6 +102,7 @@ export default class CartHelpers {
                 details: cache.product?.details ?? "",
                 variantID: cache.productId,
                 variantName: cache.product?.name ?? "",
+                bulkPricing: cache.bulkPricing,
                 productID: cache.mainProductID,
                 variantPhotoUrl: cache.product?.imageUrl ?? "",
                 variantUnitPrice: cache.variantUnitPrice,

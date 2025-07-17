@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { FilterModel } from "../models/filterModel"
-import { ProductProps } from "../models/productModel"
+import { FilterModel } from "../../models/filterModel"
+import { ProductProps } from "../../models/productModel"
 import { stat } from "fs";
 
 interface SliceProp {
@@ -36,11 +36,11 @@ const filterSlice = createSlice({
             state.filterData[name] = data;
         },
         filterWebSocketFavoriteEvent: (state, action: PayloadAction<{ isFavorite: boolean, id: string }>) => {
-            
+
             const { id, isFavorite } = action.payload;
 
             console.log(id);
-            
+
             state.filteredData = state.filteredData.map(prev => prev.id === id ? { ...prev, isFavorite: isFavorite } : prev);
         },
         filterResetData: () => initialState,

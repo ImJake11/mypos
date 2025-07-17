@@ -4,7 +4,7 @@ import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndica
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import CategoriesIcon from '@/app/lib/icons/CategoriesIcon'
 import { CategoryModel } from '@/app/lib/models/categoryModel';
-import { openToas } from '@/app/lib/redux/toastSlice';
+import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { generateImageStringUrl } from '@/app/lib/utils/services/convertImageFileToString';
 import Image from 'next/image';

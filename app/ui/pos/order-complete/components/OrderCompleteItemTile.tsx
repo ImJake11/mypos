@@ -1,6 +1,6 @@
 
 import { CartModel } from '@/app/lib/models/cartModel'
-import { posUpdateCartItemQuantity } from '@/app/lib/redux/posSlice';
+import { posUpdateCartItemQuantity } from '@/app/lib/redux/slice/posSlice';
 import { calculatePriceAdjustment } from '@/app/lib/utils/services/priceCalculations/calculatePriceAdjusment';
 import React from 'react'
 import { useDispatch } from 'react-redux';

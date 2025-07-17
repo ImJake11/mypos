@@ -1,4 +1,4 @@
-import { posSetCartItemsFromAPI } from "@/app/lib/redux/posSlice";
+import { posSetCartItemsFromAPI } from "@/app/lib/redux/slice/posSlice";
 import { AppDispatch } from "@/app/lib/redux/store";
 import CartHelpers from "@/app/ui/pos/components/cart/services/cartHelper";
 

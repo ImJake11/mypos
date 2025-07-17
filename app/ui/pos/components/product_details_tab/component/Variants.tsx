@@ -1,5 +1,5 @@
 import { VariantsProps } from "@/app/lib/models/productModel";
-import { posSelectVariant, posUpdateSelectedvariantQuantity } from "@/app/lib/redux/posSlice";
+import { posSelectVariant, posUpdateSelectedvariantQuantity } from "@/app/lib/redux/slice/posSlice";
 import { RootState } from "@/app/lib/redux/store";
 import { useDispatch, useSelector } from "react-redux";
 import ProductDetailsServices from "../services/productDetailsServices";
