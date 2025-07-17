@@ -7,9 +7,9 @@ import { RootState } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { ProductActionEnums } from '@/app/lib/redux/utils/enums/productActionEnums';
-import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
+import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 
 const ProductFormStatus = () => {
     const dispatch = useDispatch();

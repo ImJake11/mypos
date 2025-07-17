@@ -1,6 +1,6 @@
 
 import { TransactionFilterKeys } from '@/app/lib/constants/TransactionFilterKeys';
-import { TransactionFilterModel } from '@/app/lib/models/trnasactionFilterModel';
+import { TransactionFilterModel } from '@/app/lib/models/transactionFilterModel';
 import { RootState } from '@/app/lib/redux/store'
 import { transactionUpdateFilterData } from '@/app/lib/redux/slice/transactionSlice';
 import React from 'react'

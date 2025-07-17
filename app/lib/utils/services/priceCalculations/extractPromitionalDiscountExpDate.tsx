@@ -1,5 +1,4 @@
-import monthsName from "../../../IconLinks.tsx/MonthsList";
-
+import monthsName from "@/app/lib/constants/MonthsList";
 
 
 export function extractPromotionalDiscountExpirationDate(date: string) {

@@ -7,13 +7,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/lib/redux/store';
 import { transactionUpdateFilterData } from '@/app/lib/redux/slice/transactionSlice';
 import { TransactionFilterKeys } from '@/app/lib/constants/TransactionFilterKeys';
-import { TransactionFilterModel } from '@/app/lib/models/trnasactionFilterModel';
+import { TransactionFilterModel } from '@/app/lib/models/transactionFilterModel';
 
 const TransactionStatusComponent = () => {
 
     const [isOpen, setIsOpen] = useState(false);
 
-    const { providedPayment } = useSelector((state: RootState) => state.transaction.filterData);
+    const { transactionStatus } = useSelector((state: RootState) => state.transaction.filterData);
 
     const options = [
         TransactionStatus.COMPLETED,
@@ -35,7 +35,7 @@ const TransactionStatusComponent = () => {
             <div className='w-full border border-[var(--border-default-dark)] rounded-[8px] h-[3rem] items-center justify-between flex p-2'
                 onClick={() => setIsOpen(!isOpen)}
             >
-                <span>{providedPayment ?? "All"}</span>
+                <span>{transactionStatus ?? "All"}</span>
                 <i className="text-[1.5rem] ri-arrow-down-s-fill" />
             </div>
 
@@ -51,16 +51,16 @@ function OptionTile({ name }: { name: string }) {
 
     const dispatch = useDispatch();
 
-    const { providedPayment } = useSelector((state: RootState) => state.transaction.filterData);
+    const { transactionStatus } = useSelector((state: RootState) => state.transaction.filterData);
 
-    const selectedProvidedPayment = providedPayment ?? "All";
+    const selectedTransactionStatus = transactionStatus ?? "All";
 
-    const isSelected = name === selectedProvidedPayment;
+    const isSelected = name === selectedTransactionStatus;
 
     return <div className={`ml-7 flex w-full gap-2 h-[2rem] items-center ${isSelected ? "bg-[var(--main-bg-secondary-dark)]" : "bg-Otransparent"} rounded-[4px] p-2`}
         onClick={() => dispatch(transactionUpdateFilterData({
             data: name,
-            name: TransactionFilterKeys.providedPayment as keyof TransactionFilterModel
+            name: TransactionFilterKeys.transactionStatus
         }))}
     >
         <TransactionIcon size={16} />

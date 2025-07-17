@@ -11,7 +11,8 @@ import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
-import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
+import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+
 
 const ProductInformationDetails = () => {
 

@@ -12,7 +12,7 @@ interface ProductDetailsProp {
     isActive: boolean,
     description: string,
     sellingPrice: number,
-    promotionalDiscount: PromotionalDiscountProp,
+    promotionalDiscount?: PromotionalDiscountProp,
     isFavorite: boolean,
 
 }
@@ -26,13 +26,15 @@ export default function ProductDetails({ category,
     ProductDetailsProp
 ) {
 
-    const { discountRate, expirationDate } = promotionalDiscount;
 
-    const hasDiscount = checkDiscountExpiration(expirationDate);
+    const hasDiscount = promotionalDiscount && checkDiscountExpiration(promotionalDiscount.expirationDate);
 
     // compute total price if product has discount
     function computeTotalPrice(): number {
-        const computed = (discountRate / 100) * sellingPrice;
+
+        if (!promotionalDiscount) return sellingPrice;
+
+        const computed = (promotionalDiscount.discountRate / 100) * sellingPrice;
         const total = sellingPrice - computed;
         return total;
     }
@@ -55,7 +57,7 @@ export default function ProductDetails({ category,
     const discount = <>
         {hasDiscount && <div className='button-primary-gradient w-fit h-[3rem] flex gap-1.5 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
             <i className="ri-discount-percent-fill"></i>
-            <span>{discountRate}% OFF ( Valid until: {extractPromotionalDiscountExpirationDate(expirationDate)} )</span>
+            <span>{promotionalDiscount.discountRate}% OFF ( Valid until: {extractPromotionalDiscountExpirationDate(promotionalDiscount.expirationDate)} )</span>
         </div>}
     </>
 
@@ -70,7 +72,7 @@ export default function ProductDetails({ category,
                 <div className='button-primary-gradient rounded-[7px] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center'>
                     <FontAwesomeIcon icon={faFilter} /><span>{category.content}</span>
                 </div>
-                <div className={`${isActive? "button-primary-gradient" : "bg-linear-90 from-gray-400 to-gray-300"} rounded-[7px] max-h-[2rem] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center`}>
+                <div className={`${isActive ? "button-primary-gradient" : "bg-linear-90 from-gray-400 to-gray-300"} rounded-[7px] max-h-[2rem] text-white text-[.7rem] p-[5px_15px] flex gap-2 items-center`}>
                     <FontAwesomeIcon icon={faCircle} /><span>{isActive ? "Active" : "InActive"}</span>
                 </div>
             </div>

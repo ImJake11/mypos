@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TransactionDetailsModel } from "../../models/transactionModel";
-import { TransactionFilterModel } from "../../models/trnasactionFilterModel";
+import { TransactionFilterModel } from "../../models/transactionFilterModel";
 import { TransactionFilterKeys } from "../../constants/TransactionFilterKeys";
 
 interface SliceProp {
@@ -9,14 +9,18 @@ interface SliceProp {
     isFilterVisible: boolean,
     transactionsData: TransactionDetailsModel[],
     filterData: TransactionFilterModel,
+    isFiltering: boolean,
+    filteredData: TransactionDetailsModel[],
 }
 
 const initialState: SliceProp = {
-    isLoading: false,
+    isLoading: true,
     isError: false,
     isFilterVisible: false,
     transactionsData: [],
     filterData: {},
+    filteredData: [],
+    isFiltering: false,
 }
 
 const transactionSlice = createSlice({
@@ -62,6 +66,12 @@ const transactionSlice = createSlice({
             if (state.filterData.exemptTran && state.filterData.zeroRatedTran && state.filterData.vatableTran) {
                 state.filterData.mixedTran = true;
             }
+        },
+        transactionSetFilteredData: (state, action: PayloadAction<TransactionDetailsModel[]>) => {
+            state.filteredData = action.payload;
+        },
+        transactionToggleIsFiltering: (state, action: PayloadAction<boolean>) => {
+            state.isFiltering = action.payload;
         }
     }
 });
@@ -70,6 +80,8 @@ export const {
     transactionSetData,
     transactionSetError,
     transactionToggleFilterTab,
+    transactionSetFilteredData,
+    transactionToggleIsFiltering,
     transactionSetLoading,
     transactionUpdateFilterData,
 } = transactionSlice.actions;

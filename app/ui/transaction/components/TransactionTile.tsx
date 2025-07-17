@@ -1,3 +1,4 @@
+'use client';
 
 import { gcashIcon, mastercartIcon, mayaIcon } from '@/app/lib/constants/IconLink'
 import { PaymentMethod, PaymentProvider } from '@/app/lib/enum/paymentMethod'
@@ -5,6 +6,7 @@ import ArrowToRight from '@/app/lib/icons/arrowToRight'
 import { TransactionIcon } from '@/app/lib/icons/transactionIcon'
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
 import { useFormatDateOnly, useFormatTime } from '@/app/lib/utils/services/dateFormatter'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 
 const TransactionTile = ({
@@ -12,6 +14,7 @@ const TransactionTile = ({
 }: {
     data: TransactionDetailsModel
 }) => {
+    const router = useRouter();
 
     const date = data.date;
 
@@ -51,8 +54,9 @@ const TransactionTile = ({
                 {data.paymentProvider ? <img src={getProviderIcon()} width={25} alt="icon" /> : "Cash"}
             </div>
 
-            <span className='flex-1 underline underline-offset-4 text-[var(--color-brand-primary)] text-center'>Details</span>
-
+            <span className='flex-1 underline underline-offset-4 text-[var(--color-brand-primary)] text-center cursor-pointer'
+                onClick={() => router.push(`/ui/transaction/details/${data.transactionId}`)}
+            >Details</span>
 
             <div className='absolute left-2'>
                 <TransactionIcon size={18} opacity={.2} />

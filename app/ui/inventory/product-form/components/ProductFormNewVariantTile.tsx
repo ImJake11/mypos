@@ -1,6 +1,5 @@
 "use client";
 
-import { VariantKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { VariantsProps } from '@/app/lib/models/productModel';
 import { formDeleteVariant, formUpdateVariants } from '@/app/lib/redux/slice/productSlice';
@@ -11,6 +10,7 @@ import { generateImageStringUrl } from '@/app/lib/utils/services/convertImageFil
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
+import { VariantKeys } from '@/app/lib/constants/ProductKeys';
 
 interface Prop {
     appDispatch: AppDispatch,

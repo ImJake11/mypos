@@ -5,7 +5,6 @@ export const TransactionFilterKeys = {
     endDate: "endDate",
     minimunNetTotal: "minimunNetTotal",
     maximumNetTotal: "maximumNetTotal",
-    productName: "productName",
     vatableTran: "vatableTran",
     zeroRatedTran: "zeroRatedTran",
     exemptTran: "exemptTran",

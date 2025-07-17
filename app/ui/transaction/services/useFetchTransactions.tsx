@@ -17,10 +17,13 @@ export const useFetchTransactions = ((
 
         const fetchData = async () => {
 
+            dispatch(transactionSetLoading(true));
+
             try {
-                dispatch(transactionSetLoading(true));
+
                 const res = await fetch("/api/transactions", {
                     method: "GET",
+                    cache: "no-store",
                 });
 
                 if (!res.ok) {

@@ -57,6 +57,14 @@
   --stock-flag-near: rgb(230, 190, 11, .7);
   --stock-flag-safe: rgb(5, 174, 5, .7);
   --stock-flag-over-stock: rgb(2, 2, 225, .7);
+
+  --appbar-height: 5rem;
+  --appbar-bg: var(--main-bg-primary-dark);
+
+  /** transaction status colors*/
+  --transaction-returned: rgb(234, 179, 8, .1);
+  --transaction-void: rgb(239, 68, 68, .1);
+  --transaction-successful: rgb(34, 197, 94, .1);
 }
 
 
@@ -92,7 +100,7 @@ body {
   background-image: linear-gradient(45deg, rgb(67, 66, 66), gray);
 }
 
-.button-primary-gradient-error{
+.button-primary-gradient-error {
   background-image: linear-gradient(45deg, rgb(147, 31, 31), red);
 }
 

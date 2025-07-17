@@ -1,6 +1,6 @@
 "use client";
 
-import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
+import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 import CategoriesIcon from '@/app/lib/icons/CategoriesIcon';
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import { ProductProps } from '@/app/lib/models/productModel';

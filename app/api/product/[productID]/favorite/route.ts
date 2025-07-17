@@ -6,15 +6,15 @@ import io from "socket.io-client";
 const socket = io(process.env.SOCKET_URL!);
 
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: { productID: string } }) {
 
     try {
 
-        const { id } = await params;
+        const { productID } = await params;
 
         const { isFavorite } = await req.json();
 
-        if (!id || typeof isFavorite !== "boolean") {
+        if (!productID || typeof isFavorite !== "boolean") {
             return NextResponse.json({ error: "Product id is required" }, { status: 400 });
         }
 
@@ -23,13 +23,13 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
                 isFavorite,
             },
             where: {
-                id: id,
+                id: productID,
             }
         });
 
 
         const dataToEmit = {
-            id: id,
+            id: productID,
             isFavorite: isFavorite,
         }
 

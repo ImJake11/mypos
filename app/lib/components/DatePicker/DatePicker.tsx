@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AnimatePresence, motion } from "framer-motion";
 import { RootState } from '../../redux/store';
 import monthsName from '../../constants/MonthsList';
-import { datePickerSave } from '../../redux/slice/datePickerSlice';
+import { datePickerSave, datePickerToggleVisibility } from '../../redux/slice/datePickerSlice';
 
 interface DateProp {
     month: number,
@@ -35,6 +35,8 @@ const DatePicker = () => {
         const { day, month, year } = date;
         const isoDate = new Date(year, month, day).toISOString();
 
+        console.log(isoDate);
+        
         dispatch(datePickerSave({
             context: context,
             payload: isoDate,
@@ -99,7 +101,7 @@ const DatePicker = () => {
 
                 <div className='flex justify-end gap-3 mt-6'>
                     <button className='border border-gray-400 rounded-[7px] p-[10px_15px]' onClick={() => {
-
+                        dispatch(datePickerToggleVisibility(null))
                     }}>Cancel</button>
                     <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_15px]' onClick={handleSave}>Save</button>
                 </div>

@@ -96,7 +96,7 @@ model TransactionDetails {
   transactionId   String             @id @unique @default(uuid())
   date            DateTime           @default(now())
   userid          String
-  taxablSales     Decimal
+  taxablSales    Decimal
   totalValSales   Decimal
   nonTaxableSales Decimal
   exemptSales     Decimal

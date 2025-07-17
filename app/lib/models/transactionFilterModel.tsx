@@ -5,7 +5,6 @@ export interface TransactionFilterModel {
     endDate?: string,
     minimunNetTotal?: number,
     maximumNetTotal?: number,
-    productName?: string,
     vatableTran?: boolean,
     zeroRatedTran?: boolean,
     exemptTran?: boolean,

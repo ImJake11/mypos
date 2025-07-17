@@ -4,6 +4,7 @@ import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
 import TransactionBody from './components/TransactionFilter/components/TransactionBody'
 import TransactionFilterTab from './components/TransactionFilter/TransactionFilterTab'
+import Toas from '@/app/lib/components/Toas'
 
 const page = () => {
     return (
@@ -16,6 +17,7 @@ const page = () => {
                 <TransactionBody />
             </div>
             <TransactionFilterTab />
+            <Toas />
         </div>
     )
 }

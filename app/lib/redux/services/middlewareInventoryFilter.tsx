@@ -18,7 +18,7 @@ export async function middlewareInventoryFilter(
 
     try {
         // --display loading state
-        dispatch(inventorySetLoadingState());
+        dispatch(inventorySetLoadingState(true));
 
         // --  hide the filter tab
         dispatch(filterToggleFilterTab(false));
@@ -44,7 +44,7 @@ export async function middlewareInventoryFilter(
         }))
         throw new Error("Filtering data failed");
     } finally {
-        dispatch(inventorySetLoadingState());
+        dispatch(inventorySetLoadingState(false));
     }
 
 }
@@ -53,11 +53,11 @@ export function middlewareInventoryClearFilter({ dispatch }: {
     dispatch: AppDispatch
 }) {
     // -- display loading state
-    dispatch(inventorySetLoadingState());
+    dispatch(inventorySetLoadingState(true));
 
     dispatch(inventoryToggleFiltering(false));
 
     setTimeout(() => {
-        dispatch(inventorySetLoadingState());
+        dispatch(inventorySetLoadingState(false));
     }, 800);
 }

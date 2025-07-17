@@ -10,12 +10,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck } from '@fortawesome/free-solid-svg-icons';
 import BulkTable from './ProductFormBulkTable';
 import { ProductProps } from '@/app/lib/models/productModel';
-import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import { VatModel } from '@/app/lib/models/vatModel';
 import { fetchVats } from '@/app/lib/utils/data/fetchVats';
 import { AnimatePresence, motion } from "framer-motion";
 import { InformationIcon } from '@/app/lib/icons/informationIcon';
 import { computeSellingPrice } from '../services/computeSellingPrice';
+import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 
 const Prices = () => {
 

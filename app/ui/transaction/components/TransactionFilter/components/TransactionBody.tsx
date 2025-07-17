@@ -12,17 +12,17 @@ import { transactionToggleFilterTab } from '@/app/lib/redux/slice/transactionSli
 const TransactionBody = () => {
     const dispatch = useDispatch<AppDispatch>();
 
-    const { transactionsData, isError, isLoading, } = useSelector((state: RootState) => state.transaction);
+    const { transactionsData, filteredData, isError, isLoading, isFiltering } = useSelector((state: RootState) => state.transaction);
 
     useFetchTransactions({});
 
-    if (isLoading) return <div className='w-full h-full grid place-content-center'>LOADING BOSSING!!!</div>
+    const displayList = isFiltering ? filteredData : transactionsData;
 
     if (isError) return <div className='w-full h-full grid place-content-center'>ERROR BOSS!!!</div>
 
     return (
         <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary-dark)] rounded-[8px] p-3 flex flex-col'>
-            <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary-dark)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
+            {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary-dark)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
 
                 {/** filter icon and title */}
                 <div className='flex w-full justify-between items-center min-h-0'>
@@ -42,14 +42,14 @@ const TransactionBody = () => {
                     <HeaderTile name='Action' />
                 </div>
 
-                {transactionsData.length <= 0 ? <NoData /> :
+                {displayList.length <= 0 && !isLoading ? <NoData /> :
                     <ul className='overflow-auto flex-1 min-h-0 flex flex-col'>
-                        {transactionsData.map((data) => (
+                        {displayList.map((data) => (
                             <TransactionTile key={data.transactionId} data={data} />
                         ))}
                     </ul>
                 }
-            </div>
+            </div>}
         </div>
     )
 }
@@ -64,9 +64,19 @@ function HeaderTile({ name, flex }: {
     </div>
 }
 
+function LoadingTile() {
+    return <div className='w-full h-full flex flex-col gap-3 bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5'>
+        <div className='flex w-full gap-3'>
+            {Array.from({ length: 6 }).map((_, i) => <div key={i} className='flex-1 min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary-dark)]'>
+            </div>)}
+        </div>
+        {Array.from({ length: 15 }).map((_, i) => <div key={i} className='w-full min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary-dark)]'>
+        </div>)}
+    </div>
+}
 function NoData() {
     return <div className='flex-1 flex flex-col justify-center items-center gap-4'>
-        <Image src='/no-data-found.png' width={150} height={150} alt='image' />
+        {/* <Image src='/no-data-found.png' width={150} height={150} alt='image' /> */}
         <span className='translate-x-4'>No data found</span>
     </div>
 }

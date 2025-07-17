@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
                 nonTaxableSales: details.nonTaxableSales,
                 paymentProvider: details.paymentProvider,
                 paymentMethod: details.paymentMethod,
-                taxablSales: details.taxablSales,
+                taxablSales: details.taxableSales,
                 totalValSales: details.totalValSales,
                 referenceId: details.referenceId ?? undefined,
                 userid: details.userid,
@@ -118,8 +118,6 @@ export async function POST(req: NextRequest) {
 export async function GET() {
 
     try {
-
-
         const transactions = await prisma.transactionDetails.findMany({
             orderBy: {
                 date: "desc"

@@ -47,6 +47,13 @@ function SubButtonTile({ name, icon }: {
     const isSelected = providedPayment && providedPayment === name;
 
     const handleAction = () => {
+        if (isSelected) {
+            dispatch(transactionUpdateFilterData({
+                data: undefined,
+                name: TransactionFilterKeys.providedPayment,
+            }))
+            return;
+        }
         dispatch(transactionUpdateFilterData({
             data: name,
             name: TransactionFilterKeys.providedPayment,

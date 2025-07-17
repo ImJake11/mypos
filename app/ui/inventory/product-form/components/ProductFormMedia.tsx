@@ -1,6 +1,5 @@
 "use client";
 
-import { ProductKeys } from '@/app/lib/IconLinks.tsx/ProductKeys';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { formUpdateState } from '@/app/lib/redux/slice/productSlice';
@@ -9,6 +8,7 @@ import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import ErrorMessage from './ProductFormErrorMessage';
+import { ProductKeys } from '@/app/lib/constants/ProductKeys';
 
 const UploadMedia = () => {
 
