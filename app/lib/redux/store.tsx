@@ -9,6 +9,7 @@ import posSlice from "./slice/posSlice";
 import filterSlice from "./slice/filterSlice";
 import transaction from "./slice/transactionSlice";
 import datePickerSlice from "./slice/datePickerSlice";
+import refundSlice from "./slice/refundSlice";
 
 const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
         inventorySlice,
         sidebarSlice,
         posSlice,
+        refundSlice,
         transaction,
     },
     middleware: (getDefaultMiddleware) =>

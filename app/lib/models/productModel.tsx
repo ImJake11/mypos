@@ -46,6 +46,7 @@ export interface VariantsProps {
     stock: number,
     imageUrl: string,
     isArchived: boolean,
+    product?: ProductProps,
     productId?: string,
     details?: string, // for uploading image in firebase
 }

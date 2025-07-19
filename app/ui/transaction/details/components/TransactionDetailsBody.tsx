@@ -28,7 +28,7 @@ const TransactionDetailsBody = async ({ data }: { data: TransactionDetailsModel 
     }
 
     return (
-        <div className='flex-1 rounded-[12px] p-5 overflow-hidden' style={{
+        <div className='flex-1 rounded-[12px] p-5 overflow-hidden text-[.8rem]' style={{
             backgroundColor: "var(--main-bg-secondary-dark)"
         }}>
             <div className='w-full h-full rounded-[12px] flex overflow-auto flex-col gap-7 p-6' style={{
@@ -42,7 +42,7 @@ const TransactionDetailsBody = async ({ data }: { data: TransactionDetailsModel 
                 <TransactionDetailsSales data={data} />
 
                 <div className='h-[2rem]' />
-               <TransactionDetailsBackButton />
+                <TransactionDetailsBackButton id={data.transactionId!} />
             </div>
 
         </div>

@@ -1,9 +1,10 @@
+import { BulkTableProp, VariantsProps } from "./productModel";
 
 
 export interface TransactionDetailsModel {
     transactionId?: string;
     date?: string; // ISO date string (e.g., from Date.toISOString())
-    userid: string; 
+    userid: string;
     taxablSales: number;
     totalValSales: number;
     nonTaxableSales: number;
@@ -25,6 +26,9 @@ export interface TransactionItemModel {
     productId: string;
     mainProductId: string,
     quantity: number;
+    product?: VariantsProps,
     unitPrice: number;
+    bulkTierID?: string,
+    bulkTier?: BulkTableProp,
     vatStatus: string;
 }

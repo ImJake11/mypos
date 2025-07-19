@@ -4,7 +4,7 @@ import "./globals.css";
 import ReduxProvider from "./lib/redux/slice/ReduxProvider";
 
 const poppins = Poppins({
-  weight: ['500', '600', '800'], // Specify the weights you need
+  weight: ['500', '600', '700', '800'], // Specify the weights you need
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-poppins',

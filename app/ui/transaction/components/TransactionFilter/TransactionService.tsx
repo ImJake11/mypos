@@ -21,7 +21,7 @@ export default class TransactionServices {
             }
 
             const { data } = await res.json();
-            console.log(data);
+            
             return data as TransactionDetailsModel[];
 
         } catch (e) {

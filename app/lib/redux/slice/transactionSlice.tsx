@@ -10,12 +10,14 @@ interface SliceProp {
     transactionsData: TransactionDetailsModel[],
     filterData: TransactionFilterModel,
     isFiltering: boolean,
+    isPDFVisible: boolean,
     filteredData: TransactionDetailsModel[],
 }
 
 const initialState: SliceProp = {
     isLoading: true,
     isError: false,
+    isPDFVisible: false,
     isFilterVisible: false,
     transactionsData: [],
     filterData: {},
@@ -35,6 +37,9 @@ const transactionSlice = createSlice({
         },
         transactionSetData: (state, action: PayloadAction<TransactionDetailsModel[]>) => {
             state.transactionsData = action.payload;
+        },
+        trnasactionTogglePDF: (state) => {
+            state.isPDFVisible = !state.isPDFVisible;
         },
         transactionToggleFilterTab: (state) => {
             state.isFilterVisible = !state.isFilterVisible;
@@ -81,6 +86,7 @@ export const {
     transactionSetError,
     transactionToggleFilterTab,
     transactionSetFilteredData,
+    trnasactionTogglePDF,
     transactionToggleIsFiltering,
     transactionSetLoading,
     transactionUpdateFilterData,

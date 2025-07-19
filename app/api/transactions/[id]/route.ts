@@ -13,7 +13,18 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                 transactionId: id,
             },
             include: {
-                purchasedItems: true
+                purchasedItems: {
+                    include: {
+                        product: {
+                            select: {
+                                imageUrl: true,
+                                name: true,
+                            }
+                        },
+                        bulkTier: true,
+                    }
+                },
+
             }
         });
 

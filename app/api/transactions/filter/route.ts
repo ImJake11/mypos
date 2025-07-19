@@ -1,4 +1,5 @@
 import { TransactionFilterKeys } from "@/app/lib/constants/TransactionFilterKeys";
+import { TransactionStatus } from "@/app/lib/enum/transactionStatus";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -66,7 +67,7 @@ export async function GET(req: NextRequest) {
         }
 
         const paramTransactionStatus = params.get(transactionStatus)
-        if (paramTransactionStatus) {
+        if (paramTransactionStatus && paramTransactionStatus !== "All") {
             where.status = paramTransactionStatus
         }
 
@@ -82,6 +83,9 @@ export async function GET(req: NextRequest) {
 
         const data = await prisma.transactionDetails.findMany({
             where,
+            include: {
+                purchasedItems: true,
+            }
         });
 
         return NextResponse.json({ data }, { status: 200 });

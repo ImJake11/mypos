@@ -52,26 +52,28 @@ model Product {
 }
 
 model Variants {
-  id         String      @id @unique @default(uuid())
-  name       String
-  price      Int
-  stock      Int
-  imageUrl   String
-  isPositive Boolean     @default(false)
-  product    Product     @relation(fields: [productId], references: [id])
-  productId  String
-  isArchived Boolean     @default(false)
-  details    String?
-  CartCache  CartCache[]
+  id               String             @id @unique @default(uuid())
+  name             String
+  price            Int
+  stock            Int
+  imageUrl         String
+  isPositive       Boolean            @default(false)
+  product          Product            @relation(fields: [productId], references: [id])
+  productId        String
+  isArchived       Boolean            @default(false)
+  details          String?
+  CartCache        CartCache[]
+  TransactionItems TransactionItems[]
 }
 
 model BulkTire {
-  id        String      @id @unique @default(uuid())
-  product   Product     @relation(fields: [productId], references: [id])
-  productId String
-  quantity  Int
-  discount  Int
-  CartCache CartCache[]
+  id               String             @id @unique @default(uuid())
+  product          Product            @relation(fields: [productId], references: [id])
+  productId        String
+  quantity         Int
+  discount         Int
+  CartCache        CartCache[]
+  TransactionItems TransactionItems[]
 }
 
 model PromotionalDiscount {
@@ -96,7 +98,7 @@ model TransactionDetails {
   transactionId   String             @id @unique @default(uuid())
   date            DateTime           @default(now())
   userid          String
-  taxablSales    Decimal
+  taxablSales     Decimal
   totalValSales   Decimal
   nonTaxableSales Decimal
   exemptSales     Decimal
@@ -116,7 +118,10 @@ model TransactionItems {
   transactionId String
   transaction   TransactionDetails @relation(fields: [transactionId], references: [transactionId])
   productId     String
+  product       Variants           @relation(references: [id], fields: [productId])
   quantity      Int
+  bulkTierID    String?
+  bulkTier      BulkTire?          @relation(references: [id], fields: [bulkTierID])
   unitPrice     Int
   vatStatus     String
 }
