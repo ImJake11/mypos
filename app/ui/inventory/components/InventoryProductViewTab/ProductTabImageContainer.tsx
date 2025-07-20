@@ -9,7 +9,7 @@ interface ImageProp {
 export default function ImageContainer({ url }: ImageProp) {
 
     return (
-        <div className='w-full min-h-[30rem] bg-gray-100 rounded-b-[40px] overflow-x-hidden flex relative'>
+        <div className='w-full min-h-[25rem] bg-gray-100 rounded-b-[40px] overflow-x-hidden flex relative'>
             {url ? <img src={url} alt="cover image" className='object-cover w-full h-full' /> :
                 <FontAwesomeIcon icon={faImage} size='4x' className='place-self-center text-gray-400' />}
 

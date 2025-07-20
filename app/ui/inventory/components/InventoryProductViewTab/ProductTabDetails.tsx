@@ -41,7 +41,7 @@ export default function ProductDetails({ category,
 
     const price = <>
         {/** total price */}
-        <div className='flex gap-2 text-[1.5rem] items-center'>
+        <div className='flex gap-2 text-[1.2rem] items-center'>
             <div className='p-2'>
                 <FontAwesomeIcon icon={faTag} style={{ color: "var(--color-brand-primary)" }} />
             </div>
@@ -55,14 +55,14 @@ export default function ProductDetails({ category,
     </>
 
     const discount = <>
-        {hasDiscount && <div className='button-primary-gradient w-fit h-[3rem] flex gap-1.5 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
+        {hasDiscount && <div className='button-primary-gradient w-fit h-[2rem] flex gap-1.5 rounded-[7px] text-white items-center p-[5px_15px] text-[1rem]'>
             <i className="ri-discount-percent-fill"></i>
             <span>{promotionalDiscount.discountRate}% OFF ( Valid until: {extractPromotionalDiscountExpirationDate(promotionalDiscount.expirationDate)} )</span>
         </div>}
     </>
 
 
-    return <div className='flex-2 flex flex-col p-[var(--form-section-padding)] gap-6'>
+    return <div className='flex-2 flex flex-col p-[var(--form-section-padding)] gap-2'>
         {/** name & status */}
         <div className='flex flex-col gap-3 w-full'>
 
@@ -86,7 +86,7 @@ export default function ProductDetails({ category,
         {/** description */}
         <div className='w-full flex-1 flex-col flex  text-[var(--foreground-lighter)] text-left gap-3'>
             <p className="font-semibold italic">Product Description: </p>
-            <p>{description ? description : "No description"}</p>
+            <p>{description ? description : "No description."}</p>
         </div>
 
 

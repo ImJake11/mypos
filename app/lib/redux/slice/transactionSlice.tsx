@@ -65,6 +65,9 @@ const transactionSlice = createSlice({
                 state.filterData.mixedTran = false;
             }
 
+            if (name === TransactionFilterKeys.paymentOption && data === undefined) {
+                state.filterData[TransactionFilterKeys.providedPayment] = undefined;
+            }
 
             state.filterData[name] = data;
 

@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import TransactionRefundExistingItemTile from './components/TransactionRefundExistingItemTile'
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { refundSetTransactionData, refundToggleErrorState, refundToggleLoadingState } from '@/app/lib/redux/slice/refundSlice';
+import { refundMarkAllItem, refundResetState, refundSetTransactionData, refundToggleErrorState, refundToggleLoadingState } from '@/app/lib/redux/slice/refundSlice';
 import { RootState } from '@/app/lib/redux/store';
 
 const TransactionRefundList = () => {
@@ -14,13 +14,14 @@ const TransactionRefundList = () => {
 
   const id = params.id;
 
-  const { transactionData, isError, isLoading, } = useSelector((state: RootState) => state.refundSlice);
+  const { transactionData, isError, isLoading} = useSelector((state: RootState) => state.refundSlice);
 
   useEffect(() => {
     const fetchData = async () => {
 
       try {
-        dispatch(refundToggleLoadingState(true))
+        dispatch(refundResetState());
+        dispatch(refundToggleLoadingState(true));
 
         // fetch
         const res = await fetch(`/api/transactions/${id}`, {
@@ -43,7 +44,7 @@ const TransactionRefundList = () => {
       }
     }
 
-    fetchData()
+    fetchData();
   }, []);
 
   if (isLoading) return <div className='flex-1'>
@@ -51,14 +52,16 @@ const TransactionRefundList = () => {
   </div>
 
   return (
-    <div className='flex-1 p-2 rounded-[8px] flex flex-col gap-2 text-[.8rem]'
+    <div className='flex-1 p-2 rounded-[8px] flex flex-col gap-4 text-[.8rem]'
       style={{
-        backgroundColor: "var(--main-bg-secondary-dark)"
+        backgroundColor: "var(--main-bg-primary-dark)"
       }}
     >
       <span className='flex w-full justify-between p-[0_10px]'>
         <span>Transaction ID: 434-34324-23432</span>
-        <span style={{ color: "var(--color-brand-primary)" }}>Mark All</span>
+        <span className='cursor-pointer' style={{ color: "var(--color-brand-primary)" }}
+          onClick={() => dispatch(refundMarkAllItem())}
+        >Mark All</span>
       </span>
 
       <div className='w-full h-[calc(100vh-8rem)] overflow-auto'>

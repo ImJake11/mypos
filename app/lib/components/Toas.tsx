@@ -133,7 +133,7 @@ const Toas = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit w-[40rem] left-3 bottom-3 box-border p-[15px_10px]`}
+            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit w-[40rem] left-3 bottom-3 box-border p-[.2rem_.5rem] text-[.8rem]`}
                 style={generateColorAttr()}
 
                 initial={{
@@ -158,9 +158,6 @@ const Toas = () => {
                 ></i>
                 <span>{message}</span>
                 <div className='flex-1'></div>
-
-
-
                 {/** actions 
                  * show onnly f the toas type is confirmation
                 */}

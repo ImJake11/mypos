@@ -32,7 +32,7 @@ const TransactionStatusComponent = () => {
         >
             <span>Transaction Status</span>
 
-            <div className='w-full border border-[var(--border-default-dark)] rounded-[8px] h-[3rem] items-center justify-between flex p-2'
+            <div className='w-full border border-[var(--border-default-dark)] rounded-[8px] h-[2rem] items-center justify-between flex p-2'
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span>{transactionStatus ?? "All"}</span>

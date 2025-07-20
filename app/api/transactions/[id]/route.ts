@@ -17,6 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
                     include: {
                         product: {
                             select: {
+                                productId: true,
                                 imageUrl: true,
                                 name: true,
                             }
@@ -32,6 +33,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
             return NextResponse.json({ error: "Not found" }, { status: 404 });
         }
 
+        console.log(data);
         return NextResponse.json({ data }, { status: 200 });
 
     } catch (e) {

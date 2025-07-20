@@ -68,7 +68,7 @@ const ProductList = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className='main-background-gradient flex flex-col flex-1 min-h-0 overflow-auto gap-4 p-3.5 rounded-[11px]'>
+          <div className='main-background-gradient flex flex-col flex-1 min-h-0 overflow-auto gap-1 p-2 rounded-[11px]'>
             {/** Table Header */}
             {isListView && (
               <motion.div
@@ -90,7 +90,7 @@ const ProductList = () => {
             {displayList.length <= 0 ? (
               <InventoryNoDataFound />
             ) : (
-              <ul className={`flex-1 overflow-auto ${isListView ? "flex flex-col" : "grid grid-cols-6"} gap-3`}>
+              <ul className={`flex-1 overflow-auto ${isListView ? "flex flex-col" : "grid grid-cols-6"} gap-2`}>
                 <AnimatePresence>
                   {displayList.map((d) =>
                     isListView ? (

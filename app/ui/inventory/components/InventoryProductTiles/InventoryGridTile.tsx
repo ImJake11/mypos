@@ -33,7 +33,7 @@ const InventoryGridTile = ({
 
 
     return (
-        <motion.div className='w-full h-[300px] bg-[var(--product-card-bg)] flex-col rounded-[var(--product-card-border-radius)] flex p-4 gap-2 relative'
+        <motion.div className='w-full h-[250px] bg-[var(--product-card-bg)] flex-col rounded-[var(--product-card-border-radius)] flex p-2 gap-1 relative'
             layout
             initial={{
                 opacity: 0,
@@ -49,7 +49,7 @@ const InventoryGridTile = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
         >
-            <div className="w-full h-[150px] overflow-hidden rounded-[7px] relative"
+            <div className="w-full h-[120px] overflow-hidden rounded-[12px] relative"
                 style={{
                     backgroundColor: "var(--secondary-background)"
                 }}
@@ -86,7 +86,7 @@ const InventoryGridTile = ({
                     }}
                 >
                     {/** favorite */}
-                    <button className='h-[3rem] w-[3rem] rounded-full grid place-content-center'
+                    <button className='h-[2rem] w-[2rem] rounded-full grid place-content-center'
                         style={{
                             backgroundColor: "var(--main-bg-secondary-dark)"
                         }}
@@ -108,7 +108,7 @@ const InventoryGridTile = ({
 
 
                     {/** add to cart */}
-                    <button className='button-primary-gradient h-[3rem] w-[3rem] rounded-full grid place-content-center'
+                    <button className='button-primary-gradient h-[2rem] w-[2rem] rounded-full grid place-content-center'
                     >
                         <FontAwesomeIcon icon={faCartPlus} className='text-white' />
                     </button>

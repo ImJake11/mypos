@@ -2,7 +2,7 @@
 
 :root {
   /********--- COLORS --- ******/
-  --color-brand-primary: #0077b6;
+  --color-brand-primary: rgb(0, 119, 182);
   --color-brand-secondary: #0096c7;
 
   --main-bg-primary-dark: #141313;
@@ -72,6 +72,7 @@ body {
   background: var(--main-bg-primary-dark);
   color: var(--foreground);
   font-family: "Poppins", sans-serif;
+  font-size: .8rem;
 }
 
 

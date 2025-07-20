@@ -18,6 +18,8 @@ export interface TransactionDetailsModel {
     purchasedItems: TransactionItemModel[];
     referenceId?: string,
     status: string,
+    transactionReferenceID?: string,
+    reason?: string,
 }
 
 export interface TransactionItemModel {

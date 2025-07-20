@@ -66,7 +66,7 @@ const ViewProductTab = () => {
 
         onClick={() => dispatch(inventoryToggleProductView(null))}
       >
-        <motion.div className='absolute h-screen w-[40vw] right-0 flex flex-col overflow-auto gap-4'
+        <motion.div className='absolute h-screen w-[40vw] right-0 flex flex-col overflow-auto gap-2'
           style={{
             backgroundColor: "var(--main-bg-primary-dark)"
           }}
@@ -95,9 +95,8 @@ const ViewProductTab = () => {
             category={data.category!}
           />
           {data?.highlights && <KeyFeatures data={data.highlights} />}
-          <div className='h-[1rem]' />
+
           <VariantsTable variants={data.variants} lowStock={data.lowStock} />
-          <div className='h-[1rem]' />
 
           {/** show only if product has bulk pricing data */}
           {data.bulkEnabled && <BulkTable bulkTier={data.bulkTier} />}
@@ -106,7 +105,7 @@ const ViewProductTab = () => {
           {/** actions */}
           <div className='flex w-full items-center justify-end gap-3 pr-5'>
 
-            <button className='p-[10px_15px] rounded-[7px] flex items-center gap-2'
+            <button className='p-[5px_10px] rounded-[4px] flex items-center gap-2'
               style={{
                 border: "1px solid var(--main-bg-secondary-dark)"
               }}
@@ -116,7 +115,7 @@ const ViewProductTab = () => {
             </button>
 
             {/** update */}
-            <button className='button-primary-gradient p-[10px_15px] rounded-[7px] flex items-center gap-2'
+            <button className='button-primary-gradient p-[5px_10px] rounded-[4px] flex items-center gap-2'
               onClick={handleUpdate}
             >
               <FontAwesomeIcon icon={faEdit} />
@@ -126,7 +125,7 @@ const ViewProductTab = () => {
 
 
           {/** add to cart button */}
-          <button className='button-primary-gradient place-self-center w-[calc(100%-3rem)] mb-5 min-h-[4rem] rounded-[7px] flex items-center gap-2.5 justify-center'>
+          <button className='button-primary-gradient place-self-center w-[calc(100%-3rem)] mb-5 min-h-[2.5rem] rounded-[7px] flex items-center gap-2.5 justify-center'>
             <FontAwesomeIcon icon={faCartPlus} />
             Add to cart
           </button>

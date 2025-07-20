@@ -16,6 +16,7 @@ const page = () => {
             <TransactionFilterTab />
             <Toas />
             <TransactionPDFLayout />
+            <Toas />
         </div>
     )
 }

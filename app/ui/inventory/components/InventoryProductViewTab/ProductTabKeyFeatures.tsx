@@ -12,7 +12,7 @@ export function KeyFeatures({ data }: KeyFeaturesProp) {
     function Tile({ content }: { content: string }) {
 
         return <div className='flex items-center gap-2 ml-6'>
-            <div className='button-primary-gradient h-[.7rem] w-[.7rem] rounded-full' />
+            <div className='button-primary-gradient h-[.5rem] w-[.5rem] rounded-full' />
             <span>{content}</span>
         </div>
     }
@@ -20,8 +20,8 @@ export function KeyFeatures({ data }: KeyFeaturesProp) {
 
     return (
         <div className='flex-col w-full flex gap-1.5 p-5'>
-            <span className='flex justify-start items-center gap-1.5 italic font-semibold mb-3.5'>
-                <i className="ri-key-fill text-[1.5rem]"
+            <span className='flex justify-start items-center gap-1.5 italic font-semibold mb-1'>
+                <i className="ri-key-fill text-[1.2rem]"
                     style={{
                         color: "var(--color-brand-primary)"
                     }}

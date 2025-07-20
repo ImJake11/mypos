@@ -1,17 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { TransactionDetailsModel, TransactionItemModel } from "../../models/transactionModel"
+import { PaymentMethod, PaymentProvider } from "../../enum/paymentMethod"
 
 interface SliceProp {
     isLoading: boolean,
     isError: boolean,
     transactionData?: TransactionDetailsModel,
     returnedItems: TransactionItemModel[],
+    paymenthMethod: PaymentMethod,
+    paymentProvider?: PaymentProvider,
+    reason?: string,
+    referenceID?: string,
 }
 
 const initialState: SliceProp = {
     isLoading: false,
     isError: false,
-    returnedItems: []
+    returnedItems: [],
+    paymenthMethod: PaymentMethod.CASH
 }
 
 const refundReducer = createSlice({
@@ -50,7 +56,10 @@ const refundReducer = createSlice({
 
             const currentQuantity = state.returnedItems[index].quantity;
 
-            if (payloadAction === "minus" && currentQuantity > 0) {
+            if (payloadAction === "minus") {
+
+                if (currentQuantity <= 1) return;
+
                 state.returnedItems[index] = {
                     ...state.returnedItems[index],
                     quantity: currentQuantity - 1,
@@ -73,17 +82,45 @@ const refundReducer = createSlice({
                     }
                 }
             }
+        },
+        refundTogglePaymentMethod: (state, action: PayloadAction<PaymentMethod>) => {
+            if (action.payload === PaymentMethod.CASH) {
+                state.paymentProvider = undefined;
+            }
+            state.paymenthMethod = action.payload;
+        },
+        refundTogglePaymentProvider: (state, action: PayloadAction<PaymentProvider>) => {
+            
+            state.paymentProvider = action.payload;
+ 
+        },
+        refundMarkAllItem: (state) => {
 
+            if (!state.transactionData) return;
 
-        }
+            state.returnedItems = state.transactionData?.purchasedItems.map(item => item);
+        },
+        refundSetReason: (state, action: PayloadAction<string>) => {
+            state.reason = action.payload;
+        },
+        refundSetReferenceID: (state, action: PayloadAction<string>) => {
+            state.referenceID = action.payload;
+        },
+        refundResetState: () => initialState,
     }
 })
 
 export const {
     refundSetTransactionData,
     refundToggleErrorState,
+    refundSetReason,
     refundToggleLoadingState,
+    refundSetReferenceID,
     refundUpdateQuantity,
+    refundMarkAllItem,
+    refundResetState,
+    refundTogglePaymentMethod,
+    refundTogglePaymentProvider,
     refundReturnItem,
 } = refundReducer.actions;
 export default refundReducer.reducer;

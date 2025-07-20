@@ -67,6 +67,8 @@ const CategoriesList = () => {
 
             {/** category */}
             <div className='relative '>
+
+                {/** category preview container */}
                 <div className='flex w-full items-center pr-1'
                     onClick={() => {
                         setSearchQuery("");
@@ -75,10 +77,12 @@ const CategoriesList = () => {
                 >
                     <div className='w-[1rem] h-[1rem] bg-[var(--main-bg-secondary-dark)] rounded-[2px]' />
                     <div className='w-[1rem] h-[1px] border border-[var(--main-bg-secondary-dark)] border-dashed' />
-                    <div className='w-full h-[3rem] border-[2px] border-[var(--main-bg-secondary-dark)] flex items-center rounded-[8px] p-2'>
+                    <div className='w-full h-[2.5rem] border-[2px] border-[var(--main-bg-secondary-dark)] flex items-center rounded-[8px] p-2'>
                         {categoryPreview}
                     </div>
                 </div>
+
+                {/** dropdown icon */}
                 <motion.div className='absolute right-4 bottom-3.5'
                     animate={{
                         rotate: isOpen ? "180deg" : "0deg"
@@ -91,7 +95,7 @@ const CategoriesList = () => {
 
             {/** input */}
             <AnimatePresence>
-                {isOpen && <motion.input type="text" className='tf-attr h-[3rem] ml-[2rem] p-2 mr-1' placeholder='Search category' value={searchQuery}
+                {isOpen && <motion.input type="text" className='tf-attr h-[2.5rem] ml-[2rem] p-2 mr-1' placeholder='Search category' value={searchQuery}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const { value } = e.target;
 
@@ -141,7 +145,7 @@ interface ButtonProp {
 }
 
 function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
-    return <motion.div className={`w-full h-fit p-[8px_10px] flex gap-2 items-center rounded-[7px] ${isSelected ? "button-primary-gradient" : "main-background-gradient"} text-nowrap whitespace-nowrap`}
+    return <motion.div className={`w-full h-fit p-[6px_8px] flex gap-2 items-center rounded-[7px] ${isSelected ? "button-primary-gradient" : "main-background-gradient"} text-nowrap whitespace-nowrap`}
         style={{
             border: "solid var(--primary) 1px",
         }}
@@ -158,7 +162,7 @@ function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
             x: "-100%"
         }}
     >
-        <div className='w-[2rem] h-[2rem] rounded-full border border-[var(--foreground)] grid place-content-center text-[.8rem] overflow-hidden'>
+        <div className='w-[1.5rem] h-[1.5rem] rounded-full border border-[var(--foreground)] grid place-content-center text-[.8rem] overflow-hidden'>
             {data?.url && <img src={data.url} alt="c" />}
         </div>
         {data?.content ? data?.content : "All"}

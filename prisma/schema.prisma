@@ -95,22 +95,24 @@ model Vat {
 }
 
 model TransactionDetails {
-  transactionId   String             @id @unique @default(uuid())
-  date            DateTime           @default(now())
-  userid          String
-  taxablSales     Decimal
-  totalValSales   Decimal
-  nonTaxableSales Decimal
-  exemptSales     Decimal
-  netTotal        Decimal
-  amountPaid      Decimal
-  changeGiven     Decimal
-  paymentMethod   String
-  paymentProvider String?
-  discountID      String?
-  purchasedItems  TransactionItems[]
-  referenceId     String?
-  status          String
+  transactionId          String             @id @unique @default(uuid())
+  date                   DateTime           @default(now())
+  userid                 String
+  taxablSales            Decimal
+  totalValSales          Decimal
+  nonTaxableSales        Decimal
+  exemptSales            Decimal
+  netTotal               Decimal
+  amountPaid             Decimal
+  changeGiven            Decimal
+  paymentMethod          String
+  paymentProvider        String?
+  discountID             String?
+  reason                 String?
+  purchasedItems         TransactionItems[]
+  referenceId            String?
+  status                 String
+  referenceTransactionID String?
 }
 
 model TransactionItems {

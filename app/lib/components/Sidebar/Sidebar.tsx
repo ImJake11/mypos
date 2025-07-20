@@ -10,6 +10,7 @@ import InventoryIcon from '../../icons/inventoryIcon';
 import { TransactionIcon } from '../../icons/transactionIcon';
 import { usePathname, useRouter } from 'next/navigation';
 import ArrowToRight from '../../icons/arrowToRight';
+import Link from 'next/link';
 
 const Sidebar = () => {
 
@@ -56,30 +57,30 @@ interface ButtonProps {
     isSelected: boolean
 }
 const ButtonTile = ({ name, icon, url, isSelected, width }: ButtonProps) => {
-    const router = useRouter();
 
     const pathName = usePathname();
 
-    return <motion.button className={`${width ?? "w-full"} place-self-end h-[3rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
-        style={{
-            backgroundSize: "200% 100%",
-            backgroundPosition: "0% 0%",
-            backgroundImage: isSelected ? "linear-gradient(45deg,var(--main-bg-primary-dark), var(--color-brand-primary), var(--color-brand-secondary), var(--main-bg-primary-dark))" : undefined,
-        }}
-        animate={{
-            backgroundPosition: "100% 0%"
-        }}
-        transition={{
-            duration: 3,
-            ease: "linear",
-            repeat: Infinity,
-            repeatType: "reverse",
-        }}
-        onClick={() => router.push(url)}
-    >
-        {icon}
-        <p>{name}</p>
-    </motion.button>
+    return <Link href={url}>
+        <motion.button className={`${width ?? "w-full"} place-self-end h-[2.5rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
+            style={{
+                backgroundSize: "200% 100%",
+                backgroundPosition: "0% 0%",
+                backgroundImage: isSelected ? "linear-gradient(45deg,var(--main-bg-primary-dark), var(--color-brand-primary), var(--color-brand-secondary), var(--main-bg-primary-dark))" : undefined,
+            }}
+            animate={{
+                backgroundPosition: "100% 0%"
+            }}
+            transition={{
+                duration: 3,
+                ease: "linear",
+                repeat: Infinity,
+                repeatType: "reverse",
+            }}
+        >
+            {icon}
+            <p>{name}</p>
+        </motion.button>
+    </Link>
 }
 
 

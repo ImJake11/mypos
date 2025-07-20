@@ -15,13 +15,17 @@ const TransactionPaymentMethodOptions = () => {
 
     return (
         <motion.div className='w-full flex flex-col gap-4'
-            layout
+            animate={{
+                height: paymentOption === PaymentMethod.E_WALLET ? "16rem" : "8rem",
+            }}
         >
             <span>Payment Option</span>
 
             <ButtonTile name='All' isSelected={paymentOption === undefined} paymentMethodKey={undefined} />
             <ButtonTile name='Cash' isSelected={paymentOption === PaymentMethod.CASH} paymentMethodKey={PaymentMethod.CASH} />
             <ButtonTile name='E-Wallet' isSelected={paymentOption === PaymentMethod.E_WALLET} paymentMethodKey={PaymentMethod.E_WALLET} />
+
+            {/** e wallet options */}
             {paymentOption === PaymentMethod.E_WALLET && <EWalletOption />}
         </motion.div>
     )
@@ -90,11 +94,11 @@ function ButtonTile({ name, icon, isSelected, paymentMethodKey }: {
         }))
     }
 
-    return <div className='flex w-full h-[3rem] rounded-[8px] border border-[var(--border-default-dark)] items-center gap-3 p-2'
+    return <div className='flex w-full h-[2rem] rounded-[8px] border border-[var(--border-default-dark)] items-center gap-3 p-2'
         onClick={handleHandleAction}
     >
 
-        <div className='w-[1.5rem] h-[1.5rem] rounded-full border border-[var(--border-default-dark)] relative'>
+        <div className='w-[1rem] h-[1rem] rounded-full border border-[var(--border-default-dark)] relative'>
             {isSelected && <div className='absolute inset-0.5 button-primary-gradient rounded-full' />}
         </div>
         <span>{name}</span>

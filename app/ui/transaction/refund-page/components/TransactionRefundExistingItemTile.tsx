@@ -19,16 +19,15 @@ const TransactionRefundExistingItemTile = ({ data }:
     const isSelected = returnedItems.find(item => item.id === data.id)
 
     return (
-        <div className='flex w-full h-[3rem] rounded-[8px] p-2 items-center gap-1 min-h-0 mb-1'
+        <div className='flex w-full h-[2rem] rounded-[8px] p-2 items-center gap-3 min-h-0 mb-1'
             style={{
                 backgroundColor: "var(--main-bg-primary-dark)"
             }}
         >
-
             {/** checkbox */}
-            <div className='w-[1.5rem] h-[1.5rem] rounded-[4px] grid place-content-center'
+            <div className='w-[1rem] h-[1rem] rounded-[4px] grid place-content-center'
                 style={{
-                    border: "solid 1px var(--main-bg-secondary-dark)",
+                    border: "solid 1px var(--border-default-dark)",
                     backgroundColor: isSelected ? "var(--color-brand-primary)" : "transparent"
                 }}
                 onClick={() => dispatch(refundReturnItem(data))}
@@ -36,6 +35,14 @@ const TransactionRefundExistingItemTile = ({ data }:
                 {isSelected && <i className="ri-check-fill text-[1rem]" />}
             </div>
 
+            {/** image container */}
+            <div className='w-[2rem] h-[2rem] rounded-[4px] overflow-hidden'
+                style={{ backgroundColor: "var(--main-bg-secondary-dark)" }}
+            >
+                <img src={data.product?.imageUrl} alt="imiage" />
+            </div>
+
+            {/** name */}
             <strong>{capitalizeFirtLetter(data.product?.name!)}</strong>
             <div className='flex-1' />
 

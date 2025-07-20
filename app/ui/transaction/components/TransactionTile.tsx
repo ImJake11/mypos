@@ -6,6 +6,7 @@ import ArrowToRight from '@/app/lib/icons/arrowToRight'
 import { TransactionIcon } from '@/app/lib/icons/transactionIcon'
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
 import { useFormatDateOnly, useFormatTime } from '@/app/lib/utils/services/dateFormatter'
+import Link from 'next/link';
 import { useRouter } from 'next/navigation'
 import React from 'react'
 
@@ -54,9 +55,12 @@ const TransactionTile = ({
                 {data.paymentProvider ? <img src={getProviderIcon()} width={25} alt="icon" /> : "Cash"}
             </div>
 
-            <span className='flex-1 underline underline-offset-4 text-[var(--color-brand-primary)] text-center cursor-pointer'
-                onClick={() => router.push(`/ui/transaction/details/${data.transactionId}`)}
-            >Details</span>
+            <div className='flex-1 grid place-content-center'>
+                <Link href={`/ui/transaction/details/${data.transactionId}`}>
+                    <span className='underline underline-offset-4 text-[var(--color-brand-primary)] cursor-pointer'
+                    >Details</span>
+                </Link>
+            </div>
 
             <div className='absolute left-2'>
                 <TransactionIcon size={18} opacity={.2} />

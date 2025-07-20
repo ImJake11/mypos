@@ -200,13 +200,13 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                             {/** actions */}
                             <div className='w-full flex gap-2 justify-end'>
                                 {/** clear filter */}
-                                <button className='w-fit h-[3rem] rounded-[8px] button-primary-gradient p-[0_15px]'
+                                <button className='w-fit h-[2.5rem] rounded-[8px] button-primary-gradient p-[0_15px]'
                                     onClick={handleClearFilter}
                                 >
                                     Clear All
                                 </button>
                                 {/** filter button */}
-                                <button className={`${checkFilterData() ? "button-primary-gradient" : "button-primary-disabled-gradient"} h-[3rem] w-fit p-[0px_15px] rounded-[8px]`}
+                                <button className={`${checkFilterData() ? "button-primary-gradient" : "button-primary-disabled-gradient"} h-[2.5rem] w-fit p-[0px_15px] rounded-[8px]`}
                                     onClick={handleFilter}>Filter Products</button>
                             </div>
                         </div>
@@ -252,7 +252,7 @@ function TextInput({ label, name, onChange, showDesign, value }: InputProp) {
                 <div className='w-[1rem] h-[1rem] bg-[var(--main-bg-secondary-dark)] rounded-[2px]' />
                 <div className='w-[1rem] h-[1px] border border-[var(--main-bg-secondary-dark)] border-dashed' />
             </>}
-            <input type="text" name={name} value={value === "undefined" ? "" : value} className='tf-attr flex-1 h-[3rem] p-3'
+            <input type="text" name={name} value={value === "undefined" ? "" : value} className='tf-attr flex-1 h-[2.5rem] p-3'
                 onChange={onChange}
             />
         </div>

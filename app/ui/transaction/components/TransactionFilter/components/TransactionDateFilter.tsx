@@ -35,7 +35,7 @@ function TransactionDateFilter() {
             <ButtonTile name="Start Date" onClick={() => dispatch(datePickerToggleVisibility({
                 context: TransactionActions.SET_START_DATE
             }))} />
-            <div className="flex-1 h-[3rem] rounded-[8px] border border-[var(--border-default-dark)] grid place-content-center">
+            <div className="flex-1 h-[2rem] rounded-[8px] border border-[var(--border-default-dark)] grid place-content-center">
                 {start}
             </div>
             <button onClick={() => {
@@ -53,7 +53,7 @@ function TransactionDateFilter() {
             <ButtonTile name="End Date" onClick={() => dispatch(datePickerToggleVisibility({
                 context: TransactionActions.SET_END_DATE
             }))} />
-            <div className="flex-1 h-[3rem] rounded-[8px] border border-[var(--border-default-dark)] grid place-content-center">
+            <div className="flex-1 h-[2rem] rounded-[8px] border border-[var(--border-default-dark)] grid place-content-center">
                 {end}
             </div>
             <button onClick={() => {
@@ -69,7 +69,7 @@ function TransactionDateFilter() {
 function ButtonTile({ name, onClick }: {
     name: string, onClick: () => void
 }) {
-    return <button className="w-[10rem] h-[3rem] rounded-[8px] button-primary-gradient grid place-content-center"
+    return <button className="w-[10rem] h-[2rem] rounded-[8px] button-primary-gradient grid place-content-center"
         onClick={onClick}
     >
         {name}
