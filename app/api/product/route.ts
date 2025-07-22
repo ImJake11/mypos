@@ -1,10 +1,12 @@
 
-import { Prisma } from "@/app/generated/prisma";
-import { BulkTableProp, ProductProps, VariantsProps } from "@/app/lib/models/productModel";
+import { BulkTableProp, ProductProps } from "@/app/lib/models/productModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import io from "socket.io-client";
+import { createNewNotification } from "../services/createNotification";
+import { NotificationFilterType } from "@/app/lib/enum/notificationType";
 
-
+const socket = io(process.env.SOCKET_URL || "");
 
 export async function POST(req: NextRequest) {
 
@@ -16,14 +18,12 @@ export async function POST(req: NextRequest) {
 
         const rawBulkTier = rawdata.bulkTier as BulkTableProp[];
 
-        const promotionalDiscount = rawdata.promotionalDiscount;
 
         const { bulkEnabled,
             categoryID,
             costPrice,
             coverImage,
             description,
-            discountEnabled,
             highlights,
             isActive,
             isFavorite,
@@ -68,6 +68,20 @@ export async function POST(req: NextRequest) {
             }
         });
 
+        if (socket) {
+            const payload = await createNewNotification({
+                message: `Product ${name} added to you list, with a stock of ${stock}`,
+                title: "New Product",
+                type: NotificationFilterType.SYSTEM,
+                relatedID: id,
+            });
+
+            socket.emit("notification_event", {
+                data: payload,
+                type: "add",
+            });
+        }
+
         return NextResponse.json({ id }, { status: 200 })
 
     } catch (e) {
@@ -98,7 +112,6 @@ export async function PUT(req: NextRequest) {
             lowStock,
             name,
             photoSnapshots,
-            promotionalDiscount,
             sellingPrice,
             stock,
             tax,
@@ -144,7 +157,20 @@ export async function PUT(req: NextRequest) {
             },
         });
 
-        console.log(name.toUpperCase(), coverImage)
+        if (socket) {
+            const payload = await createNewNotification({
+                message: `Product ${name} changes saved successfully`,
+                title: "Product Update",
+                type: NotificationFilterType.SUCCESSFUL,
+                relatedID: id,
+            });
+
+            socket.emit("notification_event", {
+                data: payload,
+                type: "add",
+            });
+        }
+
         return NextResponse.json({ id }, { status: 200 });
 
     } catch (e) {
@@ -161,25 +187,20 @@ export async function GET() {
             orderBy: {
                 stock: 'desc'
             },
-            include: {
-                bulkTier: true,
-                category: true,
-                vatStatus: true,
-                promotionalDiscount: true,
+            select: {
+                stock: true,
+                name: true,
+                sellingPrice: true,
+                coverImage: true,
+                id: true,
+                isActive: true,
+                lowStock: true,
+                isFavorite: true,
                 variants: {
                     select: {
-                        isArchived: true,
                         id: true,
-                        imageUrl: true,
-                        isPositive: true,
-                        name: true,
-                        price: true,
-                        product: true,
-                        productId: true,
-                        stock: true,
-                        details: true,
                     }
-                },
+                }
             }
         });
 

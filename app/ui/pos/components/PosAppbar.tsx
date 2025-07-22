@@ -8,6 +8,7 @@ import { posToggleCartTab } from '@/app/lib/redux/slice/posSlice';
 import { FilterIcon } from '@/app/lib/icons/filterIcon';
 import { filterToggleFilterTab } from '@/app/lib/redux/slice/filterSlice';
 import CartIndicator from '@/app/lib/components/CartIndicator';
+import Appbar from '@/app/lib/components/Appbar/Appbar';
 
 const PosAppbar = () => {
 
@@ -15,19 +16,21 @@ const PosAppbar = () => {
 
     const cartItemsLength = useSelector((state: RootState) => state.posSlice.cartItems.length);
 
+    const child = <div className='flex items-center'>
+        <CartIndicator />
+        {/** filter iconn */}
+        <button className='flex h-[2rem] p-[0_7px] rounded-[8px] button-primary-gradient gap-2 items-center'
+            onClick={() => dispatch(filterToggleFilterTab(true))}
+        >
+            Filter <div className='w-[1.3rem] h-[1.3rem]'><FilterIcon /></div>
+        </button>
+    </div>
+
     return (
-        <div className='min-h-[5rem] w-full bg-[var(--main-bg-primary-dark)] flex justify-end items-center gap-.5 p-[0_10px]'>
-
-            {/** cart icon */}
-            <CartIndicator />
-
-            {/** filter iconn */}
-            <button className='flex h-[2.5rem] p-[0_7px] rounded-[8px] button-primary-gradient gap-2 items-center'
-                onClick={() => dispatch(filterToggleFilterTab(true))}
-            >
-                Filter <div className='w-[1.3rem] h-[1.3rem]'><FilterIcon /></div>
-            </button>
-        </div>
+        <Appbar
+            title='Point Of Sale'
+            child={child}
+        />
     )
 }
 

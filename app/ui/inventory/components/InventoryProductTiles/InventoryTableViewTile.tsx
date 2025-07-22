@@ -64,7 +64,7 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
 
             {/** action */}
             <button className='underline underline-offset-5 text-[var(--color-brand-primary)] flex-[1]'
-                onClick={() => dispatch(inventoryToggleProductView(data))}
+                onClick={() => dispatch(inventoryToggleProductView({ id: data.id!, isOpen: true }))}
             >View</button>
 
         </motion.div>

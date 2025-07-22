@@ -1,3 +1,4 @@
+import { createNewNotification } from "@/app/api/services/createNotification";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import io from "socket.io-client";

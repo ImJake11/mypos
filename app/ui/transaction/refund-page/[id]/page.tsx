@@ -6,14 +6,13 @@ import TransactionRefundList from '../TransactionRefundExistingItemList'
 import TransactionRefundReturnItems from '../TransactionRefundReturnItems'
 import ProcessDialog from '@/app/lib/components/ProcessDialog/ProcessDialog'
 import Toas from '@/app/lib/components/Toas'
+import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
+import GlobalWrapper from '@/app/lib/components/GlobalWrapper'
 
 const page = () => {
-    return (
-        <div className='w-screen h-screen flex flex-col overflow-hidden relative'
-            style={{
-                backgroundColor: "var(--main-bg-primary-dark)"
-            }}
-        >
+
+    const child = (
+        <div className='w-full h-full flex flex-col'>
             <Appbar icon={
                 <i className="ri-refund-line" />}
                 title='Refund Transaction' />
@@ -21,8 +20,16 @@ const page = () => {
                 <TransactionRefundList />
                 <TransactionRefundReturnItems />
             </div>
-            <ProcessDialog />
-            <Toas />
+        </div>
+    )
+    return (
+        <div className='w-screen h-screen flex flex-col overflow-hidden relative'
+            style={{
+                backgroundColor: "var(--main-bg-primary-dark)"
+            }}
+        >
+            <Sidebar />
+            <GlobalWrapper child={child} />
         </div>
     )
 }

@@ -20,8 +20,8 @@ const TransactionDetailsSales = ({ data }: { data: TransactionDetailsModel }) =>
                 backgroundColor: "var(--main-bg-secondary-dark)"
             }}
         >
-            <TransactionDetailsTile data={convertToCurrency(totalValSales)} title='Total Value Sales' />
-            <TransactionDetailsTile data={convertToCurrency(taxablSales)} title='Taxable Sales (VAT)' />
+            <TransactionDetailsTile data={convertToCurrency(taxablSales)} title='Total Value Sales' />
+            <TransactionDetailsTile data={convertToCurrency(totalValSales)} title='Taxable Sales (VAT)' />
             <TransactionDetailsTile data={convertToCurrency(nonTaxableSales)} title='Zero-rated Sales' />
             <TransactionDetailsTile data={convertToCurrency(exemptSales)} title='Exempt Sales' />
             <div className='w-full h-[1px] border-dashed border m-[1rem_0]' />

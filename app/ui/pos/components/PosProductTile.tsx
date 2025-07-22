@@ -2,10 +2,11 @@
 
 import { ProductProps } from '@/app/lib/models/productModel'
 import { posSelectProduct } from '@/app/lib/redux/slice/posSlice';
+import { RootState } from '@/app/lib/redux/store';
 import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
 import Image from 'next/image';
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 interface Prop {
     data: ProductProps,
@@ -15,17 +16,17 @@ const PosProductTile = ({ data }: Prop) => {
     const dispatch = useDispatch();
 
     return (
-        <div className='w-full min-h-[17rem] h-[17rem] bg-[var(--product-card-bg)] rounded-[12px] flex flex-col p-4 relative text-center gap-2 overflow-hidden
+        <div className='w-full min-h-[13rem] h-[13rem] bg-[var(--product-card-bg)] rounded-[12px] flex flex-col p-2 relative text-center gap-2 overflow-hidden
         '>
 
             {/** image container */}
-            <div className='w-full min-h-[10rem] max-h-[10rem] bg-[var(--tertiary)] overflow-hidden rounded-[7px]'>
+            <div className='w-full min-h-[7rem] max-h-[7rem] bg-[var(--tertiary)] overflow-hidden rounded-[7px]'>
                 {data.coverImage && <img src={data.coverImage} loading='lazy' alt='cover image' className='w-full h-full object-fill' />}
             </div>
 
             <span className='text-[.8rem]'>{data.name}</span>
             <div className='flex-1' />
-            <span className='font-semibold text-[var(--color-brand-primary)]'>Php {data.sellingPrice}</span>
+            <span className='font-semibold text-[var(--color-brand-primary)]'>{Number(data.sellingPrice).toLocaleString('en-US', { style: "currency", currency: "PHP" })}</span>
 
             {/** discount  */}
             {data.promotionalDiscount && checkDiscountExpiration(data.promotionalDiscount.expirationDate) && <div className='button-primary-gradient h-fit rounded-[7px] p-[5px_7px] flex-1 flex justify-end pr-2 absolute top-2 right-2'>

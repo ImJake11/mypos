@@ -12,7 +12,6 @@ import PageErrorState from '@/app/lib/components/PagesState/PageErrorState';
 import { ProductProps } from '@/app/lib/models/productModel';
 import PosLoadingState from './PosLoadingState';
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
-import { inventorySetErrorState, inventorySetLoadingState, inventorySetRawData } from '@/app/lib/redux/slice/inventorySlice';
 
 
 export const PosProductList = () => {
@@ -20,6 +19,8 @@ export const PosProductList = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const { rawProductData, isFiltering, isLoading, isError } = useSelector((state: RootState) => state.posSlice);
+
+    const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
 
     const filteredData = useSelector((state: RootState) => state.filterSlice.filteredData);
 
@@ -36,10 +37,10 @@ export const PosProductList = () => {
 
     if (isError) return <PageErrorState />;
 
-    return isLoading ? <PosLoadingState /> : <div className='flex-1 min-h-0 main-background-gradient overflow-auto rounded-[12px] p-2 gap-3'>
+    return isLoading ? <PosLoadingState /> : <div className='flex-1 min-h-0 main-background-gradient overflow-auto rounded-[12px]  gap-3'>
 
         {/** body */}
-        {displayList.length <= 0 ? <PageNoDataFound /> : <ul className='w-full min-h-0 flex-1 grid-cols-6 grid gap-3 p-2 items-start overflow-auto'>
+        {displayList.length <= 0 ? <PageNoDataFound /> : <ul className={`w-full min-h-0 flex-1 ${isSidebarMinimize? "grid-cols-7" : "grid-cols-6"} grid gap-3 p-2 items-start overflow-auto`}>
             {displayList.map((p) => <PosProductTile key={p.id} data={p} />)}
         </ul>}
 

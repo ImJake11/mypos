@@ -23,6 +23,8 @@ import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
 const ProductList = () => {
   const dispatch = useDispatch<AppDispatch>();
 
+  const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
+
   const {
     isListView,
     isLoading,
@@ -90,7 +92,7 @@ const ProductList = () => {
             {displayList.length <= 0 ? (
               <InventoryNoDataFound />
             ) : (
-              <ul className={`flex-1 overflow-auto ${isListView ? "flex flex-col" : "grid grid-cols-6"} gap-2`}>
+              <ul className={`flex-1 overflow-auto ${isListView ? "flex flex-col" : `grid ${isSidebarMinimize ? "grid-cols-7" : "grid-cols-6"}`} gap-2`}>
                 <AnimatePresence>
                   {displayList.map((d) =>
                     isListView ? (

@@ -1,21 +1,26 @@
-import { Payload } from "@/app/generated/prisma/runtime/library";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
-
 
 
 const initialState = {
     isSidebarMinimize: false,
+    isFloatingVisible: false,
 }
 
 const sidebarSlice = createSlice({
     initialState,
     name: "sidebar",
     reducers: {
-        toggleSidebar: (state, action: PayloadAction<boolean>) => {
+        sidebarToggleSidebar: (state, action: PayloadAction<boolean>) => {
             state.isSidebarMinimize = action.payload;
+        },
+        sidebarToggleFloatingButton: (state, action: PayloadAction<boolean>) => {
+            state.isFloatingVisible = action.payload;
         }
     }
 })
 
-export const { toggleSidebar } = sidebarSlice.actions;
+export const {
+    sidebarToggleFloatingButton,
+    sidebarToggleSidebar,
+} = sidebarSlice.actions;
 export default sidebarSlice.reducer;

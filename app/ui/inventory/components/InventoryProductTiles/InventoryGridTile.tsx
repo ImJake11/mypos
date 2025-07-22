@@ -3,10 +3,10 @@
 import React, { useState } from 'react'
 import { ProductProps } from '@/app/lib/models/productModel'
 import { inventoryToggleProductView } from '@/app/lib/redux/slice/inventorySlice';
-import { AppDispatch } from '@/app/lib/redux/store';
+import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { faCartPlus, faHeart, faImage } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion } from "framer-motion";
 import { inventoryServiceUpdateProductFavorite } from '../../services/inventoryServiceAddProductToFavorite';
 import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
@@ -22,7 +22,6 @@ const InventoryGridTile = ({
     const dispatch = useDispatch<AppDispatch>();
 
     const [isHover, setIsHover] = useState(false);
-
     const handleMouseEnter = () => {
         setIsHover(true);
     }
@@ -54,9 +53,7 @@ const InventoryGridTile = ({
                     backgroundColor: "var(--secondary-background)"
                 }}
 
-                onClick={() => dispatch(inventoryToggleProductView(
-                    data
-                ))}
+                onClick={() => dispatch(inventoryToggleProductView({ id: data.id!, isOpen: true }))}
             >
                 {data.coverImage ? <motion.img src={data.coverImage} loading='lazy' alt="cover photo" className='object-fill w-full h-full'
                     animate={{
@@ -75,7 +72,7 @@ const InventoryGridTile = ({
                     <span className='font-semibold italic'>{data.name}</span>
 
                     <span className='text-[.8rem] text-[var(--foreground-lighter)]'>
-                        Php {data.sellingPrice}
+                        {Number(data.sellingPrice).toLocaleString('en-US', { currency: "PHP", style: "currency" })}
                     </span>
                 </div>
 

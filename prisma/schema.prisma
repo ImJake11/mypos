@@ -144,3 +144,14 @@ model CartCache {
   userId                String
   vatStatus             String
 }
+
+model Notification {
+  id        String   @id @unique @default(uuid())
+  title     String
+  message   String
+  type      String
+  createdAt DateTime @default(now())
+  isRead    Boolean? @default(false)
+  relatedTo String?
+  relatedID String?
+}

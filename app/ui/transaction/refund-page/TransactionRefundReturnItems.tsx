@@ -84,6 +84,7 @@ const TransactionRefundReturnItems = () => {
                         style={{
                             border: "solid 1px var(--color-brand-primary)"
                         }}
+                        onClick={()=> router.back()}
                     >Cancel</button>
 
                     <button className='button-primary-gradient min-h-[2rem] w-[7rem] rounded-[8px]'

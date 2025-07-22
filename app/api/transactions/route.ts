@@ -123,8 +123,14 @@ export async function GET() {
             orderBy: {
                 date: "desc"
             },
-            include: {
-                purchasedItems: true,
+            select: {
+                date: true,
+                transactionId: true,
+                netTotal: true,
+                status: true,
+                paymentMethod: true,
+                paymentProvider: true,
+                referenceId: true,
             }
         });
 

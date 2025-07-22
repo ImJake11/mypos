@@ -1,11 +1,10 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProductProps } from '@/app/lib/models/productModel';
 import { inventoryToggleProductView } from '@/app/lib/redux/slice/inventorySlice';
-import { formSetProductDataForUpdate } from '@/app/lib/redux/slice/productSlice';
 import { RootState } from '@/app/lib/redux/store';
-import { faCartPlus, faClose, faEdit, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faCartPlus, faClose, faEdit } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,22 +16,22 @@ import BulkTable from './ProductTabBulkTable';
 import ImageContainer from './ProductTabImageContainer';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
+import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
 
 const ViewProductTab = () => {
 
   const router = useRouter();
-
   const dispatch = useDispatch();
 
-  const { selectedProductDataForView, productViewOpen } = useSelector((state: RootState) => state.inventorySlice);
+  const [data, setProductData] = useState<ProductProps | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const { productViewID, isProductViewVisible } = useSelector((state: RootState) => state.inventorySlice)
 
   const cartItems = useSelector((state: RootState) => state.posSlice.cartItems);
 
-  const data: ProductProps = selectedProductDataForView as ProductProps;
-
-
   const handleUpdate = () => {
-    const isExisiting = cartItems.find(item => item.productID === data.id);
+    const isExisiting = cartItems.find(item => item.productID === data!.id);
 
     if (isExisiting) {
       dispatch(openToas({
@@ -40,14 +39,45 @@ const ViewProductTab = () => {
         type: ToasEnum.ERROR,
       }))
     } else {
-      dispatch(formSetProductDataForUpdate(data));
-      router.push("/ui/inventory/product-form")
+      router.push(`/ui/inventory/product-form?product-id=${productViewID}`)
     }
   }
 
+  useEffect(() => {
+    setIsLoading(true);
+
+    if (!isProductViewVisible) return;
+
+    const fetchData = async () => {
+      try {
+        const product = await fetchSingleProductData(productViewID);
+
+        setProductData(product);
+      } catch (e) {
+        dispatch(inventoryToggleProductView({
+          id: "",
+          isOpen: false,
+        }))
+        dispatch(openToas({
+          message: "Failed to fetch product",
+          type: ToasEnum.ERROR,
+        }))
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    const timeout = setTimeout(() => {
+      fetchData();
+    }, 1500);
+
+    return () => clearTimeout(timeout);
+
+  }, [isProductViewVisible]);
+
   return (
     <AnimatePresence>
-      {productViewOpen && <motion.div className='w-screen h-screen absolute backdrop-blur-[2px]'
+      {isProductViewVisible && <motion.div className='w-screen h-screen absolute backdrop-blur-[2px]'
         style={{
           backgroundColor: "rgb(0,0,0, .8)"
         }}
@@ -64,18 +94,22 @@ const ViewProductTab = () => {
           opacity: 0
         }}
 
-        onClick={() => dispatch(inventoryToggleProductView(null))}
+        onClick={() => dispatch(inventoryToggleProductView({
+          id: "",
+          isOpen: false,
+        }))}
       >
-        <motion.div className='absolute h-screen w-[40vw] right-0 flex flex-col overflow-auto gap-2'
+        {isLoading ? <LoadingState /> : <motion.div className='absolute h-screen w-[40vw] flex flex-col overflow-auto gap-2'
           style={{
-            backgroundColor: "var(--main-bg-primary-dark)"
+            backgroundColor: "var(--main-bg-primary-dark)",
+            right: "var(--sidebar-width)",
           }}
           initial={{
-            x: "100%",
+            opacity: 0,
           }}
 
           animate={{
-            x: 0,
+            opacity: 1,
           }}
 
           transition={{
@@ -84,22 +118,22 @@ const ViewProductTab = () => {
             delay: .3
           }}
         >
-          <ImageContainer url={data.coverImage} />
+          <ImageContainer url={data!.coverImage} />
           <ProductDetails
-            isActive={data.isActive}
-            isFavorite={data.isFavorite}
-            name={data.name}
-            sellingPrice={data.sellingPrice}
-            promotionalDiscount={data.promotionalDiscount}
-            description={data.description ?? ""}
-            category={data.category!}
+            isActive={data!.isActive}
+            isFavorite={data!.isFavorite}
+            name={data!.name}
+            sellingPrice={data!.sellingPrice}
+            promotionalDiscount={data!.promotionalDiscount}
+            description={data!.description ?? ""}
+            category={data!.category!}
           />
-          {data?.highlights && <KeyFeatures data={data.highlights} />}
+          {data?.highlights && <KeyFeatures data={data!.highlights} />}
 
-          <VariantsTable variants={data.variants} lowStock={data.lowStock} />
+          <VariantsTable variants={data!.variants} lowStock={data!.lowStock} />
 
           {/** show only if product has bulk pricing data */}
-          {data.bulkEnabled && <BulkTable bulkTier={data.bulkTier} />}
+          {data!.bulkEnabled && <BulkTable bulkTier={data!.bulkTier} />}
           <div className='min-h-[2rem]' />
 
           {/** actions */}
@@ -129,11 +163,20 @@ const ViewProductTab = () => {
             <FontAwesomeIcon icon={faCartPlus} />
             Add to cart
           </button>
-        </motion.div>
+        </motion.div>}
       </motion.div>}
     </AnimatePresence>
   )
 }
 
+function LoadingState() {
+  return (
+    <div className='w-[40vw] h-screen bg-red-300 absolute'
+      style={{
+        right: "var(--sidebar-width)"
+      }}
+    ></div>
+  )
+}
 
 export default ViewProductTab

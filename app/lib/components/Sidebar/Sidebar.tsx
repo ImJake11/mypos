@@ -1,87 +1,88 @@
 "use client";
 
 import React from 'react'
-import UserProfile from './UserProfile';
 import { motion } from "framer-motion";
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import PosIcon from '../../icons/posIcon';
 import InventoryIcon from '../../icons/inventoryIcon';
 import { TransactionIcon } from '../../icons/transactionIcon';
-import { usePathname, useRouter } from 'next/navigation';
-import ArrowToRight from '../../icons/arrowToRight';
-import Link from 'next/link';
+import "remixicon/fonts/remixicon.css";
+import DashboardIcon from '../../icons/DashboardIcon';
+import SidebarMainButtonTile from './SidebarMainButtonTile';
+import SidebarSubButton from './SidebarSubButtonTile';
+import SidebarFloatingToggle from './SidebarFloatingToggle';
+import { sidebarToggleFloatingButton } from '../../redux/slice/sidebarSlice';
+import StoreIcon from '../../icons/StoreIcon';
+import NotificationIcon from '../../icons/NotificationIcon';
+
+const inventorySubRoute: React.JSX.Element[] = [
+    <SidebarSubButton name='New Product' url='/ui/inventory/product-form' />,
+];
+
+const posSubroute: React.JSX.Element[] = [
+    <SidebarSubButton name='Complete Transaction' url='/ui/pos/order-complete' />
+]
+
 
 const Sidebar = () => {
+    const dispatch = useDispatch();
 
-    const pathName = usePathname();
+    const {
+        isSidebarMinimize,
+    } = useSelector((state: RootState) => state.sidebarSlice);
 
-    const urlParts = pathName.split("/");
+    const _notifCount = useSelector((state: RootState)=> state.notificationSlice.notificationCount);
+    const iconSize = 22;
 
     return (
-        <motion.div className='h-screen flex flex-col overflow-hidden min-w-[var(--sidebar-width)] w-[var(--sidebar-width)]'
+        <motion.div key="sidebar-component" className='h-screen flex flex-col fixed'
             style={{
                 backgroundColor: "var(--main-bg-primary-dark)"
             }}
-        >
-            {/** logo container */}
-            <div className='w-full min-h-[3.5rem] relative'>
 
+            animate={{
+                width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)",
+            }}
+        >
+
+            {/** logo container */}
+            <div className='w-full min-h-[4rem] relative'
+                onMouseEnter={() => dispatch(sidebarToggleFloatingButton(true))}
+                onMouseLeave={() => dispatch(sidebarToggleFloatingButton(false))}
+            >
+                {/** floating sidebar toggle */}
+                <SidebarFloatingToggle />
             </div>
-            <div className='w-full flex-1 flex flex-col p-2.5 overflow-auto '>
-                <ButtonTile icon={<PosIcon size={22} />} name='POS' isSelected={urlParts[2] == 'pos'} url='/ui/pos' />
+            <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
+                <SidebarMainButtonTile icon={<DashboardIcon size={iconSize} />} name='Overview' url='/' />
+
+                {/** pos */}
+                <SidebarMainButtonTile icon={<PosIcon size={iconSize} />} name='POS' url='/ui/pos' options={posSubroute} />
 
                 {/** inventory button */}
-                <div className='w-full flex flex-col '>
-                    <ButtonTile icon={<InventoryIcon size={22} />} name='Inventory' isSelected={urlParts[2] === 'inventory'} url='/ui/inventory' />
-
-                    {/** sub buttons */}
-                    <ButtonTile icon={<ArrowToRight size={12} color='var(--foreground)' />} name='Create Product' isSelected={urlParts[2] === 'inventory'} url='/ui/inventory' width='w-[90%]' />
-
-                </div>
+                <SidebarMainButtonTile icon={<InventoryIcon size={iconSize} />} name='Inventory' url='/ui/inventory' options={
+                    inventorySubRoute
+                } />
 
                 {/** trnasaction */}
-                <ButtonTile icon={<TransactionIcon size={24} />} name='Transaction' isSelected={urlParts[2] === 'transaction'} url='/ui/transaction' />
+                <SidebarMainButtonTile icon={<TransactionIcon size={iconSize} />} name='Transaction' url='/ui/transaction' />
+
+                <SidebarMainButtonTile icon={<StoreIcon size={iconSize} />} name='Store Setup' url='' />
+
+                <SidebarMainButtonTile icon={<NotificationIcon size={iconSize} />} name='Notifications' url='/ui/notifications-page' notificationLength={_notifCount} />
             </div>
+
             {/** profile container */}
-            <UserProfile />
+
+            {/** 
+            *  <UserProfile />
+            */}
         </motion.div>
     )
 }
 
-interface ButtonProps {
-    name: string,
-    icon: React.JSX.Element,
-    url: string,
-    width?: string,
-    isSelected: boolean
-}
-const ButtonTile = ({ name, icon, url, isSelected, width }: ButtonProps) => {
 
-    const pathName = usePathname();
-
-    return <Link href={url}>
-        <motion.button className={`${width ?? "w-full"} place-self-end h-[2.5rem] flex gap-1.5 items-center p-1.5 mb-1 rounded-[7px] overflow-hidden`}
-            style={{
-                backgroundSize: "200% 100%",
-                backgroundPosition: "0% 0%",
-                backgroundImage: isSelected ? "linear-gradient(45deg,var(--main-bg-primary-dark), var(--color-brand-primary), var(--color-brand-secondary), var(--main-bg-primary-dark))" : undefined,
-            }}
-            animate={{
-                backgroundPosition: "100% 0%"
-            }}
-            transition={{
-                duration: 3,
-                ease: "linear",
-                repeat: Infinity,
-                repeatType: "reverse",
-            }}
-        >
-            {icon}
-            <p>{name}</p>
-        </motion.button>
-    </Link>
-}
 
 
 export default Sidebar

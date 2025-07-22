@@ -1,24 +1,14 @@
 import { capitalizeFirtLetter } from "@/app/lib/utils/services/capitalizeFirstLetter";
 
 
-export async function TransactionPurchasedItemsTile({ price, quantity, productID }: {
+export async function TransactionPurchasedItemsTile({ price, quantity, url, name }: {
     productID: string,
     price: number,
     quantity: number,
+    name: string,
+    url: string,
 }) {
 
-
-    const protocol = process.env.WEBSITE_PROTOCOL;
-    const host = process.env.WEBSITE_HOST;
-    const port = process.env.WEBSITE_PORT;
-
-    const res = await fetch(`${protocol}://${host}:${port}/api/product/variants/${productID}`);
-
-    if (!res.ok) {
-        return null;
-    }
-
-    const { url, name } = await res.json();
 
     return <div className='flex w-full items-center gap-5'>
         {/** image container */}

@@ -26,16 +26,16 @@ export default React.memo(function OrderCompleteItemTile({ data, index }:
     const detailsParts: string[] = details ? details.split(",") : [];
 
     return (
-        <div className='w-full min-h-[20rem] h-[20rem] gap-5 flex p-5'>
+        <div className='w-full min-h-[11rem]  h-[11rem] gap-5 flex p-2'>
 
             {/** image container */}
-            <div className='h-[15rem] w-[15rem] bg-[var(--main-bg-secondary-dark)] rounded-[8px] overflow-hidden'>
+            <div className='h-[10rem] aspect-square bg-[var(--main-bg-secondary-dark)] rounded-[8px] overflow-hidden'>
                 {variantPhotoUrl && <img src={variantPhotoUrl} alt='variant image' className='w-full h-full object-cover' />}
             </div>
 
             {/** detaills */}
             <div className='flex flex-col flex-1 gap-2'>
-                <span className='text-[1.5rem]'>{variantName}</span>
+                <span className='text-[1rem]'>{variantName}</span>
                 {detailsParts.map((detail, i) => <span key={i} className='text-[var(--foreground-lighter)]'>
                     {detail}
                 </span>)}
@@ -43,7 +43,7 @@ export default React.memo(function OrderCompleteItemTile({ data, index }:
 
             {/** price && quantity action */}
             <div className='h-full flex justify-between flex-col items-end'>
-                <span className='text-[1.5rem]'><span>₱ {variantUnitPrice.toLocaleString('en-us')}</span></span>
+                <span className='text-[1rem]'><span>₱ {variantUnitPrice.toLocaleString('en-us')}</span></span>
                 <div className='flex-1' />
                 <QuantityAction index={index} quantity={quantity} />
             </div>
@@ -61,7 +61,7 @@ const QuantityAction = ({ quantity, index }: QuantityProp) => {
     const dispatch = useDispatch();
 
 
-    return <div className='button-primary-gradient w-[150px] h-[3rem] rounded-[3px] flex justify-evenly items-center text-[1.5rem]'>
+    return <div className='button-primary-gradient w-[100px] h-[2.5rem] rounded-[3px] flex justify-evenly items-center text-[1rem]'>
         <button
             onClick={() => dispatch(posUpdateCartItemQuantity({
                 index,
@@ -69,7 +69,7 @@ const QuantityAction = ({ quantity, index }: QuantityProp) => {
             }))}
         >+</button>
         <span>{quantity}</span>
-        <button className="text-[1.8rem]"
+        <button className="text-[1.5rem]"
             onClick={() => dispatch(posUpdateCartItemQuantity({
                 index,
                 isAddition: false,

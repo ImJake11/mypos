@@ -117,12 +117,12 @@ const OrderCompletePayment = () => {
             <span>Payment option</span>
 
             <div className='flex flex-col flex-1 gap-4'>
-                <PaymentButton name={PaymentMethod.CASH} icon={CashIcon(20)} />
-                <PaymentButton name={PaymentMethod.E_WALLET} icon={EWalletIcon(24)} />
+                <PaymentButton name={PaymentMethod.CASH} icon={CashIcon(14)} />
+                <PaymentButton name={PaymentMethod.E_WALLET} icon={EWalletIcon(18)} />
             </div>
 
             <AnimatePresence mode='wait'>
-                {isCashMethod ? <motion.span className='text-[1.3rem] font-semibold' key="exchange"
+                {isCashMethod ? <motion.span className='text-[1rem] font-semibold' key="exchange"
                     initial={{
                         opacity: 0,
                     }}
@@ -135,7 +135,7 @@ const OrderCompletePayment = () => {
                             ease: "linear"
                         }
                     }}
-                >Exchange: ₱ {exchange.toLocaleString('en-us')}</motion.span> : <motion.span className='text-[1.3rem] font-semibold' key={"transaction id"}
+                >Exchange: ₱ {exchange.toLocaleString('en-us')}</motion.span> : <motion.span className='text-[1rem] font-semibold' key={"transaction id"}
                     initial={{
                         opacity: 0
                     }}
@@ -147,11 +147,11 @@ const OrderCompletePayment = () => {
                     }}
                 >Transaction/Reference ID</motion.span>}
             </AnimatePresence>
-            <input type="text" maxLength={20} value={input} className='tf-attr w-full h-[3rem] p-2'
+            <input type="text" maxLength={20} value={input} className='tf-attr w-full h-[2.5rem] p-2'
                 onChange={isCashMethod ? handleExchangeInput : handleReferenceInput}
             />
             <div className='h-[.5rem]' />
-            <button className='w-fit h-[3rem] button-primary-gradient rounded-[var(--button-border-radius)] p-[0_10px] place-self-end'
+            <button className='w-fit h-[2.5rem] button-primary-gradient rounded-[var(--button-border-radius)] p-[0_10px] place-self-end'
                 onClick={handleFinishTransaction}
             >
                 Finish Transaction

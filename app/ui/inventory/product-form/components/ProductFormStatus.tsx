@@ -17,7 +17,7 @@ const ProductFormStatus = () => {
     const isActive = useSelector((state: RootState) => state.productSlice.data.isActive);
 
     return (
-        <div className='flex gap-3 w-full justify-end p-3 items-center'>
+        <div className='flex gap-3 w-full justify-end pr-1 items-center'>
             <span>{isActive ? "Activated" : "Deactivated"}</span>
             <div className='w-[4rem] h-[2rem] relative'>
                 <motion.div className={`${isActive ? "button-primary-gradient" : "bg-linear-to-l from-black to-gray-800"}  w-full h-full rounded-full absolute top-1/2 -translate-y-1/2 border-[2px] border-white`} />

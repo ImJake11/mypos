@@ -1,5 +1,4 @@
 import { TransactionFilterKeys } from "@/app/lib/constants/TransactionFilterKeys";
-import { TransactionStatus } from "@/app/lib/enum/transactionStatus";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 

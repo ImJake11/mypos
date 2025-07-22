@@ -1,28 +1,17 @@
-import { createAction, createSlice, PayloadAction } from "@reduxjs/toolkit"
-import { ProductProps, BulkTableProp, PromotionalDiscountProp, VariantsProps } from "../../models/productModel";
-import { CategoryModel } from "../../models/categoryModel";
-import ListenerPayload from "../utils/models/appListenerModel";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { ProductProps, BulkTableProp, VariantsProps } from "../../models/productModel";
 import { ProductKeys, VariantKeys } from "../../constants/ProductKeys";
-
-// update bulk tire data prop
-interface UpdateBulkTireProp {
-    name: keyof BulkTableProp,
-    value: number,
-    index: number,
-}
-
 
 // for main ui flag 
 interface ProductSliceProp {
     data: ProductProps,
     isAutoComputeSellingPrice: boolean,
-    isForUpdate: boolean,
-
+    isLoading: boolean,
+    isError: boolean,
 }
 
 const initialState: ProductSliceProp = {
     isAutoComputeSellingPrice: false,
-    isForUpdate: false,
     data: {
         vatId: "",
         discountEnabled: false,
@@ -49,6 +38,8 @@ const initialState: ProductSliceProp = {
         coverImage: "",
         photoSnapshots: [],
     },
+    isLoading: false,
+    isError: false
 }
 
 
@@ -141,15 +132,17 @@ const productSlice = createSlice({
         formToggleAutoComputeSellingPrice: (state) => {
             state.isAutoComputeSellingPrice = !state.isAutoComputeSellingPrice;
         },
-        // for updating the product, this will set the whole data therefore the page can see the data based on user wants to update
-        formSetProductDataForUpdate: (state, action: PayloadAction<ProductProps>) => {
-            const { promotionalDiscount } = action.payload;
-            // we will check also if it has promotional discount because it is outside the [NewProductProp]
+        formSetProductData: (state, action: PayloadAction<ProductProps>) => {
 
             state.data = action.payload;
-            state.isForUpdate = true;
         },
         formResetProductState: () => initialState,
+        formToggleLoading: (state, action: PayloadAction<boolean>) => {
+            state.isLoading = action.payload;
+        },
+        formToggleError: (state, action: PayloadAction<boolean>) => {
+            state.isError = action.payload;
+        }
     }
 });
 
@@ -161,6 +154,8 @@ export const { formUpdateState,
     formUpdateVariants,
     formAddVariant,
     formResetProductState,
+    formToggleError,
+    formToggleLoading,
     formDeleteVariant,
-    formSetProductDataForUpdate } = productSlice.actions;
+    formSetProductData } = productSlice.actions;
 export default productSlice.reducer;

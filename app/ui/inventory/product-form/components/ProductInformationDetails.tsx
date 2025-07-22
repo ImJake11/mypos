@@ -12,6 +12,7 @@ import { ProductProps } from '@/app/lib/models/productModel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleInfo } from '@fortawesome/free-solid-svg-icons';
 import { ProductKeys } from '@/app/lib/constants/ProductKeys';
+import { InformationIcon } from '@/app/lib/icons/informationIcon';
 
 
 const ProductInformationDetails = () => {
@@ -57,7 +58,7 @@ const ProductInformationDetails = () => {
               color: "var(--secondary-foreground)"
             }}
           >
-            <FontAwesomeIcon icon={faCircleInfo} />
+            <InformationIcon color='var(--foreground-lighter)' size={14} />
             <span>List key highlights. Separate each with a period.</span>
           </span>
 

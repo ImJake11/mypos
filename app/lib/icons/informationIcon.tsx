@@ -1,7 +1,10 @@
 
 
-export function InformationIcon({ color }: { color: string }) {
-    return <svg className="w-full h-full" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill={color}>
+export function InformationIcon(
+    { color = "var(--foreground)", size = 12 }:
+        { color?: string, size?: number }) {
+
+    return <svg height={size} width={size} viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill={color}>
         <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
         <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
         <g id="SVGRepo_iconCarrier">

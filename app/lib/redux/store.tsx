@@ -10,6 +10,7 @@ import filterSlice from "./slice/filterSlice";
 import transaction from "./slice/transactionSlice";
 import datePickerSlice from "./slice/datePickerSlice";
 import refundSlice from "./slice/refundSlice";
+import notificationSlice from "./slice/notificationSlice";
 
 const store = configureStore({
     reducer: {
@@ -23,6 +24,7 @@ const store = configureStore({
         posSlice,
         refundSlice,
         transaction,
+        notificationSlice,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(appMiddlewareListner.middleware)
