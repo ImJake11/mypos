@@ -14,9 +14,6 @@ const TransactionDetailsBody = async ({ data }: { data: TransactionDetailsModel 
 
         const { status } = data;
 
-        const color = "var(--main-bg-secondary-dark)";
-        const size = 70;
-
         if (status === TransactionStatus.COMPLETED) {
             return "var(--transaction-successful)";
 
@@ -29,11 +26,11 @@ const TransactionDetailsBody = async ({ data }: { data: TransactionDetailsModel 
 
     return (
         <div className='flex-1 rounded-[12px] p-5 overflow-hidden text-[.8rem]' style={{
-            backgroundColor: "var(--main-bg-secondary-dark)"
+            backgroundColor: "var(--main-bg-secondary)"
         }}>
             <div className='w-full h-full rounded-[12px] flex overflow-auto flex-col gap-7 p-6' style={{
-                backgroundColor: "var(--main-bg-primary-dark)",
-                backgroundImage: `linear-gradient(180deg, ${generateStatusColor()}, var(--main-bg-primary-dark), var(--main-bg-primary-dark), var(--main-bg-primary-dark))`
+                backgroundColor: "var(--main-bg-primary)",
+                backgroundImage: `linear-gradient(180deg, ${generateStatusColor()}, var(--main-bg-primary), var(--main-bg-primary), var(--main-bg-primary))`
             }}>
 
                 <TransactionDetailsStatus data={data} />

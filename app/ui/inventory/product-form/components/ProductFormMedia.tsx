@@ -40,18 +40,14 @@ const UploadMedia = () => {
     }
 
     return (
-        <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[11px] bg-[var(--main-bg-primary-dark)]'
+        <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[11px] bg-[var(--main-bg-primary)]'
         >
             <span className='italic font-semibold '>Product Media</span>
             <ErrorMessage isShow={!coverImage} message='Cover image is required' />
             <div className='flex w-full gap-2.5'>
 
                 {/** cover photo */}
-                <div className='w-[10rem] h-[10rem]  rounded-[11px] relative cursor-pointer overflow-hidden'
-                    style={{
-                        border: "solid 1px var(--border-default-dark)"
-                    }}
-                >
+                <div className='w-[10rem] h-[10rem]  rounded-[11px] relative cursor-pointer overflow-hidden border border-gray-400'>
                     <span className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 w-full text-center'>Cover Photo</span>
                     {coverImage && <img src={coverImage} alt='cover image' className='w-full h-full absolute' />}
                     <input type='file' accept='image/**' className='opacity-0 h-full w-full' onChange={handleImage} />

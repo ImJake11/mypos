@@ -15,7 +15,6 @@ const TransactionTile = ({
 }: {
     data: TransactionDetailsModel
 }) => {
-    const router = useRouter();
 
     const date = data.date;
 
@@ -33,8 +32,7 @@ const TransactionTile = ({
     }
 
     return (
-        <div className='w-full flex items-center min-h-[3rem]  bg-[var(--main-bg-primary-dark)] border-b-[var(--main-bg-secondary-dark)] border-b text-[.9rem] relative'>
-
+        <div className='w-full flex items-center min-h-[3rem]  bg-[var(--main-bg-primary)] border-b-[var(--main-bg-secondary)] border-b text-[.8rem] relative'>
 
             {/** date */}
             <span className='flex-1 justify-center flex gap-2 items-center'>{useFormatDateOnly(date!)}</span>

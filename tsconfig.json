@@ -33,7 +33,6 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "app/ui/pos/components/product_details_tab/services/productDetailsServices.tsx"
   ],
   "exclude": [
     "node_modules"

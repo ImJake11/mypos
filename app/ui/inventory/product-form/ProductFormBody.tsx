@@ -57,7 +57,7 @@ const ProductFormBody = () => {
     if (isLoading) return <LoadingState />;
 
     return (
-        <div className='gap-5 flex flex-col flex-1 rounded-[11px] m-1.5 p-3 overflow-auto bg-[var(--main-bg-secondary-dark)]'
+        <div className='gap-5 flex flex-col flex-1 rounded-[11px] m-1.5 p-3 overflow-auto bg-[var(--main-bg-secondary)]'
         >
             <ProductFormStatus />
             <ProductInformationDetails />

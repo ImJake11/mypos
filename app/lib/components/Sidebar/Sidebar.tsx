@@ -4,43 +4,67 @@ import React from 'react'
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
-import PosIcon from '../../icons/posIcon';
-import InventoryIcon from '../../icons/inventoryIcon';
-import { TransactionIcon } from '../../icons/transactionIcon';
 import "remixicon/fonts/remixicon.css";
-import DashboardIcon from '../../icons/DashboardIcon';
 import SidebarMainButtonTile from './SidebarMainButtonTile';
-import SidebarSubButton from './SidebarSubButtonTile';
 import SidebarFloatingToggle from './SidebarFloatingToggle';
 import { sidebarToggleFloatingButton } from '../../redux/slice/sidebarSlice';
-import StoreIcon from '../../icons/StoreIcon';
-import NotificationIcon from '../../icons/NotificationIcon';
-
-const inventorySubRoute: React.JSX.Element[] = [
-    <SidebarSubButton name='New Product' url='/ui/inventory/product-form' />,
-];
-
-const posSubroute: React.JSX.Element[] = [
-    <SidebarSubButton name='Complete Transaction' url='/ui/pos/order-complete' />
-]
-
+import SidebarIcons from './SidebarIcons';
+import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
 
 const Sidebar = () => {
     const dispatch = useDispatch();
 
     const {
-        isSidebarMinimize,
+        isSidebarMinimize, hasScreenOverlay,
     } = useSelector((state: RootState) => state.sidebarSlice);
 
-    const _notifCount = useSelector((state: RootState)=> state.notificationSlice.notificationCount);
+    const _notifCount = useSelector((state: RootState) => state.notificationSlice.notificationCount);
     const iconSize = 22;
 
-    return (
-        <motion.div key="sidebar-component" className='h-screen flex flex-col fixed'
-            style={{
-                backgroundColor: "var(--main-bg-primary-dark)"
-            }}
+    const sidebarButtonDetails: SidebarButtonsProp[] = [
+        {
+            url: "/",
+            name: "Overview",
+        },
+        {
+            url: "/ui/point-of-sale",
+            name: "Point of Sale",
+            subroutes: [
+                {
+                    name: "Complete Orders",
+                    route: '/ui/point-of-sale/order-complete',
+                }
+            ],
+            yTranslation: 18,
+        },
+        {
+            url: "/ui/inventory",
+            name: "Products",
+            subroutes: [
+                {
+                    route: "/ui/inventory/product-form",
+                    name: "Create Product"
+                }
+            ],
+            yTranslation: 23.1,
+        },
+        {
+            url: "/ui/transaction",
+            name: "Transactions",
+        },
+        {
+            url: "/ui/notifications-page",
+            name: "Notifications",
+            notificationCount: _notifCount,
+        }
+    ];
 
+
+    return (
+        <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[var(--main-bg-primary)]'
+            initial={{
+                width: "var(--sidebar-width)"
+            }}
             animate={{
                 width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)",
             }}
@@ -55,22 +79,19 @@ const Sidebar = () => {
                 <SidebarFloatingToggle />
             </div>
             <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
-                <SidebarMainButtonTile icon={<DashboardIcon size={iconSize} />} name='Overview' url='/' />
+                {sidebarButtonDetails.map((button, index) => {
 
-                {/** pos */}
-                <SidebarMainButtonTile icon={<PosIcon size={iconSize} />} name='POS' url='/ui/pos' options={posSubroute} />
+                    const icon = <SidebarIcons url={button.url} />;
 
-                {/** inventory button */}
-                <SidebarMainButtonTile icon={<InventoryIcon size={iconSize} />} name='Inventory' url='/ui/inventory' options={
-                    inventorySubRoute
-                } />
-
-                {/** trnasaction */}
-                <SidebarMainButtonTile icon={<TransactionIcon size={iconSize} />} name='Transaction' url='/ui/transaction' />
-
-                <SidebarMainButtonTile icon={<StoreIcon size={iconSize} />} name='Store Setup' url='' />
-
-                <SidebarMainButtonTile icon={<NotificationIcon size={iconSize} />} name='Notifications' url='/ui/notifications-page' notificationLength={_notifCount} />
+                    return <SidebarMainButtonTile key={index}
+                        yTranslation={button.yTranslation ?? 0}
+                        icon={icon}
+                        name={button.name}
+                        notificationLength={button.notificationCount ?? 0}
+                        url={button.url}
+                        options={button.subroutes}
+                    />
+                })}
             </div>
 
             {/** profile container */}

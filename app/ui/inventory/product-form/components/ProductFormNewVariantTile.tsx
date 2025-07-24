@@ -11,11 +11,11 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { VariantKeys } from '@/app/lib/constants/ProductKeys';
+import { useSearchParams } from 'next/navigation';
 
 interface Prop {
     appDispatch: AppDispatch,
     index: number,
-    isForUpdate: boolean, // if true then the variant is for update, otherwise it is for archive
     data: VariantsProps,
     sellingPrice: number, // main product price 
 }
@@ -30,9 +30,13 @@ function generateBorderColor(condition: boolean) {
     return "border-red-400";
 }
 
-const NewVariantTile = ({ appDispatch, index, data, sellingPrice, isForUpdate }: Prop) => {
+const NewVariantTile = ({ appDispatch, index, data, sellingPrice }: Prop) => {
+
+    const params = useSearchParams();
 
     const { isPositive, imageUrl, name, price, stock, isArchived, details } = data;
+
+    const isForUpdate = params.get("product-id");
 
     // generate total of the variant base on price adjustment value
     function generateTotal() {

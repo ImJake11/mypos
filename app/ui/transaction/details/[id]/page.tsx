@@ -39,7 +39,6 @@ const page = async ({ params }: { params: { id: string } }) => {
   return (
     <div className='w-screen h-screen flex'>
       <GlobalWrapper child={child} />
-      <Sidebar />
     </div>
   )
 }

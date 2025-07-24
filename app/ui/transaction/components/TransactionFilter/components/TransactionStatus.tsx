@@ -32,7 +32,7 @@ const TransactionStatusComponent = () => {
         >
             <span>Transaction Status</span>
 
-            <div className='w-full border border-[var(--border-default-dark)] rounded-[8px] h-[2rem] items-center justify-between flex p-2'
+            <div className='w-full border border-gray-500 rounded-[8px] h-[2.5rem] items-center justify-between flex p-2'
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <span>{transactionStatus ?? "All"}</span>
@@ -57,7 +57,7 @@ function OptionTile({ name }: { name: string }) {
 
     const isSelected = name === selectedTransactionStatus;
 
-    return <div className={`ml-7 flex w-full gap-2 h-[2rem] items-center ${isSelected ? "bg-[var(--main-bg-secondary-dark)]" : "bg-Otransparent"} rounded-[4px] p-2`}
+    return <div className={`ml-7 flex w-full gap-2 h-[2rem] items-center ${isSelected ? "bg-gray-200" : "bg-Otransparent"} rounded-[4px] p-2`}
         onClick={() => dispatch(transactionUpdateFilterData({
             data: name,
             name: TransactionFilterKeys.transactionStatus

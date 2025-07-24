@@ -34,11 +34,7 @@ function Tile({ name }: {
 
     const isSelected = currentFilter === name;
 
-    return <button className='p-[5px_15px] min-w-[3rem] rounded-[15px]'
-        style={{
-            border: isSelected ? "solid 1px var(--color-brand-primary)" : "solid 1px var(--border-default-dark)",
-            color: isSelected ? "var(--color-brand-primary)" : "var(--foreground)"
-        }}
+    return <button className={`p-[5px_15px] min-w-[3rem] rounded-[15px] border ${isSelected? "var(--color-brand-primary) text-[var(--color-brand-primary)]" : "border-gray-700 text-black"}`}
         onClick={() => dispatch(notificationToggleFilter(name))}
     >
         {capitalizeFirtLetter(name.toLowerCase())}

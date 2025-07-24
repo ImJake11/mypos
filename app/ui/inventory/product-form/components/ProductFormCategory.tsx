@@ -94,7 +94,7 @@ const Category = () => {
             {isOpen && <ul className='flex-col flex items-start overflow-auto rounded-[7px]'>
 
                 {/** create button */}
-                <button className='button-primary-gradient flex w-full min-h-[3rem]  items-center gap-3 p-3.5'
+                <button className='button-primary-gradient flex w-full min-h-[3rem] text-white  items-center gap-3 p-3.5'
                     onClick={() => router.push("ui/settings/categories")}
                 >
                     <span className='font-semibold italic'>Create </span><FontAwesomeIcon icon={faAdd} />
@@ -133,7 +133,7 @@ function ButtonTile({ isSelected, data, onClose }: ButtonTileProp) {
                 </div>
                 <span>{data.content}</span>
             </button>
-            <CategoriesIcon size={24} color='var(--border-default-dark)' />
+            <CategoriesIcon size={24} attr="fill-gray-400" />
         </div>
     )
 }

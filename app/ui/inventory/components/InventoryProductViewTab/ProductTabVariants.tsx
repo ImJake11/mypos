@@ -32,7 +32,7 @@ export default function VariantsTable({ variants, lowStock }: VarintsProp) {
             <div className='w-full grid grid-cols-4'>
                 {variantHeaders.map((h, i) => <div key={i} className='h-[2rem]  uppercase grid place-content-center'
                     style={{
-                        border: "solid 1px var(--main-bg-secondary-dark)"
+                        border: "solid 1px var(--main-bg-secondary)"
                     }}
                 >
                     <span>{h}</span>
@@ -44,7 +44,7 @@ export default function VariantsTable({ variants, lowStock }: VarintsProp) {
                 {variants.map((v, i) => {
                     return <div key={i} className="h-[5rem] w-full grid grid-cols-4 p-2"
                         style={{
-                            border: "solid 1px var(--main-bg-secondary-dark)"
+                            border: "solid 1px var(--main-bg-secondary)"
                         }}
                     >
                         {/** image */}

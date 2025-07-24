@@ -8,10 +8,7 @@ const TransactionDetailsItems = ({ data }: { data: TransactionDetailsModel }) =>
 
     const { purchasedItems } = data;
     return (
-        <div className='flex flex-col rounded-[12px] gap-3 p-6'
-            style={{
-                backgroundColor: "var(--main-bg-secondary-dark)"
-            }}
+        <div className='flex flex-col rounded-[12px] gap-3 p-6 bg-gray-50'
         >
             <span className='w-full flex justify-between font-semibold'>
                 <span>Items</span>

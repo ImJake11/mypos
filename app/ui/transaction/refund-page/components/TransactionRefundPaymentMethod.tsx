@@ -35,7 +35,7 @@ const TransactionRefundPaymentMethod = () => {
 
             <div className='w-full flex flex-col gap-2'>
                 <span>Reference ID:</span>
-                <input value={String(referenceID ?? "")} type="text" maxLength={20} className='tf-attr h-[2rem] m-[0_5px] p-2'
+                <input value={String(referenceID ?? "")} type="text" maxLength={20} className='rounded-[8px] border border-gray-400 p-2 focus:outline-[var(--color-brand-primary)] h-[2.5rem] m-[0_5px]'
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const { value } = e.target;
 

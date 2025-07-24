@@ -37,7 +37,7 @@ const TransactionPDFLayout = () => {
                     {
 
                         filteredData.length <= 0 ? <div className='w-full h-full grid place-content-center'>
-                            <span><strong>
+                            <span className='text-white dark: black'><strong>
                                 No Data found
                             </strong></span>
                         </div>
@@ -48,7 +48,7 @@ const TransactionPDFLayout = () => {
                 <button className='absolute top-3 right-[15%]'
                     onClick={() => dispatch(trnasactionTogglePDF())}
                 >
-                    <CloseIcon size={30} />
+                    <CloseIcon size={30} attr='stroke-white'/>
                 </button>
 
                 <TransactionDownloadPDFBtn dataLength={filteredData.length} pdfRef={pdfRef} />

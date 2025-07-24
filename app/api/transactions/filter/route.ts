@@ -82,9 +82,19 @@ export async function GET(req: NextRequest) {
 
         const data = await prisma.transactionDetails.findMany({
             where,
-            include: {
-                purchasedItems: true,
-            }
+           include: {
+           purchasedItems:{
+                include: {
+                    product:{
+                        select: {
+                            imageUrl:true,
+                            name: true,
+                            price: true,
+                        }
+                    }
+                }
+           }
+           }
         });
 
         return NextResponse.json({ data }, { status: 200 });

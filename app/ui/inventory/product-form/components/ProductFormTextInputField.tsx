@@ -21,7 +21,7 @@ const TextInputField = ({ isNumeric, onChange, placeholder, name, label, value, 
         onChange={onChange}
         maxLength={maxLenght ? maxLenght : undefined}
         inputMode={isNumeric ? "numeric" : "text"}
-        className='tf-attr border h-[3rem] w-full p-1.5'
+        className='rounded-[8px] border border-black h-[2.5rem] w-full p-1.5 focus:outline-[var(--color-brand-primary)]'
     />
     </div>
 }

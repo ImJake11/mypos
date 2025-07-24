@@ -18,10 +18,10 @@ const InventoryLoadingState = () => {
         >
             {Array.from({ length: 15 }).map((_, i) => {
 
-                return <div key={i} className='w-full h-[250px] bg-[var(--main-bg-primary-dark)] rounded-[20px] p-2 flex flex-col justify-around'>
-                    <div className='rounded-[12px] h-[50%] w-full] bg-[var(--main-bg-secondary-dark)]'></div>
-                    <div className='rounded-[12px] h-[1rem] w-full] bg-[var(--main-bg-secondary-dark)]'></div>
-                    <div className='w-[2rem] h-[2rem] rounded-full bg-[var(--main-bg-secondary-dark)]'></div>
+                return <div key={i} className='w-full h-[250px] bg-[var(--main-bg-primary)] rounded-[8px] p-2 flex flex-col justify-around'>
+                    <div className='rounded-[12px] h-[50%] w-full] bg-[var(--main-bg-secondary)]'></div>
+                    <div className='rounded-[12px] h-[1rem] w-full] bg-[var(--main-bg-secondary)]'></div>
+                    <div className='w-[2rem] h-[2rem] rounded-full bg-[var(--main-bg-secondary)]'></div>
                 </div>
             })}
         </motion.div>

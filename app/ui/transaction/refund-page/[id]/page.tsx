@@ -23,12 +23,7 @@ const page = () => {
         </div>
     )
     return (
-        <div className='w-screen h-screen flex flex-col overflow-hidden relative'
-            style={{
-                backgroundColor: "var(--main-bg-primary-dark)"
-            }}
-        >
-            <Sidebar />
+        <div className='w-screen h-screen flex flex-col overflow-hidden relative bg-[var(--main-bg-primary)]'>
             <GlobalWrapper child={child} />
         </div>
     )

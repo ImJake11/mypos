@@ -8,11 +8,7 @@ const Appbar = ({ child, title, icon }: {
     icon?: any,
 }) => {
     return (
-        <div className='w-full min-h-[4rem] flex justify-between items-end p-2 pr-5 gap-2'
-            style={{
-                backgroundColor: "var(--main-bg-primary-dark)",
-            }}
-        >
+        <div className='w-full min-h-[4rem] flex justify-between items-end p-2 pr-5 gap-2 bg-[var(--main-bg-primary)]'>
             <div className='flex gap-2 items-center'>
                 {icon}
                 <span className='font-semibold text-[1.2rem]'>{title}</span>

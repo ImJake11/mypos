@@ -40,7 +40,7 @@ function SalesSummary({ title, data, }: {
 }) {
     return <span className='flex gap-1'>
         <span className='w-[10rem]'>{title}:</span>
-        <span style={{ color: "var(--foreground-lighter)" }}>{data}</span>
+        <span className='text-gray-500'>{data}</span>
     </span>
 }
 

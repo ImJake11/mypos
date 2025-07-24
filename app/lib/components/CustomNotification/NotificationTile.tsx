@@ -48,7 +48,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
 
     const translationValue = (): number => {
 
-        if (isClickedATile) return index * 80;
+        if (isClickedATile) return index * 82;
 
         const value = isHovered ? 40 : 10;
         return index * value;
@@ -104,7 +104,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
             x: "100%",
         }}
         animate={{
-            boxShadow: "0px 5px 10px rgba(0, 0, 0, 0.3)",
+            boxShadow: isClickedATile ? undefined : "0px 5px 10px rgba(0, 0, 0, 0.3)",
             y: translationValue(),
             opacity: opacityValue(),
             scale: scaleValue(),
@@ -142,9 +142,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
 
         {/** actions */}
         <div className='flex gap-1 items-center'>
-            <motion.button className='grid place-content-center w-[5rem] h-[2rem] rounded-[2px]'
-                style={{ backgroundColor: "var(--main-bg-secondary-dark)" }}
-
+            <motion.button className='grid place-content-center w-[5rem] h-[2rem] rounded-[4px] bg-gray-300'
                 whileHover={{
                     border: "solid 1px var(--color-brand-primary)"
                 }}
@@ -159,17 +157,11 @@ export default function NotificationTile({ index, data, maxTotal }: {
 
         {/** view all notification */}
         {index === maxTotal - 1 && <div className="absolute h-[2rem] w-full justify-end bottom-0 right-0 translate-y-10 flex gap-2">
-            <button className="rounded-[4px] p-[8px_10px]"
-                style={{
-                    border: "solid 1px var(--color-brand-primary)",
-                }}
+            <button className="rounded-[4px] p-[8px_10px] border border-[var(--color-brand-primary)] bg-[var(--main-bg-primary)]"
                 onClick={() => dispatch(notificationChangeVisiblity(false))}
             >Hide</button>
 
-            <button className="rounded-[4px] p-[8px_10px]"
-                style={{
-                    border: "solid 1px var(--color-brand-primary)",
-                }}
+            <button className="rounded-[4px] p-[8px_10px] border border-[var(--color-brand-primary)] bg-[var(--main-bg-primary)]"
             >   <Link href={"/ui/notifications-page"}>
                     View All
                 </Link>

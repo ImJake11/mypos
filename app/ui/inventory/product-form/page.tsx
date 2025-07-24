@@ -16,7 +16,6 @@ const page = () => {
     return (
         <div className='w-screen h-screen flex overflow-hidden relative'>
             <GlobalWrapper child={child} />
-            <Sidebar />
         </div>
     )
 }

@@ -53,7 +53,9 @@ const CustomTextArea = ({ onChange, placeholder, value, name, label }: Props) =>
             value={value}
             placeholder={placeholder}
             onChange={onChange}
-            className='tf-attr p-1.5 w-full h-[3rem] max-h-[7rem] min-h-[3rem]'
+            className='rounded-[8px] border border-black p-1.5 w-full h-[3rem] max-h-[7rem] min-h-[3rem]
+            focus:outline-[var(--color-brand-primary)]
+            '
         >
 
         </textarea>

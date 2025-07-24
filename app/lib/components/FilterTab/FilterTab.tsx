@@ -132,7 +132,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
         <AnimatePresence>
             {isVisible &&
                 <motion.div
-                    className='w-full h-full absolute'
+                    className='w-screen h-screen absolute'
                     style={{
                         backgroundColor: "rgb(0,0,0,.5)",
                     }}

@@ -24,23 +24,17 @@ function NotificationPageTile({ tileData }: { tileData: NotificationModel }) {
         }
     }
 
-    return <div className='ml-3 w-full p-5 gap-1 h-[5rem] mb-0.5 flex flex-col'
-        style={{
-            borderBottom: "solid 1px var(--main-bg-secondary-dark)"
-        }}
-    >
+    return <div className='pl-[3rem] pr-[1rem] pt-[.5rem] w-full gap-2 min-h-[5rem] mb-0.5 flex flex-col  border-b mr-[2rem border-gray-300'>
 
-        <div className='flex-1 flex gap-3'>
-            <span className='text-[.6rem] h-fit p-[3px_7px] rounded-[12px]' style={{ backgroundColor: getTypeColor() }}>{tileData.type}</span>
+        <div className='flex gap-3'>
+            <span className='text-[.6rem] text-white h-fit p-[3px_7px] rounded-[12px]' style={{ backgroundColor: getTypeColor() }}>{tileData.type}</span>
             <span className='font-[600]'>{tileData.title}</span >
+            <div className="flex-1" />
+            <span className='text-[.7rem] font-[600]'>{date} - {time}</span>
         </div>
 
         {/** content and date */}
-
-        <div className='flex-1 flex' style={{ color: "var(--foreground-lighter)" }}>
-            <span className='flex-1'>{tileData.message}</span>
-            <span className='place-self-end'>{date} - {time}</span>
-        </div>
+        <span className='pl-[1rem] flex-1 flex text-gray-500 text-[.7rem]'>- {tileData.message}</span>
 
     </div>
 }

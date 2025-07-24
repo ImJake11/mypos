@@ -25,11 +25,7 @@ const TransactionDetailsSummary = ({ data }: { data: TransactionDetailsModel }) 
     }
 
     return (
-        <div className='w-full h-fit rounded-[12px] flex flex-col gap-2 p-5'
-            style={{
-                backgroundColor: "var(--main-bg-secondary-dark)"
-            }}
-        >
+        <div className='w-full h-fit rounded-[12px] flex flex-col gap-2 p-5 bg-gray-50'>
             <TransactionDetailsTile data={new Date(date!).toLocaleDateString("en-US", { dateStyle: "long" })} title='Date' />
             <TransactionDetailsTile data={new Date(date!).toLocaleTimeString("en-US", { timeStyle: "short", timeZone: "Asia/Manila" })} title='Time' />
             <TransactionDetailsTile data={getTransactionIDAsPrivate()} title='Transaction ID' />

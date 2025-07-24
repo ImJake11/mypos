@@ -16,9 +16,8 @@ export default async function Page() {
     </div>
 
     return (
-        <div className='bg-[var(--background)] w-screen h-screen flex overflow-hidden relative'>
+        <div className='w-screen h-screen flex overflow-hidden relative'>
             <GlobalWrapper child={child} />
-            <Sidebar />
             <FilterTab
                 onPrimaryButtonContext={InventoryAction.INVENTORY_FILTER_DATA}
                 onClearFilterContext={InventoryAction.INVENTORY_CLEAR_FILTER_DATA}

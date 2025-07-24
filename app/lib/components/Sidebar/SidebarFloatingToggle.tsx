@@ -18,12 +18,7 @@ const SidebarFloatingToggle = () => {
 
     return (
         <AnimatePresence>
-            {isFloatingVisible && <motion.div className='w-[2rem] h-[2rem] rounded-full absolute left-[102%] top-2 grid place-content-center'
-                style={{
-                    backgroundColor: "var(--main-bg-primary-dark)",
-                    border: "solid 2px var(--color-brand-primary)",
-                }}
-
+            {isFloatingVisible && <motion.div className='w-[2rem] h-[2rem] rounded-full absolute left-[102%] top-2 grid place-content-center bg-[var(--main-bg-primary)]  border border-[var(--color-brand-primary)]'
                 initial={{
                     opacity: 0,
                     x: "-40%",

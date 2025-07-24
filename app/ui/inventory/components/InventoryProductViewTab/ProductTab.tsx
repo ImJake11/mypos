@@ -17,6 +17,7 @@ import ImageContainer from './ProductTabImageContainer';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
+import ProductTabLoadingState from './ProductTabLoadingState';
 
 const ViewProductTab = () => {
 
@@ -99,83 +100,71 @@ const ViewProductTab = () => {
           isOpen: false,
         }))}
       >
-        {isLoading ? <LoadingState /> : <motion.div className='absolute h-screen w-[40vw] flex flex-col overflow-auto gap-2'
-          style={{
-            backgroundColor: "var(--main-bg-primary-dark)",
-            right: "var(--sidebar-width)",
-          }}
-          initial={{
-            opacity: 0,
-          }}
+        <div className='w-[40vw] h-screen bg-[var(--main-bg-primary)] absolute right-0'>
+          {isLoading ? <ProductTabLoadingState /> : <motion.div className='w-full h-full flex flex-col overflow-auto gap-2 right-0'
+            style={{
+              backgroundColor: "var(--main-bg-primary)",
+            }}
+            initial={{
+              opacity: 0,
+            }}
 
-          animate={{
-            opacity: 1,
-          }}
+            animate={{
+              opacity: 1,
+            }}
 
-          transition={{
-            ease: "easeIn",
-            duration: .25,
-            delay: .3
-          }}
-        >
-          <ImageContainer url={data!.coverImage} />
-          <ProductDetails
-            isActive={data!.isActive}
-            isFavorite={data!.isFavorite}
-            name={data!.name}
-            sellingPrice={data!.sellingPrice}
-            promotionalDiscount={data!.promotionalDiscount}
-            description={data!.description ?? ""}
-            category={data!.category!}
-          />
-          {data?.highlights && <KeyFeatures data={data!.highlights} />}
+            transition={{
+              ease: "easeIn",
+              duration: .25,
+              delay: .3
+            }}
+          >
+            <ImageContainer url={data!.coverImage} />
+            <ProductDetails
+              isActive={data!.isActive}
+              isFavorite={data!.isFavorite}
+              name={data!.name}
+              sellingPrice={data!.sellingPrice}
+              promotionalDiscount={data!.promotionalDiscount}
+              description={data!.description ?? ""}
+              category={data!.category!}
+            />
+            {data?.highlights && <KeyFeatures data={data!.highlights} />}
 
-          <VariantsTable variants={data!.variants} lowStock={data!.lowStock} />
+            <VariantsTable variants={data!.variants} lowStock={data!.lowStock} />
 
-          {/** show only if product has bulk pricing data */}
-          {data!.bulkEnabled && <BulkTable bulkTier={data!.bulkTier} />}
-          <div className='min-h-[2rem]' />
+            {/** show only if product has bulk pricing data */}
+            {data!.bulkEnabled && <BulkTable bulkTier={data!.bulkTier} />}
+            <div className='min-h-[2rem]' />
 
-          {/** actions */}
-          <div className='flex w-full items-center justify-end gap-3 pr-5'>
+            {/** actions */}
+            <div className='flex w-full items-center justify-end gap-3 pr-5'>
 
-            <button className='p-[5px_10px] rounded-[4px] flex items-center gap-2'
-              style={{
-                border: "1px solid var(--main-bg-secondary-dark)"
-              }}
-            >
-              <FontAwesomeIcon icon={faClose} />
-              <span>Close</span>
+              <button className='p-[5px_10px] rounded-[4px] flex items-center gap-2 text-gray-500 border border-gray-500'
+              >
+                <FontAwesomeIcon icon={faClose} />
+                <span>Close</span>
+              </button>
+
+              {/** update */}
+              <button className='button-primary-gradient p-[5px_10px] rounded-[4px] flex items-center gap-2 text-white'
+                onClick={handleUpdate}
+              >
+                <FontAwesomeIcon icon={faEdit} />
+                <span>Update</span>
+              </button>
+            </div>
+
+
+            {/** add to cart button */}
+            <button className='button-primary-gradient place-self-center w-[calc(100%-3rem)] mb-5 min-h-[2.5rem] rounded-[7px] flex items-center gap-2.5 justify-center text-white'>
+              <FontAwesomeIcon icon={faCartPlus} />
+              Add to cart
             </button>
-
-            {/** update */}
-            <button className='button-primary-gradient p-[5px_10px] rounded-[4px] flex items-center gap-2'
-              onClick={handleUpdate}
-            >
-              <FontAwesomeIcon icon={faEdit} />
-              <span>Update</span>
-            </button>
-          </div>
-
-
-          {/** add to cart button */}
-          <button className='button-primary-gradient place-self-center w-[calc(100%-3rem)] mb-5 min-h-[2.5rem] rounded-[7px] flex items-center gap-2.5 justify-center'>
-            <FontAwesomeIcon icon={faCartPlus} />
-            Add to cart
-          </button>
-        </motion.div>}
+          </motion.div>}
+        </div>
       </motion.div>}
     </AnimatePresence>
-  )
-}
-
-function LoadingState() {
-  return (
-    <div className='w-[40vw] h-screen bg-red-300 absolute'
-      style={{
-        right: "var(--sidebar-width)"
-      }}
-    ></div>
   )
 }
 

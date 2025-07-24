@@ -5,14 +5,17 @@ import { toggleProcessDialog } from '@/app/lib/redux/slice/processSlice';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import SaveNewProduct from '@/app/ui/inventory/product-form/services/ProductFormServices';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import React, { useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 
-const btnStyles = "w-fit min-h-[3rem]  rounded-[7px] p-[10px_15px]";
+const btnStyles = "w-fit min-h-[2.5rem]  rounded-[8px] p-[10px_15px]";
 
 const Actions = () => {
     const router = useRouter();
+    const params = useSearchParams();
+
+    const isForUpdate = params.get('product-id');
 
     const dispatch = useDispatch<AppDispatch>();
     const productSlice = useSelector((state: RootState) => state.productSlice);
@@ -53,14 +56,14 @@ const Actions = () => {
                 onClick={() => router.back()}
             >Cancel</button>
 
-            {!productSlice.isForUpdate &&
-                <button className={`${btnStyles} button-primary-gradient`}
+            {!isForUpdate &&
+                <button className={`${btnStyles} button-primary-gradient text-white`}
                     onClick={() => handleSave(false)}
                 >Save & Add Another</button>
             }
-            <button className={`${btnStyles} button-primary-gradient`}
+            <button className={`${btnStyles} button-primary-gradient text-white`}
                 onClick={() => handleSave(true)}
-            >{productSlice.isForUpdate ? "Update" : "Save"}</button>
+            >{isForUpdate ? "Update" : "Save"}</button>
         </div>
     )
 }

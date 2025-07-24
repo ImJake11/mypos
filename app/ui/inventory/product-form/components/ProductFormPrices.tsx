@@ -72,7 +72,7 @@ const Prices = () => {
     }, [costPrice, tax, productSlice.isAutoComputeSellingPrice, vatId]);
 
 
-    return <div className='flex w-full flex-col gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary-dark)]'>
+    return <div className='flex w-full flex-col gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary)]'>
         {/** auto compute selling price toggle toggle */}
         <div className='flex gap-1.5'>
             <span>Auto Compute Selling Price</span>
@@ -106,7 +106,7 @@ const Prices = () => {
 
         {bulkEnabled && <BulkTable data={productSlice.data} />}
         {/** tier button */}
-        {bulkEnabled && <button className='button-primary-gradient rounded-[var(--button-border-radius)] h-[3rem] p-[10px_15px w-[8rem]' onClick={() => dispatch(formAddBulkTier())}>Add tier</button>}
+        {bulkEnabled && <button className='button-primary-gradient rounded-[var(--button-border-radius)] h-[2.5rem] text-white p-[10px_15px w-[8rem]' onClick={() => dispatch(formAddBulkTier())}>Add tier</button>}
     </div>
 }
 
@@ -119,7 +119,7 @@ function CheckBox({ isChecked, onClick }: CheckboxProps) {
     return <div
         className={`grid place-content-center h-[1.5rem] w-[1.5rem] rounded-[3px] `}
         style={{
-            backgroundColor: isChecked ? "var(--color-brand-primary)" : "var(--main-bg-secondary-dark)"
+            backgroundColor: isChecked ? "var(--color-brand-primary)" : "var(--main-bg-secondary)"
         }}
         onClick={onClick}
     >

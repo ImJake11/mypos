@@ -19,11 +19,7 @@ export default function BulkTable({ bulkTier }: BulkProp) {
             </div>
             {/** header */}
             <div className='w-full grid grid-cols-2'>
-                {bulkHeader.map((h, i) => <div key={i} className='h-[2rem]  uppercase grid place-content-center '
-                    style={{
-                        border: "solid 1px var(--main-bg-secondary-dark)"
-                    }}
-                >
+                {bulkHeader.map((h, i) => <div key={i} className='h-[2rem]  uppercase grid place-content-center border border-gray-400 '>
                     <span>{h}</span>
                 </div>)}
             </div>
@@ -31,10 +27,8 @@ export default function BulkTable({ bulkTier }: BulkProp) {
             {/** body */}
             <div className='flex flex-col w-full gap-3'>
                 {bulkTier.map((tier, i) => {
-                    return <div key={i} className="h-[2rem] w-full grid grid-cols-2 "
-                        style={{
-                            border: "solid 1px var(--main-bg-secondary-dark)"
-                        }}
+                    return <div key={i} className="h-[2rem] w-full grid grid-cols-2 border border-gray-300"
+                       
                     >
                         <div className='grid place-content-center'><span>{tier.quantity}</span></div>
                         <div className='grid place-content-center'><span>{tier.discount}% OFF</span></div>

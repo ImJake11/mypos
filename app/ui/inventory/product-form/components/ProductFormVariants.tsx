@@ -14,16 +14,15 @@ const Variants = () => {
     const newProductSlice = useSelector((state: RootState) => state.productSlice);
 
     const { variants } = newProductSlice.data;
-    const { isForUpdate } = newProductSlice;
 
 
     return (
-        <div className='flex flex-col w-full gap-3 rounded-[var(--form-section-border-radius)] p-[var(--form-section-padding)] bg-[var(--main-bg-primary-dark)]'
+        <div className='flex flex-col w-full gap-3 rounded-[var(--form-section-border-radius)] p-[var(--form-section-padding)] bg-[var(--main-bg-primary)]'
         >
             <ErrorMessage isShow={variants.length === 0} message='At least one variant is required' />
             <div className='flex w-full justify-between'>
                 <span className='italic font-semibold  '>Variants</span>
-                <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_20px]'
+                <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_20px] text-white'
                     onClick={() => dispatch(formAddVariant())}
                 >Add Variant</button>
             </div>
@@ -40,7 +39,7 @@ const Variants = () => {
                     <Header flex='flex-1' name='Actions' />
                 </div>}
                 {/** body */}
-                {variants.map((d, i) => <NewVariantTile key={i} index={i} data={d} sellingPrice={newProductSlice.data.sellingPrice} isForUpdate={isForUpdate} appDispatch={dispatch} />)}
+                {variants.map((d, i) => <NewVariantTile key={i} index={i} data={d} sellingPrice={newProductSlice.data.sellingPrice}  appDispatch={dispatch} />)}
 
             </div>
         </div>
@@ -53,11 +52,7 @@ interface HeaderProps {
 }
 const Header = ({ flex, name }: HeaderProps) => {
     return (
-        <div className={`${flex} grid place-content-center min-h-[3rem]`}
-
-            style={{
-                border: "solid 1px var(--tertiary)"
-            }}>
+        <div className={`${flex} grid place-content-center min-h-[2.5rem] border border-gray-200`}>
             <span>{name}</span>
         </div>
     )

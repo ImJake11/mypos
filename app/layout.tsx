@@ -31,9 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${poppins.variable} antialiased`}
+    <html lang="en" className="dark">
+      <body className={`${poppins.variable} antialiased`}
       >
         <ReduxProvider children={children} />
       </body>

@@ -24,22 +24,22 @@ const TransactionBody = () => {
     if (isError) return <div className='w-full h-full grid place-content-center'>ERROR BOSS!!!</div>
 
     const appbarChild = <div className='flex'>
-        <button className='w-fit h-fit p-2 rounded-[8px] button-primary-gradient'
+        <button className='w-fit h-fit p-1.5 rounded-[4px] flex gap-2 border border-gray-500 shadow-[0px_1px_5px_rgb(0,0,0,.4)]'
             onClick={() => dispatch(trnasactionTogglePDF())}
         >
-            <DownloadIcon size={18} />
+            <span>Download PDF</span>
+            <DownloadIcon size={16} />
         </button>
     </div>;
 
     return (
         <div className='flex-1 flex flex-col'>
             <Appbar
-                icon={<TransactionIcon size={24} />}
                 child={appbarChild}
                 title='Transactions' />
             {/** data */}
-            <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary-dark)] rounded-[8px] p-3 flex flex-col'>
-                {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary-dark)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
+            <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col'>
+                {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
 
                     {/** filter icon and title */}
                     <div className='flex w-full justify-between items-center min-h-0'>
@@ -77,7 +77,7 @@ function HeaderTile({ name, flex }: {
     flex?: string
 }) {
 
-    return <div className={`flex-1 h-[2rem] grid place-content-center bg-[var(--main-bg-secondary-dark)] ${flex ?? "flex-1"}`}>
+    return <div className={`flex-1 h-[2rem] grid place-content-center bg-gray-100 font-[600] ${flex ?? "flex-1"}`}>
         {name}
     </div>
 }

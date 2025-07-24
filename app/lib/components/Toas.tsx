@@ -22,7 +22,7 @@ const Toas = () => {
 
             case ToasEnum.DEFAULT:
                 attr = {
-                    backgroundColor: "var(--main-bg-primary-dark)",
+                    backgroundColor: "var(--main-bg-primary)",
                     border: "solid 2px var(--toas-default)",
                 }
                 break;
@@ -35,13 +35,13 @@ const Toas = () => {
                 break;
             case ToasEnum.SUCCESS:
                 attr = {
-                    backgroundColor: "var(--main-bg-primary-dark)",
+                    backgroundColor: "var(--main-bg-primary)",
                     border: "solid 2px var(--toas-success)",
                 }
                 break;
             case ToasEnum.ERROR:
                 attr = {
-                    backgroundColor: "var(--main-bg-primary-dark)",
+                    backgroundColor: "var(--main-bg-primary)",
                     border: "solid 2px var(--toas-error)",
                 }
                 break;
@@ -54,7 +54,7 @@ const Toas = () => {
 
             default:
                 attr = {
-                    backgroundColor: "var(--main-bg-primary-dark)",
+                    backgroundColor: "var(--main-bg-primary)",
                     border: "solid 2px var(--toas-primary)",
                 }
         }

@@ -32,7 +32,7 @@ const InventoryGridTile = ({
 
 
     return (
-        <motion.div className='w-full h-[250px] bg-[var(--product-card-bg)] flex-col rounded-[var(--product-card-border-radius)] flex p-2 gap-1 relative'
+        <motion.div className='w-full h-[250px] bg-[var(--product-card-bg)] flex-col rounded-[8px] flex p-2 gap-1 relative shadow-[1px_1px_5px_rgb(0,0,0,.3)]  transition-all duration-300 ease-in-out'
             layout
             initial={{
                 opacity: 0,
@@ -49,15 +49,12 @@ const InventoryGridTile = ({
             onMouseLeave={handleMouseLeave}
         >
             <div className="w-full h-[120px] overflow-hidden rounded-[12px] relative"
-                style={{
-                    backgroundColor: "var(--secondary-background)"
-                }}
 
                 onClick={() => dispatch(inventoryToggleProductView({ id: data.id!, isOpen: true }))}
             >
                 {data.coverImage ? <motion.img src={data.coverImage} loading='lazy' alt="cover photo" className='object-fill w-full h-full'
                     animate={{
-                        scale: isHover ? 1.2 : 1,
+                        scale: isHover ? 1.1 : 1,
                     }}
                 /> :
                     <FontAwesomeIcon icon={faImage} size='5x' className='place-self-center' />}
@@ -71,7 +68,7 @@ const InventoryGridTile = ({
                 <div className='flex flex-col w-full h-full justify-evenly gap-1'>
                     <span className='font-semibold italic'>{data.name}</span>
 
-                    <span className='text-[.8rem] text-[var(--foreground-lighter)]'>
+                    <span className='text-[.8rem]'>
                         {Number(data.sellingPrice).toLocaleString('en-US', { currency: "PHP", style: "currency" })}
                     </span>
                 </div>
@@ -85,7 +82,7 @@ const InventoryGridTile = ({
                     {/** favorite */}
                     <button className='h-[2rem] w-[2rem] rounded-full grid place-content-center'
                         style={{
-                            backgroundColor: "var(--main-bg-secondary-dark)"
+                            backgroundColor: "var(--main-bg-secondary)"
                         }}
                         onClick={() => {
                             inventoryServiceUpdateProductFavorite(

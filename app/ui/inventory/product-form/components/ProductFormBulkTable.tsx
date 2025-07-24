@@ -16,7 +16,6 @@ function generateBorderColor(condition: boolean) {
         return "border-[var(--color-brand-primary)]"
     }
 
-
     return "border-red-400";
 
 }
@@ -34,10 +33,7 @@ export default function BulkTable({ data }: Prop) {
 
     const dispatch = useDispatch<AppDispatch>();
 
-    const Header = (name: string) => <div className='flex-1 h-[3rem] grid place-content-center'
-        style={{
-            border: "solid 1px var(--main-bg-secondary-dark)"
-        }}
+    const Header = (name: string) => <div className='flex-1 h-[2.5rem] grid place-content-center border border-gray-200'
     ><span>{name}</span></div>
 
     return (
@@ -94,10 +90,11 @@ const Cell = ({ quantity, discount, index, total, sellingPrice, dispatch }: Cell
 
 
     return (
-        <div className='flex w-full h-[3rem] gap-1 mt-2'>
+        <div className='flex w-full h-[3rem] gap-1 mt-2 items-center'>
             <input type="text" name="quantity" value={String(quantity)} className={`flex-1 h-full border ${generateBorderColor(quantity > 0)} rounded-[7px] p-1.5`}
                 onChange={(e) => handleUpdate(e, index)}
             />
+
             <input type="text" name="discount" value={String(discount)} className={`flex-1 h-full border ${generateBorderColor(true)} rounded-[7px] p-1.5`}
                 onChange={(e) => handleUpdate(e, index)}
             />
@@ -107,7 +104,8 @@ const Cell = ({ quantity, discount, index, total, sellingPrice, dispatch }: Cell
                 <FontAwesomeIcon icon={faArrowRight} />
                 <span>Php  {total}</span>
             </div>
-            <FontAwesomeIcon icon={faTrash} className='text-red-500 text-[1.5rem] flex-1' onClick={() => dispatch(formDeleteBulkTire(index))} />
+
+            <FontAwesomeIcon icon={faTrash} className='text-red-500 text-[1rem] flex-1' onClick={() => dispatch(formDeleteBulkTire(index))} />
         </div>
     )
 }

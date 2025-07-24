@@ -26,7 +26,7 @@ export default function CustomNotification() {
 
       dispatch(notificationUpdateNotifications(data));
 
-      if (!isVisible) {
+      if (!isVisible && data.length > 0) {
         dispatch(notificationChangeVisiblity(true))
       }
     } catch (e) {
@@ -50,7 +50,7 @@ export default function CustomNotification() {
       dispatch(notificationChangeVisiblity(true));
     }
 
-  }, [notifications]);
+  }, []);
 
   useSocketEvent("notification_event", handleWebSocketEvent);
 
@@ -77,7 +77,7 @@ export default function CustomNotification() {
       if (!isClickedATile && !isHovered) {
         dispatch(notificationChangeVisiblity(false));
       }
-    }, 5000);
+    }, 10000);
 
     return () => clearTimeout(timeout);
 
@@ -93,7 +93,7 @@ export default function CustomNotification() {
   }, []);
 
   return <AnimatePresence>
-    {isVisible && <motion.div className='w-[30rem] h-[60vh] absolute right-5 top-4 '
+    {isVisible && <motion.div className='w-[30rem] h-[60vh] absolute right-5 top-4'
 
       initial={{
         opacity: 0

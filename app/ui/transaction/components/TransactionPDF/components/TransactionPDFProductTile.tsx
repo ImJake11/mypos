@@ -5,23 +5,14 @@ import { capitalizeFirtLetter } from '@/app/lib/utils/services/capitalizeFirstLe
 import React, { useEffect, useState } from 'react'
 
 const TransactionPDFProductTile = ({
-    id, quantity, price
+    id, quantity, price,productName
 }: {
     id: string,
     quantity: number,
     price: number,
+    productName: string,
 }) => {
 
-    const [productName, setProductName] = useState("");
-
-    useEffect(() => {
-
-        const fetchName = async () => {
-            const res = await fetchVariantName(id);
-            setProductName(res);
-        }
-        fetchName();
-    }, []);
 
     return (
         <span className='flex'>

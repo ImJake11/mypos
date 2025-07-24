@@ -64,7 +64,11 @@ const TransactionPDFItemTile = ({
             <div className='h-[.2rem]' />
             <TableHeaders />
             <div className='h-[.3rem]' />
-            {purchasedItems.map(item => <TransactionPDFProductTile key={item.id} id={item.productId} price={item.unitPrice} quantity={item.quantity} />)}
+            {purchasedItems.map(item => <TransactionPDFProductTile key={item.id} 
+            id={item.productId} 
+            price={item.unitPrice} 
+            productName={item.product?.name!}
+            quantity={item.quantity} />)}
             <div className='w-full h-[1px] mt-2'
                 style={{
                     borderBottom: "solid 1px rgb(0,0,0, .2)"

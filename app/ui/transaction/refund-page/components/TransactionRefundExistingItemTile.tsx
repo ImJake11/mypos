@@ -19,17 +19,14 @@ const TransactionRefundExistingItemTile = ({ data }:
     const isSelected = returnedItems.find(item => item.id === data.id)
 
     return (
-        <div className='flex w-full h-[2rem] rounded-[8px] p-2 items-center gap-3 min-h-0 mb-1'
+        <div className='flex w-full h-[2.5rem] rounded-[4px] p-2 items-center gap-3 min-h-0 mb-1'
             style={{
-                backgroundColor: "var(--main-bg-primary-dark)"
+                backgroundColor: "var(--main-bg-primary)"
             }}
         >
             {/** checkbox */}
-            <div className='w-[1rem] h-[1rem] rounded-[4px] grid place-content-center'
-                style={{
-                    border: "solid 1px var(--border-default-dark)",
-                    backgroundColor: isSelected ? "var(--color-brand-primary)" : "transparent"
-                }}
+            <div className={`w-[1rem] h-[1rem] rounded-[4px] grid place-content-center border ${isSelected ? "border-[var(--color-brand-primary)]" : " border-gray-500"}`}
+
                 onClick={() => dispatch(refundReturnItem(data))}
             >
                 {isSelected && <i className="ri-check-fill text-[1rem]" />}

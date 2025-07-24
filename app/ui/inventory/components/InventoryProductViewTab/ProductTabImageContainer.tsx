@@ -16,7 +16,7 @@ export default function ImageContainer({ url }: ImageProp) {
             {/** favorite icon */}
             <div className='w-[2.5rem] h-[2.5rem] rounded-full grid place-content-center absolute top-3 right-3'
                 style={{
-                    backgroundColor: "var(--main-bg-secondary-dark)"
+                    backgroundColor: "var(--main-bg-secondary)"
                 }}
             >
                 <i className="ri-heart-2-fill  text-[1.5rem]"></i>

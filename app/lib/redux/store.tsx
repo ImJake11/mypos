@@ -11,6 +11,7 @@ import transaction from "./slice/transactionSlice";
 import datePickerSlice from "./slice/datePickerSlice";
 import refundSlice from "./slice/refundSlice";
 import notificationSlice from "./slice/notificationSlice";
+import dashboarSlice from "./slice/dashboardSlice";
 
 const store = configureStore({
     reducer: {
@@ -25,6 +26,7 @@ const store = configureStore({
         refundSlice,
         transaction,
         notificationSlice,
+        dashboarSlice
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().prepend(appMiddlewareListner.middleware)

@@ -29,7 +29,7 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
 
     const generateStatusIcon = (): React.JSX.Element => {
 
-        const color = "var(--main-bg-secondary-dark)";
+        const color = "var(--main-bg-secondary)";
         const size = 70;
 
         if (status === TransactionStatus.COMPLETED) {
@@ -47,8 +47,8 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
         <div className='w-full flex gap-4'>
             <div className='w-[10rem] aspect-square rounded-full relative grid place-content-center'
                 style={{
-                    backgroundColor: "var(--main-bg-primary-dark)",
-                    border: "8px solid var(--main-bg-secondary-dark)",
+                    backgroundColor: "var(--main-bg-primary)",
+                    border: "8px solid var(--main-bg-secondary)",
                 }}
             >
                 {generateStatusIcon()}
@@ -56,8 +56,8 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
                 {/** payment provider icon container */}
                 <div className='absolute -right-2 bottom-0 w-[3rem] aspect-square rounded-full grid place-content-center'
                     style={{
-                        backgroundColor: "var(--main-bg-primary-dark)",
-                        border: "5px solid var(--main-bg-secondary-dark)",
+                        backgroundColor: "var(--main-bg-primary)",
+                        border: "5px solid var(--main-bg-secondary)",
                     }}
                 >
                     {getPaymentProviderIcon() ? <img src={getPaymentProviderIcon()} alt="img" width={24} height={24} /> : <span className='text-[1.5rem] font-bold'>C</span>}
@@ -77,7 +77,7 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
                 })}</span>
                 <div className='h-[3rem] w-[10rem] overflow-hidden rounded-[50px] grid place-content-center'
                     style={{
-                        backgroundColor: "var(--main-bg-primary-dark)"
+                        backgroundColor: "var(--main-bg-primary)"
                     }}
                 >
                     {status.toUpperCase()}

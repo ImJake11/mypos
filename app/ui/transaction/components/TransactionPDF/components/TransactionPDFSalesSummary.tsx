@@ -31,8 +31,8 @@ const TransactionPDFSalesSummary = ({ data }: {
             <Tile title='Amount paid:' data={convertToCurrency(amountPaid)} />
             <Tile title='Change:' data={convertToCurrency(changeGiven)} />
             <Tile title='Payment method:' data={`${paymentMethod} ${paymentProvider && `(${paymentProvider})`}`} />
-            <Tile title='Sub Total:' data={convertToCurrency(totalValSales)} />
-            <Tile title='Taxable Sales (VAT):' data={convertToCurrency(taxablSales)} />
+            <Tile title='Sub Total:' data={convertToCurrency(taxablSales)} />
+            <Tile title='Taxable Sales (VAT):' data={convertToCurrency(totalValSales)} />
             <Tile title='Zero-rated Sales:' data={convertToCurrency(nonTaxableSales)} />
             <Tile title='Exempt Sales:' data={convertToCurrency(exemptSales)} />
 

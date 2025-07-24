@@ -30,13 +30,13 @@ const TransactionRefundReturnItems = () => {
     }, [refundSlice]);
 
     return (
-        <div className='flex-1 flex flex-col p-2 text-[.8rem]' style={{ backgroundColor: "var(--main-bg-primary-dark)" }}>
+        <div className='flex-1 flex flex-col pl-5 pr-5 text-[.8rem]' style={{ backgroundColor: "var(--main-bg-primary)" }}>
 
             <span>Returned Items: </span>
             <div className='h-[1rem]' />
 
             <div className='w-full h-[calc(100vh-7.5rem)] flex flex-col overflow-auto'>
-                <div className='flex w-full pb-2 mb-2' style={{ borderBottom: "solid 1px var(--main-bg-secondary-dark)" }}>
+                <div className='flex w-full pb-2 mb-2' style={{ borderBottom: "solid 1px var(--main-bg-secondary)" }}>
                     <Headers title='Item' flex={3} />
                     <Headers title='Qty' flex={2} textAlign='left' />
                     <Headers title='Price' textAlign='center' />
@@ -70,7 +70,7 @@ const TransactionRefundReturnItems = () => {
                 <div className='flex flex-col w-full gap-2 p-1'>
                     <span>Reason (Optional)</span>
                     <textarea value={reason ?? ""}
-                        className='w-full max-h-[5rem] min-h-[1rem] h-[3rem] tf-attr p-2'
+                        className='w-full max-h-[5rem] min-h-[1rem] h-[3rem] border rounded-[8px] border-gray-400 p-2 focus:outline-[var(--color-brand-primary)]'
                         onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
                             dispatch(refundSetReason(e.target.value))
                         }}
@@ -80,14 +80,11 @@ const TransactionRefundReturnItems = () => {
 
                 <div className='min-h-[2rem]' />
                 <div className='w-full flex gap-2 justify-end'>
-                    <button className='min-h-[2rem] w-[7rem] rounded-[8px]'
-                        style={{
-                            border: "solid 1px var(--color-brand-primary)"
-                        }}
+                    <button className='min-h-[2rem] w-[7rem] rounded-[8px] border border-gray-400 text-gray-500'
                         onClick={()=> router.back()}
                     >Cancel</button>
 
-                    <button className='button-primary-gradient min-h-[2rem] w-[7rem] rounded-[8px]'
+                    <button className='button-primary-gradient min-h-[2rem] w-[7rem] rounded-[8px] text-white'
                         onClick={() => refundServices.saveTransaction(dispatch as AppDispatch, router)}
                     >Process Return</button>
                 </div>

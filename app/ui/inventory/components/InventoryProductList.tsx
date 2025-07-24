@@ -70,11 +70,11 @@ const ProductList = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className='main-background-gradient flex flex-col flex-1 min-h-0 overflow-auto gap-1 p-2 rounded-[11px]'>
+          <div className='bg-gray-100  flex flex-col flex-1 min-h-0 overflow-auto gap-2 p-2 rounded-[8px]'>
             {/** Table Header */}
             {isListView && (
               <motion.div
-                className='flex w-full h-[3rem] p-[0_0.5rem] bg-[var(--main-bg-primary-dark)] rounded-tr-[12px] rounded-tl-[12px]'
+                className='flex w-full h-[3rem] p-[0_0.5rem] bg-[var(--main-bg-primary)] rounded-tr-[12px] rounded-tl-[12px]'
                 initial={{ y: "-100%" }}
                 animate={{ y: "0%" }}
                 exit={{ y: "-100%" }}

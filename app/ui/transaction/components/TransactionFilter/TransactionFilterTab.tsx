@@ -63,7 +63,7 @@ const TransactionFilterTab = () => {
                     opacity: 0,
                 }}
             >
-                <motion.div className='h-full w-[30vw] bg-[var(--main-bg-primary-dark)] absolute right-0 p-5 flex flex-col gap-3'
+                <motion.div className='h-full w-[30vw] bg-[var(--main-bg-primary)] absolute right-0 p-5 flex flex-col gap-3'
                     initial={{
                         x: "100%"
                     }}
@@ -132,7 +132,7 @@ function ActionButton({
     bgColor?: string,
     onClick?: () => void,
 }) {
-    return <button className={`w-fit p-[0_10px] h-[3rem] rounded-[8px] grid place-content-center ${bgColor ?? "bg-transparent"} border border-[${borderColor ?? "var(--color-brand-primary)"}]`}
+    return <button className={`w-fit p-[0_10px] h-[2.5rem] rounded-[8px] grid place-content-center ${bgColor ?? "bg-transparent"} border border-[${borderColor ?? "var(--color-brand-primary)"}] text-white`}
         onClick={onClick}
     >
         {name}

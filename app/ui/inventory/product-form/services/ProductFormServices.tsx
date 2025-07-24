@@ -307,8 +307,6 @@ class ProductFormServices {
         // 1. Validate core required fields like name, pricing, category, etc.
         if (requiredDataIsValid) {
 
-            const { description, discountRate, expirationDate } = this.productData.promotionalDiscount;
-
 
             // 2. If bulk pricing is enabled, validate all tier values
             if (this.productData.bulkEnabled) {
@@ -349,16 +347,6 @@ class ProductFormServices {
 
                 if (hasInvalidVariants) return false;
 
-                return true;
-            }
-
-            // 4. If promotional discount is partially filled, validate all discount fields
-            else if (this.productData.promotionalDiscount) {
-
-                const isValid: boolean = description && discountRate > 0 && expirationDate ? true : false;
-
-                return isValid;
-            } else {
                 return true;
             }
         }
