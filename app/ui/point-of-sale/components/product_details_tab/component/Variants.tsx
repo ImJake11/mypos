@@ -41,7 +41,7 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
 
     const variantPrice = calculatePriceAdjustment(sellingPrice, price, isPositive);
 
-    return <div className={`w-full bg-[var(--main-bg-secondary-dark)] h-fit flex flex-col p-4 gap-4 rounded-[11px] ${isArchived ? "text-gray-500" : "text-white"}`}
+    return <div className={`w-full bg-[var(--main-bg-secondary)] h-fit flex flex-col p-4 gap-4 rounded-[11px] ${isArchived ? "text-gray-500" : "text-black"}`}
         style={{
             transform: isArchived ? "scale(0.9)" : "scale(1)"
         }}
@@ -49,7 +49,7 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
 
         <div className="flex w-full gap-3">
             {/** image */}
-            <div className='w-[7rem] h-[7rem] bg-[var(--main-bg-primary-dark)] rounded-[7px] overflow-hidden'>
+            <div className='w-[7rem] h-[7rem] bg-[var(--main-bg-primary)] rounded-[7px] overflow-hidden'>
                 <img src={imageUrl} alt="variant image" className='w-full h-full object-cover' />
             </div>
             {/** details */}
@@ -77,7 +77,7 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
 
         {/** add to cart */}
 
-        {isArchived ? <span className="text-center">This variant is Archived</span> : <div className={`${isSelected ? "bg-linear-0" : "button-primary-gradient"} h-[3rem] w-full rounded-[11px] grid place-content-center`}
+        {isArchived ? <span className="text-center">This variant is Archived</span> : <div className={`${isSelected ? "bg-linear-0" : "button-primary-gradient text-white"} h-[2.5rem] w-full rounded-[11px] grid place-content-center`}
             style={{
                 border: "solid 1px var(--color-brand-primary)",
             }}

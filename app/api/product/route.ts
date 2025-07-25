@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import io from "socket.io-client";
 import { createNewNotification } from "../services/createNotification";
 import { NotificationFilterType } from "@/app/lib/enum/notificationType";
+import { upsertProductExpenses } from "../services/upsertProductExpenses";
 
 const socket = io(process.env.SOCKET_URL || "");
 
@@ -67,6 +68,8 @@ export async function POST(req: NextRequest) {
                 id: true,
             }
         });
+
+        await upsertProductExpenses(id!, stock, costPrice);
 
         if (socket) {
             const payload = await createNewNotification({
@@ -157,6 +160,8 @@ export async function PUT(req: NextRequest) {
             },
         });
 
+        await upsertProductExpenses(id!, stock, costPrice);
+
         if (socket) {
             const payload = await createNewNotification({
                 message: `Product ${name} changes saved successfully`,
@@ -203,11 +208,6 @@ export async function GET() {
                 }
             }
         });
-
-        productData.map(p => {
-
-            console.log(p.coverImage)
-        })
 
         return NextResponse.json({ productData }, { status: 200 });
     } catch (e) {

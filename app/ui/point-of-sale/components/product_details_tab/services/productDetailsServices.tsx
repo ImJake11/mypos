@@ -15,7 +15,7 @@ export default class ProductDetailsServices {
 
     private posSlice = store.getState().posSlice;
 
-    public selectedProductData: ProductProps = this.posSlice.selectedProduct;
+    public selectedProductData: ProductProps | undefined = this.posSlice.selectedProduct;
     private selectedVariantID: string = this.posSlice.selectedVariantID;
     private quantity: number = this.posSlice.quantity;
 
@@ -27,16 +27,17 @@ export default class ProductDetailsServices {
 
     constructor() {
         // Find the variant by ID
-        this._cachedSelectedVariantData = this.selectedProductData.variants.find(variant => variant.id === this.selectedVariantID);
+        this._cachedSelectedVariantData = this.selectedProductData?.variants.find(variant => variant.id === this.selectedVariantID);
 
         // Find the highest bulk tier that matches the quantity
-        this._bulkTierData = this.selectedProductData.bulkTier?.findLast(tier => this.quantity >= tier.quantity);
+        this._bulkTierData = this.selectedProductData?.bulkTier?.findLast(tier => this.quantity >= tier.quantity);
     }
 
     /**
      * Calculates the discounted product price based on the promotional discount
      */
     public getDiscountedProductPrice(): number {
+        if (!this.selectedProductData) return 0;
 
         const { promotionalDiscount, sellingPrice } = this.selectedProductData;
 
@@ -117,7 +118,8 @@ export default class ProductDetailsServices {
      * Generates a full cart-ready object from the selected product and variant
      */
     public generateDataForCart(): CartModel | null {
-        if (!this._cachedSelectedVariantData) return null;
+
+        if (!this._cachedSelectedVariantData || !this.selectedProductData) return null;
 
         const { promotionalDiscount, vatStatus } = this.selectedProductData;
         const { imageUrl,

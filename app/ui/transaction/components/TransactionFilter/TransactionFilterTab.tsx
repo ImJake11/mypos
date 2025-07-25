@@ -82,7 +82,7 @@ const TransactionFilterTab = () => {
                 >
                     <div className='w-full flex items-center justify-between'>
                         Filter Transaction
-                        <button onClick={() => dispatch(transactionToggleFilterTab())}><CloseIcon size={32} /></button>
+                        <button onClick={() => dispatch(transactionToggleFilterTab())}><CloseIcon attr='stroke-gray-600' size={25} /></button>
                     </div >
 
 

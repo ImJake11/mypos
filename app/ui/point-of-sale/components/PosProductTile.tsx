@@ -40,7 +40,7 @@ const PosProductTile = ({ data }: Prop) => {
 
             {/** overlay for on click function */}
             <div className='absolute inset-1'
-                onClick={() => dispatch(posSelectProduct(data))}
+                onClick={() => dispatch(posSelectProduct(data.id!))}
             />
 
             

@@ -107,7 +107,7 @@ const OrderCompletePayment = () => {
             dispatch,
             transactionData,
         }).then(() => {
-            router.replace("/ui/pos");
+            router.replace("/ui/point-of-sale");
         });
 
     }

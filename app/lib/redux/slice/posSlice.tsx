@@ -11,7 +11,8 @@ interface SliceProp {
     isError: boolean,
     isFiltering: boolean,
     cartItems: CartModel[],
-    selectedProduct: ProductProps,
+    selectedProduct?: ProductProps,
+    selectedProdctID: string,
     isProductDetailsTabVisible: boolean,
     selectedVariantID: string,
     quantity: number,
@@ -28,40 +29,17 @@ const initialState: SliceProp = {
     paymenMethod: PaymentMethod.CASH,
     isCartVisible: false,
     cartItems: [], // --- list of cart items
-    selectedProduct: {
-        vatId: "",
-        name: "",
-        description: null,
-        categoryID: "",
-        sellingPrice: 0,
-        costPrice: 0,
-        tax: 0,
-        bulkEnabled: false,
-        stock: 0,
-        lowStock: 0,
-        variants: [],
-        coverImage: "",
-        photoSnapshots: [],
-        bulkTier: [],
-        promotionalDiscount: {
-            expirationDate: "",
-            discountRate: 0,
-            description: ""
-        },
-        highlights: "",
-        isActive: false,
-        isFavorite: false,
-        discountEnabled: false
-    },
     isProductDetailsTabVisible: false,
     selectedVariantID: "",
     quantity: 1,
     isLoading: true,
+    selectedProduct: undefined,
     isError: false,
     isFiltering: false,
     rawProductData: [],
     paymentProvider: "",
     transactionIDLength: 10,
+    selectedProdctID: ""
 }
 
 
@@ -81,8 +59,8 @@ const posSlice = createSlice({
         posTogglePaymentProvider: (state, action: PayloadAction<PaymentProvider>) => {
             state.paymentProvider = action.payload;
         },
-        posSelectProduct: (state, action: PayloadAction<ProductProps>) => {
-            state.selectedProduct = action.payload;
+        posSelectProduct: (state, action: PayloadAction<string>) => {
+            state.selectedProdctID = action.payload;
             state.isProductDetailsTabVisible = true;
         },
         posAddProductToCart: (state, action: PayloadAction<CartModel>) => {
@@ -175,6 +153,9 @@ const posSlice = createSlice({
         posSetCartItemsFromAPI: (state, action: PayloadAction<CartModel[]>) => {
             state.cartItems = action.payload;
         },
+        posSetSelectedProductData: (state, action: PayloadAction<ProductProps>) => {
+            state.selectedProduct = action.payload;
+        },
         posResetPosState: () => initialState,
     }
 });
@@ -185,6 +166,7 @@ export const createdActionPosClearFilter = createAction<ListenerPayload>("pos_cl
 export const { posAddProductToCart,
     posSetRawProductData,
     posSetReferenceID,
+    posSetSelectedProductData,
     posSelectProduct,
     posSelectVariant,
     posToggleCartTab,

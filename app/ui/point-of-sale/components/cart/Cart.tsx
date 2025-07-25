@@ -8,10 +8,9 @@ import CartHelpers from './services/cartHelper';
 import CartOrderSummary from './component/CartOrderSummary';
 import CartIcon from '@/app/lib/icons/cartIcon';
 import { useFetchCart } from '@/app/ui/point-of-sale/services/useFetchCart';
+import { AnimatePresence, motion } from "framer-motion";
 
 const Cart = () => {
-
-    const dispatch = useDispatch<AppDispatch>();
 
     const posSlice = useSelector((state: RootState) => state.posSlice);
 
@@ -25,45 +24,59 @@ const Cart = () => {
 
     useFetchCart({});
 
-    if (!posSlice.isCartVisible) return null;
-
     return (
-        <div className='absolute w-screen h-screen backdrop-blur-[2px]'
-            style={{
-                backgroundColor: "rgb(0,0,0, .5)",
-            }}
-        >
-            <div className='absolute right-0 w-[40vw] h-full bg-[var(--main-bg-primary)] flex flex-col p-5 gap-2'>
-                <div className='flex w-full items-center gap-2'>
-                    <div className='w-[2rem] h-[2rem]'>
-                        <CartIcon />
+        <AnimatePresence>
+            {posSlice.isCartVisible && <motion.div className='absolute w-screen h-screen backdrop-blur-[2px]'
+                style={{
+                    backgroundColor: "rgb(0,0,0, .5)",
+                }}
+
+                initial={{
+                    opacity: 0,
+                }}
+                animate={{
+                    opacity: 1,
+                }}
+                exit={{
+                    opacity: 0,
+                }}
+            >
+                <motion.div className='absolute right-0 w-[40vw] h-full bg-[var(--main-bg-primary)] flex flex-col p-5 gap-2'
+                    initial={{
+                        x: "100%"
+                    }}
+                    animate={{
+                        x: "0%"
+                    }}
+                    exit={{
+                        x: "100%"
+                    }}
+
+                    transition={{
+                        delay: .3,
+                        ease: "easeInOut",
+                        type: "tween"
+                    }}
+                >
+                    <div className='flex w-full items-center gap-2 '>
+                        <CartIcon size={22} />
+                        <span className='font-semibold italic'>Cart</span>
                     </div>
-                    <span className='font-semibold italic'>Cart</span>
-                </div>
 
-                <div className='h-1.5' />
-                {/** headers */}
-                <div className='flex w-full font-bold text-left '>
-                    <span className='flex-3'>Items</span>
-                    <span className='flex-2'>Price</span>
-                    <span className='flex-2'>Quantity</span>
-                    <span className='flex-1'></span>
-                </div>
-                <div className='h-[1rem]' />
+                    {/** list of items */}
+                    <div className='w-full h-[75vh] flex flex-col overflow-auto gap-2'>
+                        {cartData.length === 0 ? <div className='w-full h-full grid place-content-center'>
+                            No items
+                        </div> :
+                            cartData.map((data, i) => <CartTile key={i} cartHelper={cartHelper} index={i} data={data} />)}
+                    </div>
 
-                {/** list of items */}
-                <div className='w-full h-[75vh] flex flex-col overflow-auto gap-2'>
-                    {cartData.length === 0 ? <div className='w-full h-full grid place-content-center'>
-                        No items
-                    </div> :
-                        cartData.map((data, i) => <CartTile key={i} cartHelper={cartHelper} index={i} data={data} />)}
-                </div>
-
-                {/** summary */}
-                <CartOrderSummary
-                    overallCartTotal={cartHelper.computeOverAllTotalCartItems()} />
-            </div>
-        </div>
+                    {/** summary */}
+                    <CartOrderSummary
+                        overallCartTotal={cartHelper.computeOverAllTotalCartItems()} />
+                </motion.div>
+            </motion.div>}
+        </AnimatePresence>
     )
 }
 

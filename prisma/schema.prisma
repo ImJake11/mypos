@@ -49,6 +49,7 @@ model Product {
   vatStatus             Vat                  @relation(fields: [vatId], references: [id])
   vatId                 String               @default("48156bcc-e71b-48c6-8520-88b74b223676")
   CartCache             CartCache[]
+  ProductExpenses       ProductExpenses[]
 }
 
 model Variants {
@@ -145,13 +146,21 @@ model CartCache {
   vatStatus             String
 }
 
-model Notification {
+model Notifications {
   id        String   @id @unique @default(uuid())
   title     String
   message   String
   type      String
   createdAt DateTime @default(now())
-  isRead    Boolean? @default(false)
+  isRead    Boolean  @default(false)
   relatedTo String?
   relatedID String?
+}
+
+model ProductExpenses {
+  id        String   @unique @default(uuid())
+  productID String   @unique
+  product   Product  @relation(fields: [productID], references: [id])
+  timestamp DateTime @default(now())
+  total     Float
 }

@@ -41,8 +41,9 @@ const TransactionTile = ({
             <span className='text-[var(--foreground-lighter)] flex-2 text-center'>{data.transactionId}</span>
 
             {/** amount */}
-            <span className='flex-1 text-center'>₱ {data.netTotal.toLocaleString("en-us", {
-                style: "currency"
+            <span className='flex-1 text-center'>{Number(data.netTotal).toLocaleString("en-us", {
+                style: "currency",
+                currency: "PHP"
             })}</span>
 
             {/** status */}

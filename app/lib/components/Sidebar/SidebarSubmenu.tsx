@@ -25,9 +25,10 @@ const SidebarSubmenu = () => {
     }
     return (
         <AnimatePresence>
-            {isButtonHover && isSidebarMinimize && <motion.div key={`${subMenuYTranslation}`} className={`w-fit h-fit absolute left-[var(--sidebar-width-minimized)] cursor-`}
+            {isButtonHover && <motion.div key={`${subMenuYTranslation}`} className={`w-fit h-fit absolute left-[var(--sidebar-width-minimized)] cursor-`}
                 style={{
                     y: `${subMenuYTranslation}vh`,
+                    boxShadow: "0px 1px 5px rgb(0,0,0,.4)"
                 }}
                 initial={{
                     opacity: 0,
@@ -43,7 +44,7 @@ const SidebarSubmenu = () => {
                 onMouseLeave={() => handleHover(false)}
             >
 
-                {hoveredButtonOptions && hoveredButtonOptions.map((r, i) => <motion.div key={i} className={`w-[10rem] h-[2rem] ${path === r.route ? "bg-[var(--color-brand-secondary)] text-white" : "bg-[var(--main-bg-secondary)] text-gray-500"} rounded-[4px] grid place-content-center`}
+                {hoveredButtonOptions && hoveredButtonOptions.map((r, i) => <motion.div key={i} className={`w-[10rem] h-[2rem] ${path === r.route ? "bg-[var(--color-brand-secondary)] text-white" : "bg-[var(--main-bg-primary)] text-gray-500"} rounded-[4px] grid place-content-center`}
                     initial={{
                         opacity: 0,
                         x: "50%"

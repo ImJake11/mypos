@@ -122,7 +122,7 @@ const SidebarMainButtonTile = React.memo(({
         </Link>
 
         {/** ssub routes */}
-        {options && isSelected() && <div className="flex flex-col w-full bg-gray-100 ml-2.5 rounded-[8px]">
+        {options && !isSidebarMinimize && isSelected() && <div className="flex flex-col w-full bg-gray-100 ml-2.5 rounded-[8px]">
             {options?.map((d, i) => {
 
                 const isRrouteSelected = pathName === d.route;

@@ -132,7 +132,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
         <AnimatePresence>
             {isVisible &&
                 <motion.div
-                    className='w-screen h-screen absolute'
+                    className='w-screen h-screen absolute backdrop-blur-[3px]'
                     style={{
                         backgroundColor: "rgb(0,0,0,.5)",
                     }}
@@ -146,7 +146,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                         opacity: 0,
                     }}
                 >
-                    <motion.div className='absolute right-0 h-full w-[30vw] p-3 bg-[var(--main-bg-primary-dark)] flex flex-col'
+                    <motion.div className='absolute right-0 h-full w-[30vw] p-3 bg-[var(--main-bg-primary)] flex flex-col'
                         initial={{
                             x: "100%",
                         }}
@@ -225,7 +225,7 @@ interface CheckBoxesProp {
 
 function CheckBoxes({ isChecked, label, onClick }: CheckBoxesProp) {
     return <div className='flex w-full  gap-2.5'>
-        <div className={`w-[1.5rem] h-[1.5rem] rounded-[3px] grid place-content-center ${isChecked ? "bg-[var(--color-brand-primary)]" : "bg-[var(--main-bg-secondary-dark)]"}`}
+        <div className={`w-[1.5rem] h-[1.5rem] rounded-[3px] grid place-content-center ${isChecked ? "bg-[var(--color-brand-primary)]" : "bg-[var(--main-bg-secondary)]"}`}
             onClick={onClick}
         >
             {isChecked && <FontAwesomeIcon icon={faCheck} />}
@@ -249,8 +249,8 @@ function TextInput({ label, name, onChange, showDesign, value }: InputProp) {
 
         <div className='flex w-full items-center pr-1'>
             {showDesign && <>
-                <div className='w-[1rem] h-[1rem] bg-[var(--main-bg-secondary-dark)] rounded-[2px]' />
-                <div className='w-[1rem] h-[1px] border border-[var(--main-bg-secondary-dark)] border-dashed' />
+                <div className='w-[1rem] h-[1rem] bg-[var(--main-bg-secondary)] rounded-[2px]' />
+                <div className='w-[1rem] h-[1px] border border-[var(--main-bg-secondary)] border-dashed' />
             </>}
             <input type="text" name={name} value={value === "undefined" ? "" : value} className='tf-attr flex-1 h-[2.5rem] p-3'
                 onChange={onChange}

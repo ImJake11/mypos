@@ -32,11 +32,11 @@ export default React.memo(function CartTile({ data, index, cartHelper }: Prop) {
         dispatch(posRemoveVariant({ variantID: data.variantID }));
     }
 
-    return <div className='flex items-center h-fit p-[7px_9px] w-full bg-[var(--main-bg-secondary-dark)] rounded-[7px] gap-2 text-center'>
+    return <div className='flex items-center h-fit p-[7px_9px] w-full bg-[var(--main-bg-secondary)] rounded-[7px] gap-2 text-center'>
 
         {/** image container and name */}
         <div className='flex-3 flex items-center text-nowrap overflow-hidden text-ellipsis gap-2'>
-            <div className='h-[3rem] w-[3rem] bg-[var(--background)] rounded-[3px] overflow-hidden'>
+            <div className='h-[2.5rem] w-[2.5rem] bg-[var(--background)] rounded-[3px] overflow-hidden'>
                 <img src={data.variantPhotoUrl} alt="i" className="h-full w-full object-cover" />
             </div>
             <span>{data.variantName}</span>
@@ -86,9 +86,9 @@ const QuantityAction = ({ quantity, index }:
     }
 
     return <div className="flex-2">
-        <div className='button-primary-gradient w-[80%] h-[2rem] rounded-[3px] flex justify-evenly items-center'>
+        <div className='w-[80%] h-[2rem] rounded-[3px] flex justify-evenly items-center'>
             <button
-                className="text-[1.2rem]"
+                className="text-[1.2rem] text-[var(--color-brand-primary)]"
                 onClick={() => handlePlusMinus(true)}>+</button>
             <span>{quantity}</span>
             <button

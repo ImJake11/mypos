@@ -6,7 +6,7 @@ const initialState = {
     isHovered: false,
     isClickedATile: false,
     notifications: [] as NotificationModel[],
-    isVisible: true,
+    isVisible: false,
     notificationCount: 0,
     isInitialPageDataLoad: false,
     isMaxDataReach: false,

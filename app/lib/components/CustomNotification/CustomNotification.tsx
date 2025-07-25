@@ -22,7 +22,7 @@ export default function CustomNotification() {
 
       if (notifications.length >= 4) return;
 
-      const data = await fetchNotifications(notifications.length, 4, NotificationFilterType.TODAY);
+      const data = await fetchNotifications(notifications.length, 4, NotificationFilterType.SUCCESSFUL);
 
       dispatch(notificationUpdateNotifications(data));
 
@@ -93,7 +93,7 @@ export default function CustomNotification() {
   }, []);
 
   return <AnimatePresence>
-    {isVisible && <motion.div className='w-[30rem] h-[60vh] absolute right-5 top-4'
+    {isVisible && <motion.div className='w-[30rem] h-[55vh] absolute right-5 top-4'
 
       initial={{
         opacity: 0

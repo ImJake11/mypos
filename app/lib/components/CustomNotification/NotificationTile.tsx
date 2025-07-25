@@ -102,6 +102,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
         }}
         initial={{
             x: "100%",
+            border: "solid 1px var(--main-bg-primary)"
         }}
         animate={{
             boxShadow: isClickedATile ? undefined : "0px 5px 10px rgba(0, 0, 0, 0.3)",
@@ -109,6 +110,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
             opacity: opacityValue(),
             scale: scaleValue(),
             x: xTranslationvalue(),
+            border: isClickedATile ? `solid 2px ${getIndicatorColor()}` : undefined,
         }}
 
         exit={{

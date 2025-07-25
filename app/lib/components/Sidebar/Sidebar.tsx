@@ -10,6 +10,9 @@ import SidebarFloatingToggle from './SidebarFloatingToggle';
 import { sidebarToggleFloatingButton } from '../../redux/slice/sidebarSlice';
 import SidebarIcons from './SidebarIcons';
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
+import SidebarLogo from './SidebarLogo';
+import UserProfile from './UserProfile';
+
 
 const Sidebar = () => {
     const dispatch = useDispatch();
@@ -61,9 +64,9 @@ const Sidebar = () => {
 
 
     return (
-        <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[var(--main-bg-primary)]'
+        <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[var(--main-bg-primary)] p-[0_.1rem] scrollbar-hide'
             initial={{
-                width: "var(--sidebar-width)"
+                width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)"
             }}
             animate={{
                 width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)",
@@ -75,8 +78,10 @@ const Sidebar = () => {
                 onMouseEnter={() => dispatch(sidebarToggleFloatingButton(true))}
                 onMouseLeave={() => dispatch(sidebarToggleFloatingButton(false))}
             >
+                <SidebarLogo isSidebarMinimize={isSidebarMinimize} />
                 {/** floating sidebar toggle */}
                 <SidebarFloatingToggle />
+
             </div>
             <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
                 {sidebarButtonDetails.map((button, index) => {
@@ -93,12 +98,7 @@ const Sidebar = () => {
                     />
                 })}
             </div>
-
-            {/** profile container */}
-
-            {/** 
-            *  <UserProfile />
-            */}
+            <UserProfile />
         </motion.div>
     )
 }
