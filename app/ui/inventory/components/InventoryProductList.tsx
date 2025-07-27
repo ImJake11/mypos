@@ -19,6 +19,8 @@ import InventoryTableViewTile from './InventoryProductTiles/InventoryTableViewTi
 import InventoryNoDataFound from '../../../lib/components/PagesState/PageNoDataFoundPage';
 import { filterWebSocketFavoriteEvent } from '@/app/lib/redux/slice/filterSlice';
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
+import InventoryListVies from '../services/InventoryListVies';
+import InventoryGridView from '../InventoryGridView';
 
 const ProductList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -70,40 +72,9 @@ const ProductList = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className='bg-gray-100  flex flex-col flex-1 min-h-0 overflow-auto gap-2 p-2 rounded-[8px]'>
-            {/** Table Header */}
-            {isListView && (
-              <motion.div
-                className='flex w-full h-[3rem] p-[0_0.5rem] bg-[var(--main-bg-primary)] rounded-tr-[12px] rounded-tl-[12px]'
-                initial={{ y: "-100%" }}
-                animate={{ y: "0%" }}
-                exit={{ y: "-100%" }}
-              >
-                <TableHeaderTile flex='flex-[1]' title='Image' />
-                <TableHeaderTile flex='flex-[3]' title='Name' />
-                <TableHeaderTile flex='flex-[2]' title='Stock' />
-                <TableHeaderTile flex='flex-[2]' title='Stock Status' />
-                <TableHeaderTile flex='flex-[2]' title='Price' />
-                <TableHeaderTile flex='flex-[2]' title='Variant' />
-                <TableHeaderTile flex='flex-[2]' title='Availability' />
-                <TableHeaderTile flex='flex-[1]' title='Action' />
-              </motion.div>
-            )}
-            {displayList.length <= 0 ? (
-              <InventoryNoDataFound />
-            ) : (
-              <ul className={`flex-1 overflow-auto ${isListView ? "flex flex-col" : `grid ${isSidebarMinimize ? "grid-cols-7" : "grid-cols-6"}`} gap-2`}>
-                <AnimatePresence>
-                  {displayList.map((d) =>
-                    isListView ? (
-                      <InventoryTableViewTile key={d.id} data={d} />
-                    ) : (
-                      <GridTile key={d.id} data={d} />
-                    )
-                  )}
-                </AnimatePresence>
-              </ul>
-            )}
+          <div className='bg-gray-100  flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
+
+            {isListView ? <InventoryListVies data={displayList} /> : <InventoryGridView data={displayList} />}
           </div>
         </motion.div>
       )}
@@ -111,12 +82,5 @@ const ProductList = () => {
   );
 };
 
-function TableHeaderTile({ flex, title }: { flex: string; title: string }) {
-  return (
-    <div className={`${flex} h-full place-content-center grid font-semibold`}>
-      {title}
-    </div>
-  );
-}
 
 export default ProductList;

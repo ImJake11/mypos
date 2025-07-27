@@ -1,7 +1,10 @@
 import { TransactionDetailsModel } from "@/app/lib/models/transactionModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
-
+import io from "socket.io-client"
+import { createNewNotification } from "../services/createNotification";
+import { NotificationFilterType } from "@/app/lib/enum/notificationType";
+import { createNewActivityLog } from "../services/createNewActivityLog";
 /**
  * API Route: POST /api/transaction
  * 
@@ -29,20 +32,22 @@ import { NextRequest, NextResponse } from "next/server";
  * - 400 Bad Request if input is missing
  * - 500 Internal Server Error on unexpected failures
  */
+const socket = io(process.env.SOCKET_URL || "")
+
 export async function POST(req: NextRequest) {
+
+    const { transactionData } = await req.json();
+
+
+    if (transactionData === undefined) {
+        return NextResponse.json({ error: "Transaction data is undefined" }, { status: 400 });
+    }
+
+    const details: TransactionDetailsModel = transactionData
+
 
     try {
 
-        const { transactionData } = await req.json();
-
-
-        if (transactionData === undefined) {
-            return NextResponse.json({ error: "Transaction data is undefined" }, { status: 400 });
-        }
-
-        const details: TransactionDetailsModel = transactionData
-
-        console.log(typeof details.referenceId)
 
         const { transactionId } = await prisma.transactionDetails.create({
 
@@ -105,10 +110,30 @@ export async function POST(req: NextRequest) {
             });
         }));
 
+        if (socket) {
+            createNewNotification({
+                message: `Transaction ${transactionId} is processed successfully`,
+                title: "New Transaction",
+                type: NotificationFilterType.SUCCESSFUL,
+                relatedID: transactionId,
+            })
+        }
+
+        await createNewActivityLog({
+            action: "Complete Transaction",
+            relatedId: transactionId,
+            status: "SUCCESSFUL"
+        });
+
+
         return NextResponse.json({ message: "Successfully saved transaction data" }, { status: 200 })
 
     } catch (e) {
-        console.log(e)
+        await createNewActivityLog({
+            action: "Complete Transaction",
+            relatedId: "",
+            status: "FAILED"
+        });
         return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
@@ -146,3 +171,4 @@ export async function GET() {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }
+

@@ -75,9 +75,9 @@ const CategoriesList = () => {
                         setIsOpen(!isOpen);
                     }}
                 >
-                    <div className='w-[1rem] h-[1rem] bg-[var(--main-bg-secondary-dark)] rounded-[2px]' />
-                    <div className='w-[1rem] h-[1px] border border-[var(--main-bg-secondary-dark)] border-dashed' />
-                    <div className='w-full h-[2.5rem] border-[2px] border-[var(--main-bg-secondary-dark)] flex items-center rounded-[8px] p-2'>
+                    <div className='w-[1rem] h-[1rem] bg-gray-300 rounded-[2px]' />
+                    <div className='w-[1rem] h-[1px] border border-gray-300 border-dashed' />
+                    <div className='w-full h-[2.5rem] border-[2px] border-gray-300 flex items-center rounded-[8px] p-2'>
                         {categoryPreview}
                     </div>
                 </div>
@@ -95,7 +95,7 @@ const CategoriesList = () => {
 
             {/** input */}
             <AnimatePresence>
-                {isOpen && <motion.input type="text" className='tf-attr h-[2.5rem] ml-[2rem] p-2 mr-1' placeholder='Search category' value={searchQuery}
+                {isOpen && <motion.input type="text" className='border border-gray-300 focus:outline-[var(--color-brand-primary)] rounded-[8px] h-[2.5rem] ml-[2rem] p-2 mr-1' placeholder='Search category' value={searchQuery}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const { value } = e.target;
 
@@ -115,7 +115,7 @@ const CategoriesList = () => {
 
             {/** options */}
             <AnimatePresence>
-                {isOpen && <motion.div className='flex w-full h-fit max-h-[20rem] flex-col gap-1.5 items-center pl-[2rem] overflow-x-auto bg-[var(--background)]'
+                {isOpen && <motion.div className='flex w-full h-fit max-h-[20rem] flex-col gap-1.5 items-center pl-[2rem] overflow-x-auto'
                     initial={{
                         opacity: 0,
                     }}
@@ -145,7 +145,7 @@ interface ButtonProp {
 }
 
 function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
-    return <motion.div className={`w-full h-fit p-[6px_8px] flex gap-2 items-center rounded-[7px] ${isSelected ? "button-primary-gradient" : "main-background-gradient"} text-nowrap whitespace-nowrap`}
+    return <motion.div className={`w-full h-fit p-[6px_8px] flex gap-2 items-center rounded-[7px] ${isSelected ? "button-primary-gradient" : "main-background-gradient"} text-nowrap whitespace-nowrap ${isSelected? "text-white" : "text-black"}`}
         style={{
             border: "solid var(--primary) 1px",
         }}
@@ -170,6 +170,6 @@ function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
 }
 
 function LoadingTile() {
-    return <div className='w-full min-h-[3rem] rounded-[4px] bg-[var(--main-bg-secondary-dark)]'></div>
+    return <div className='w-full min-h-[3rem] rounded-[4px] bg-[var(--main-bg-secondary)]'></div>
 }
 export default CategoriesList

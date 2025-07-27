@@ -3,7 +3,7 @@
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { NotificationModel } from '@/app/lib/models/notificationModel';
-import { notificationSetIsInitialPageLoad, notificationSetIsMaxDataReach, notificationSetPageNotifications } from '@/app/lib/redux/slice/notificationSlice';
+import { notificationResetPageNotificatons, notificationSetIsInitialPageLoad, notificationSetIsMaxDataReach, notificationSetPageNotifications } from '@/app/lib/redux/slice/notificationSlice';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { fetchNotifications } from '@/app/lib/utils/data/fetchNotifications';
@@ -18,7 +18,7 @@ const NotificationPageBody = ({ data }: { data: NotificationModel[] }) => {
     const dispatch = useDispatch();
     const containerRef = useRef<HTMLDivElement>(null);
 
-    const { pageNotifications, currentFilter, isInitialPageDataLoad, isMaxDataReach } = useSelector((state: RootState) => state.notificationSlice);
+    const { pageNotifications, currentFilter, isInitialPageDataLoad, isMaxDataReach, isRead } = useSelector((state: RootState) => state.notificationSlice);
 
     const handleScroll = () => {
         const element = containerRef.current;
@@ -39,7 +39,9 @@ const NotificationPageBody = ({ data }: { data: NotificationModel[] }) => {
         if (isFetching) return;
 
         try {
-            const newNotifications = await fetchNotifications(pageNotifications.length, 10, currentFilter);
+            setIsFetching(true);
+
+            const newNotifications = await fetchNotifications(pageNotifications.length, 10, isRead, currentFilter);
 
             if (newNotifications.length <= 0) {
                 setIsFetching(false);
@@ -49,24 +51,27 @@ const NotificationPageBody = ({ data }: { data: NotificationModel[] }) => {
 
             dispatch(notificationSetPageNotifications([...pageNotifications, ...newNotifications]));
 
-            setTimeout(() => {
-                setIsFetching(false);
-            }, 1000);
-
         } catch (e) {
             dispatch(openToas({
                 message: "Failed to get more notifications",
                 type: ToasEnum.ERROR,
             }))
+        } finally {
+            setTimeout(() => {
+                setIsFetching(false);
+            }, 1000);
+
         }
     }
 
+    useEffect(() => {
+        dispatch(notificationResetPageNotificatons());
+    }, [isRead]);
+
     // monitor the filter changes 
     useEffect(() => {
-        if (!isInitialPageDataLoad) return;
-        
         handleFetch()
-    }, [currentFilter]);
+    }, [currentFilter, isRead]);
 
 
     // set initial page daata
@@ -81,7 +86,11 @@ const NotificationPageBody = ({ data }: { data: NotificationModel[] }) => {
         <div ref={containerRef} className='w-full h-[85vh] rounded-[12px] overflow-x-hidden overflow-auto flex flex-col'
             onScroll={handleScroll}
         >
-            {pageNotifications.map((n) => <NotificationPageTile key={n.id} tileData={n} />)}
+            {
+                pageNotifications.length <= 0 && !isFetching ? <div className='w-full h-full grid place-content-center'>
+                    <span>No notifications.</span>
+                </div> :
+                    pageNotifications.map((n) => <NotificationPageTile key={n.id} tileData={n} />)}
             <div className='h-[1rem]' />
             <div className='items-center justify-center flex w-full min-h-[2rem] gap-2'>
                 {isFetching && <> <span>Getting more notifications</span>

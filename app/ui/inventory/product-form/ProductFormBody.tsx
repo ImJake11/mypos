@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import Actions from './components/ProductFormActions'
 import UploadMedia from './components/ProductFormMedia'
 import Prices from './components/ProductFormPrices'
@@ -18,7 +18,7 @@ import { RootState } from '@/app/lib/redux/store';
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 
 const ProductFormBody = () => {
-
+    const dropAreaRef = useRef<HTMLDivElement>(null);
     const searchParams = useSearchParams();
 
     const id = searchParams.get("product-id");
@@ -57,7 +57,7 @@ const ProductFormBody = () => {
     if (isLoading) return <LoadingState />;
 
     return (
-        <div className='gap-5 flex flex-col flex-1 rounded-[11px] m-1.5 p-3 overflow-auto bg-[var(--main-bg-secondary)]'
+        <div ref={dropAreaRef} className='gap-5 flex flex-col flex-1 rounded-[11px] m-1.5 p-3 overflow-auto bg-[var(--main-bg-secondary)]'
         >
             <ProductFormStatus />
             <ProductInformationDetails />
@@ -75,7 +75,7 @@ function LoadingState() {
     return (
         <div className='flex-1 grid place-content-center'>
             <div className='flex gap-2 text-[1rem]'>
-                <CircularLoadingIndicator borderWidth={2} size={25}/>
+                <CircularLoadingIndicator borderWidth={2} size={25} />
                 <span>Prepairing Product Form...</span>
             </div>
         </div>

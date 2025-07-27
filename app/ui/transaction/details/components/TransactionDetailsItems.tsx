@@ -3,6 +3,7 @@
 import React from 'react'
 import { TransactionPurchasedItemsTile } from './TransactionDetailsPurchasedItemTile'
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
+import { IconListDetails } from '@tabler/icons-react';
 
 const TransactionDetailsItems = ({ data }: { data: TransactionDetailsModel }) => {
 
@@ -10,10 +11,11 @@ const TransactionDetailsItems = ({ data }: { data: TransactionDetailsModel }) =>
     return (
         <div className='flex flex-col rounded-[12px] gap-3 p-6 bg-gray-50'
         >
-            <span className='w-full flex justify-between font-semibold'>
-                <span>Items</span>
-                <span>Total</span>
-            </span>
+            <div className='flex w-full gap-2 items-center mb-[1rem]'>
+                <IconListDetails size={20} className='fill-gray-500 stroke-gray-500' />
+                <span className='text-[1rem]'>Items</span>
+            </div>
+
             <div className='h-[1rem]' />
             {purchasedItems.map((d, i) => <TransactionPurchasedItemsTile key={i}
                 name={d.product?.name!}

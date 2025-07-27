@@ -17,9 +17,7 @@ const Cart = () => {
     const cartData = posSlice.cartItems;
 
     const cartHelper = useMemo(() => {
-        return new CartHelpers({
-            cartItems: cartData,
-        })
+        return new CartHelpers()
     }, [cartData]);
 
     useFetchCart({});
@@ -28,7 +26,7 @@ const Cart = () => {
         <AnimatePresence>
             {posSlice.isCartVisible && <motion.div className='absolute w-screen h-screen backdrop-blur-[2px]'
                 style={{
-                    backgroundColor: "rgb(0,0,0, .5)",
+                backgroundColor: "rgb(0,0,0, .5)",
                 }}
 
                 initial={{

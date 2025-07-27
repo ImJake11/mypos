@@ -20,14 +20,14 @@ export class DashboardServices {
                 throw new Error("Server Error");
             }
 
-            const { dailySummary, yesterdaySummary, transactionStatus } = await res.json();
+            const { dailySummary, yesterdaySummary, recentTransactions } = await res.json();
 
             console.log(yesterdaySummary);
 
             dispatch(dashboardSetDailySummary({
                 dailySummary,
                 yesterdaySummary,
-                transactionStatus,
+                recentTransactions,
             }));
 
         } catch (e) {

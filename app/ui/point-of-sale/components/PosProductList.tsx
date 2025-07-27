@@ -37,7 +37,7 @@ export const PosProductList = () => {
 
     if (isError) return <PageErrorState />;
 
-    return isLoading ? <PosLoadingState /> : <div className='flex-1 min-h-0 main-background-gradient overflow-auto rounded-[12px]  gap-3'>
+    return isLoading ? <PosLoadingState /> : <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary)] overflow-auto gap-3'>
 
         {/** body */}
         {displayList.length <= 0 ? <PageNoDataFound /> : <ul className={`w-full min-h-0 flex-1 ${isSidebarMinimize? "grid-cols-7" : "grid-cols-6"} grid gap-3 p-2 items-start overflow-auto`}>

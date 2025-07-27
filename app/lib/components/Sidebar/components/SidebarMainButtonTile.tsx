@@ -3,10 +3,10 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import ArrowDownIcon from "../../icons/ArrowDownIcon";
-import { RootState } from "../../redux/store";
+import ArrowDownIcon from "../../../icons/ArrowDownIcon";
+import { RootState } from "../../../redux/store";
 import React from "react";
-import { sidebarHandleHover, SubrouteProp } from "../../redux/slice/sidebarSlice";
+import { sidebarHandleHover, SubrouteProp } from "../../../redux/slice/sidebarSlice";
 
 interface ButtonProps {
     name: string,
@@ -79,9 +79,13 @@ const SidebarMainButtonTile = React.memo(({
         />
 
         <Link href={url}>
-            <div className='absolute inset-0 h-[2.5rem] top-0 flex gap-2 items-center p-[0_1rem]'
+            <motion.div className='absolute inset-0 h-[2.5rem] top-0 flex gap-2 items-center p-[0_1rem]'
                 onMouseEnter={() => handleMouseHover(true)}
                 onMouseLeave={() => handleMouseHover(false)}
+
+                whileHover={{
+                    backgroundColor: "rgb(0,0,0,.1)",
+                }}
             >
                 <ButtonTile icon={icon} />
                 <AnimatePresence>
@@ -98,7 +102,7 @@ const SidebarMainButtonTile = React.memo(({
                         }}
                     >
                         {/** name */}
-                        <span className={`${isSelected() ? "text-white" : "text-[#403d3d]"} text-nowrap`}>
+                        <span className={`text-white text-nowrap`}>
                             {name}
                         </span>
 
@@ -118,16 +122,16 @@ const SidebarMainButtonTile = React.memo(({
                         </motion.div>}
                     </motion.div>}
                 </AnimatePresence>
-            </div>
+            </motion.div>
         </Link>
 
         {/** ssub routes */}
-        {options && !isSidebarMinimize && isSelected() && <div className="flex flex-col w-full bg-gray-100 ml-2.5 rounded-[8px]">
+        {options && !isSidebarMinimize && isSelected() && <div className="flex flex-col w-full">
             {options?.map((d, i) => {
 
                 const isRrouteSelected = pathName === d.route;
 
-                return <motion.div key={i} className={`w-full h-[2rem] grid place-content-center ${isRrouteSelected? "text-[var(--color-brand-primary)]" : "text-black"}`}
+                return <motion.div key={i} className={`w-full h-[2.5rem] grid place-content-center ${isRrouteSelected? "text-[var(--color-brand-primary)]" : "text-white"}`}
                     whileHover={{
                         backgroundColor: "rgb(0,0,0,.1)"
                     }}

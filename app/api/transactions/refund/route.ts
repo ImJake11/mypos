@@ -1,18 +1,23 @@
 import { TransactionDetailsModel } from "@/app/lib/models/transactionModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import io from "socket.io-client";
+import { createNewActivityLog } from "../../services/createNewActivityLog";
+import { createNewNotification } from "../../services/createNotification";
+import { NotificationFilterType } from "@/app/lib/enum/notificationType";
+import { transactionSetData } from "@/app/lib/redux/slice/transactionSlice";
 
+const socket = io(process.env.SOCKET_URL || "");
 
 export async function POST(req: NextRequest) {
 
+    const {
+        transactionData
+    } = await req.json();
+
+    const rawData: TransactionDetailsModel = transactionData;
+
     try {
-
-        const {
-            transactionData
-        } = await req.json();
-
-        const rawData: TransactionDetailsModel = transactionData;
-
 
         await prisma.transactionDetails.create({
             data: {
@@ -69,11 +74,40 @@ export async function POST(req: NextRequest) {
             });
         }
 
-        console.log("Success");
+        if (socket) {
+            await createNewNotification({
+                message: "Transaction refunded successfully",
+                title: "Transaction",
+                type: NotificationFilterType.SUCCESSFUL,
+                relatedID: transactionData.id,
+            })
+        }
+
+        await createNewActivityLog({
+            action: `Refund a Transaction`,
+            relatedId: transactionData.id ?? "",
+            status: "SUCCESSFUL",
+        })
+
         return NextResponse.json({ message: "Process successful" }, { status: 200 });
 
     } catch (e) {
-        console.log(e);
+
+        if (socket) {
+            await createNewNotification({
+                message: "Transaction refunded failed",
+                title: "Transaction",
+                type: NotificationFilterType.ERROR,
+                relatedID: rawData.transactionId,
+            })
+        }
+
+        await createNewActivityLog({
+            action: `Refund a Transaction`,
+            relatedId: "",
+            status: "FALILED",
+        });
+
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }

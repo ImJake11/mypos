@@ -20,7 +20,7 @@ const ProcessDialog = () => {
             }}
         >
 
-            <div className='w-[50vw] md:w-[30vw] h-[40vh]  absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-[11px]'
+            <div className='w-[40vw] md:w-[30vw] h-[30vh]  absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-[11px]'
                 style={{
                     backgroundColor: "var(--main-bg-primary)"
                 }}

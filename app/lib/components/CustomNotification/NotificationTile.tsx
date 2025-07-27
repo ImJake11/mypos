@@ -144,7 +144,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
 
         {/** actions */}
         <div className='flex gap-1 items-center'>
-            <motion.button className='grid place-content-center w-[5rem] h-[2rem] rounded-[4px] bg-gray-300'
+            <motion.button className='grid place-content-center w-[5rem] h-[2rem] rounded-[4px] bg-gray-200'
                 whileHover={{
                     border: "solid 1px var(--color-brand-primary)"
                 }}
@@ -158,12 +158,12 @@ export default function NotificationTile({ index, data, maxTotal }: {
         />
 
         {/** view all notification */}
-        {index === maxTotal - 1 && <div className="absolute h-[2rem] w-full justify-end bottom-0 right-0 translate-y-10 flex gap-2">
-            <button className="rounded-[4px] p-[8px_10px] border border-[var(--color-brand-primary)] bg-[var(--main-bg-primary)]"
+        {index === 0 && <div className="absolute h-[2rem] w-full justify-start top-0 left-0 -translate-y-10 flex gap-2">
+            <button className="rounded-[4px] p-[8px_10px] border border-gray-300 bg-gray-100"
                 onClick={() => dispatch(notificationChangeVisiblity(false))}
             >Hide</button>
 
-            <button className="rounded-[4px] p-[8px_10px] border border-[var(--color-brand-primary)] bg-[var(--main-bg-primary)]"
+            <button className="rounded-[4px] p-[8px_10px] border border-gray-300 bg-gray-100"
             >   <Link href={"/ui/notifications-page"}>
                     View All
                 </Link>

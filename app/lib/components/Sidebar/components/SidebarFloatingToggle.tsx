@@ -2,10 +2,10 @@
 
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../redux/store'
+import { RootState } from '../../../redux/store'
 import { AnimatePresence, motion } from 'framer-motion';
-import MenuALTIcon from '../../icons/MenuALTIcon';
-import { sidebarToggleSidebar } from '../../redux/slice/sidebarSlice';
+import MenuALTIcon from '../../../icons/MenuALTIcon';
+import { sidebarToggleSidebar } from '../../../redux/slice/sidebarSlice';
 
 const SidebarFloatingToggle = () => {
     const dispatch = useDispatch();

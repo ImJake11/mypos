@@ -44,9 +44,12 @@ export const useFetchCart = ((
 
     useEffect(() => {
 
-        const cartService = new CartHelpers({
-            cartItems: cartData,
-        })
+        const cartService = new CartHelpers();
+
+        if (cartData.length > 0) {
+            if (onSuccess) onSuccess();
+            return
+        };
 
         const handleCartCaching = async () => {
 

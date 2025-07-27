@@ -176,7 +176,7 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice }: Prop) => {
 
             {/** stock */}
             <div className='flex-1 grid place-content-center'>
-                <input value={String(stock)} type="text" maxLength={3} inputMode='numeric' className={`p-2 h-[3rem] border ${generateBorderColor(stock > 0)} rounded-[7px] w-full`}
+                <input value={String(stock)} type="text" maxLength={5} inputMode='numeric' className={`p-2 h-[3rem] border ${generateBorderColor(stock > 0)} rounded-[7px] w-full`}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const { value } = e.target;
 

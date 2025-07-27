@@ -3,21 +3,18 @@ import { NotificationModel } from "../../models/notificationModel";
 
 
 export async function fetchNotifications(currentLength: number,
-    limit: number, filter?: NotificationFilterType,
+    limit: number, isRead: boolean, filter?: NotificationFilterType,
 ): Promise<NotificationModel[]> {
 
     try {
-        const res = await fetch(`/api/notification?offset=${currentLength}&&limit=${limit}&&filter=${filter}`, {
+        const res = await fetch(`/api/notification?offset=${currentLength}&&limit=${limit}&&filter=${filter}&&isread=${isRead}`, {
             method: "GET",
         })
 
         if (!res.ok) {
             throw new Error("Failed to fetch notifications");
         }
-
         const { notifications } = await res.json();
-
-        console.log(notifications.length);
 
         return notifications;
 

@@ -7,9 +7,13 @@ import Appbar from '@/app/lib/components/Appbar/Appbar'
 
 const page = () => {
 
+    const appbar = (
+        <div className='w-full'></div>
+    )
+
     const child = <div className='w-full h-full flex flex-col'>
         {/** app bar */}
-        <Appbar title='Complete Order' />
+        <Appbar title='Complete Order' child={appbar} />
 
         <div className='h-[calc(100vh-4rem)] flex'>
             {/** cart items list */}

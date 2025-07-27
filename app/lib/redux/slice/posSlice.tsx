@@ -47,8 +47,8 @@ const posSlice = createSlice({
     initialState,
     name: "pos slice",
     reducers: {
-        posToggleCartTab: (state) => {
-            state.isCartVisible = !state.isCartVisible;
+        posToggleCartTab: (state, action: PayloadAction<boolean>) => {
+            state.isCartVisible = action.payload;
         },
         posSetReferenceID: (state, action: PayloadAction<string>) => {
             state.referenceID = action.payload;
@@ -73,6 +73,10 @@ const posSlice = createSlice({
             state.selectedVariantID = "";
         },
         posSelectVariant: (state, action: PayloadAction<string>) => {
+            if (action.payload === state.selectedVariantID) {
+                state.selectedVariantID = '';
+                return
+            }
             // if the passed payload is empty mean deselecting the variant;
             state.selectedVariantID = action.payload;
         },

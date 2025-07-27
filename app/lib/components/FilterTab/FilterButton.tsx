@@ -4,16 +4,17 @@ import React from 'react'
 import { FilterIcon } from '../../icons/filterIcon'
 import { filterToggleFilterTab } from '../../redux/slice/filterSlice'
 import { useDispatch } from 'react-redux'
+import { IconAdjustmentsHorizontal, IconFilter, IconFilter2 } from '@tabler/icons-react'
 
 const FilterButton = () => {
 
     const dispatch = useDispatch();
 
     return (
-        <button className='flex h-[2rem] p-[0_7px] rounded-[4px] gap-2 items-center border border-gray-500 shadow-[1px_1px_5px_rgb(0,0,0,.3)]'
+        <button className='h-[2rem] w-[2rem] rounded-full border-gray-300 bg-gray-100 border grid place-content-center'
             onClick={() => dispatch(filterToggleFilterTab(true))}
         >
-            Filter <div className='w-[1.3rem] h-[1.3rem]'><FilterIcon /></div>
+            <IconAdjustmentsHorizontal size={20} className='stroke-gray-400' />
         </button>
     )
 }

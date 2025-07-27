@@ -1,21 +1,28 @@
 "use client";
 
-import React from 'react'
-import { motion } from "framer-motion";
+import React, { useEffect, useState } from 'react'
+import { AnimatePresence, motion } from "framer-motion";
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import "remixicon/fonts/remixicon.css";
-import SidebarMainButtonTile from './SidebarMainButtonTile';
-import SidebarFloatingToggle from './SidebarFloatingToggle';
-import { sidebarToggleFloatingButton } from '../../redux/slice/sidebarSlice';
-import SidebarIcons from './SidebarIcons';
+import SidebarMainButtonTile from './components/SidebarMainButtonTile';
+import SidebarFloatingToggle from './components/SidebarFloatingToggle';
+import { sidebarOpen, sidebarToggleFloatingButton } from '../../redux/slice/sidebarSlice';
+import SidebarIcons from './components/SidebarIcons';
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
-import SidebarLogo from './SidebarLogo';
-import UserProfile from './UserProfile';
+import SidebarLogo from './components/SidebarLogo';
+import { usePathname } from 'next/navigation';
 
 
-const Sidebar = () => {
+const Sidebar = ({
+    isFloating,
+}: {
+    isFloating: boolean,
+}) => {
     const dispatch = useDispatch();
+    const path = usePathname();
+
+    const [isAllowed, setIsAllowed] = useState(true);
 
     const {
         isSidebarMinimize, hasScreenOverlay,
@@ -56,50 +63,77 @@ const Sidebar = () => {
             name: "Transactions",
         },
         {
-            url: "/ui/notifications-page",
             name: "Notifications",
-            notificationCount: _notifCount,
-        }
+            url: "/ui/notifications-page"
+        },
+        {
+            name: "Settings",
+            url: "/ui/settings",
+        },
     ];
 
+    useEffect(() => {
+        const pagesWithOut = ['/ui/point-of-sale'];
+
+        pagesWithOut.forEach(element => {
+            if (path === element) {
+                setIsAllowed(false);
+            } else {
+                setIsAllowed(true);
+                dispatch(sidebarOpen(false))
+            }
+        });
+
+    }, [path]);
+
+    if (!isAllowed && !isFloating) return null;
 
     return (
-        <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[var(--main-bg-primary)] p-[0_.1rem] scrollbar-hide'
-            initial={{
-                width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)"
-            }}
-            animate={{
-                width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)",
-            }}
-        >
-
-            {/** logo container */}
-            <div className='w-full min-h-[4rem] relative'
-                onMouseEnter={() => dispatch(sidebarToggleFloatingButton(true))}
-                onMouseLeave={() => dispatch(sidebarToggleFloatingButton(false))}
+        <AnimatePresence>
+            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] p-[0_.1rem] scrollbar-hide'
+                initial={{
+                    x: "-100%",
+                    width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)"
+                }}
+                animate={{
+                    x: "0%",
+                    width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)",
+                }}
+                exit={{
+                    opacity: 0,
+                }}
+                transition={{
+                    ease: "linear"
+                }}
             >
-                <SidebarLogo isSidebarMinimize={isSidebarMinimize} />
-                {/** floating sidebar toggle */}
-                <SidebarFloatingToggle />
 
-            </div>
-            <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
-                {sidebarButtonDetails.map((button, index) => {
+                {/** logo container */}
+                <div className='w-full min-h-[4rem] relative'
+                    onMouseEnter={() => dispatch(sidebarToggleFloatingButton(true))}
+                    onMouseLeave={() => dispatch(sidebarToggleFloatingButton(false))}
+                >
+                    <SidebarLogo isSidebarMinimize={isSidebarMinimize} />
+                    {/** floating sidebar toggle */}
+                    <SidebarFloatingToggle />
 
-                    const icon = <SidebarIcons url={button.url} />;
+                </div>
+                <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
+                    {sidebarButtonDetails.map((button, index) => {
 
-                    return <SidebarMainButtonTile key={index}
-                        yTranslation={button.yTranslation ?? 0}
-                        icon={icon}
-                        name={button.name}
-                        notificationLength={button.notificationCount ?? 0}
-                        url={button.url}
-                        options={button.subroutes}
-                    />
-                })}
-            </div>
-            <UserProfile />
-        </motion.div>
+                        const icon = <SidebarIcons url={button.url} />;
+
+                        return <SidebarMainButtonTile key={index}
+                            yTranslation={button.yTranslation ?? 0}
+                            icon={icon}
+                            name={button.name}
+                            notificationLength={button.notificationCount ?? 0}
+                            url={button.url}
+                            options={button.subroutes}
+                        />
+                    })}
+                </div>
+            </motion.div>
+        </AnimatePresence>
     )
 }
 

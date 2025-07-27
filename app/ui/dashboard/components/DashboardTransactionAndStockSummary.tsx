@@ -7,10 +7,12 @@ const DashboardTransactionAndStockSummary = ({
     icon,
     title,
     child,
+    subTitle,
 }: {
     icon?: React.JSX.Element,
     title?: string,
     child?: React.JSX.Element,
+    subTitle?: string,
 }) => {
     return (
         <motion.div className='min-h-[25rem] max-h-[25rem] flex-1/3 rounded-[8px] bg-[var(--main-bg-primary)] p-3 flex flex-col overflow-hidden'
@@ -24,13 +26,14 @@ const DashboardTransactionAndStockSummary = ({
             }}
         >
             <div className='flex w-full gap-3 items-center'>
-                <div className='w-[2rem] h-[2rem] rounded-full bg-gray-300/40 grid place-content-center'>
+                <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-300/40 grid place-content-center'>
                     <React.Fragment>
                         {icon}
                     </React.Fragment>
                 </div>
-                <span className='text-[1rem] font-[500]'>
-                    {title}
+                <span className='text-[1rem] flex-1 flex flex-col font-[500]'>
+                    <span>{title}</span>
+                    <span className='text-[.6rem] text-gray-400'>{subTitle}</span>
                 </span>
             </div>
 

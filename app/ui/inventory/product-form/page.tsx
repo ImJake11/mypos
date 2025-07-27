@@ -1,5 +1,4 @@
 import React from 'react'
-import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import GlobalWrapper from '@/app/lib/components/GlobalWrapper'
 import Appbar from '@/app/lib/components/Appbar/Appbar'
 import ProductFormBody from './ProductFormBody'

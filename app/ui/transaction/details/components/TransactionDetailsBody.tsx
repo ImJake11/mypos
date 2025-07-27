@@ -39,7 +39,7 @@ const TransactionDetailsBody = async ({ data }: { data: TransactionDetailsModel 
                 <TransactionDetailsSales data={data} />
 
                 <div className='h-[2rem]' />
-                <TransactionDetailsBackButton id={data.transactionId!} />
+                <TransactionDetailsBackButton id={data.transactionId!} status={data.status} />
             </div>
 
         </div>

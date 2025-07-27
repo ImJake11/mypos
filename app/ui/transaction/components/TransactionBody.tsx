@@ -10,6 +10,8 @@ import { transactionToggleFilterTab, trnasactionTogglePDF } from '@/app/lib/redu
 import Appbar from '@/app/lib/components/Appbar/Appbar'
 import { TransactionIcon } from '@/app/lib/icons/transactionIcon'
 import DownloadIcon from '@/app/lib/icons/DownloadIcon'
+import TransactionAppbar from '../TransactionAppbar'
+import TransactionDetailsVoidConfirmationPrompt from '../details/components/TransactionDetailsVoidConfirmationPrompt'
 
 const TransactionBody = () => {
 
@@ -23,20 +25,9 @@ const TransactionBody = () => {
 
     if (isError) return <div className='w-full h-full grid place-content-center'>ERROR BOSS!!!</div>
 
-    const appbarChild = <div className='flex'>
-        <button className='w-fit h-fit p-1.5 rounded-[4px] flex gap-2 border border-gray-500 shadow-[0px_1px_5px_rgb(0,0,0,.4)]'
-            onClick={() => dispatch(trnasactionTogglePDF())}
-        >
-            <span>Download PDF</span>
-            <DownloadIcon size={16} />
-        </button>
-    </div>;
-
     return (
         <div className='flex-1 flex flex-col'>
-            <Appbar
-                child={appbarChild}
-                title='Transactions' />
+            <TransactionAppbar />
             {/** data */}
             <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col'>
                 {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
@@ -44,7 +35,6 @@ const TransactionBody = () => {
                     {/** filter icon and title */}
                     <div className='flex w-full justify-between items-center min-h-0'>
                         <span>Recent transactions</span>
-                        <button onClick={() => dispatch(transactionToggleFilterTab())}><FilterIconTwo size={26} /></button>
                     </div>
 
                     <div className='h-[1rem] min-h-0' />

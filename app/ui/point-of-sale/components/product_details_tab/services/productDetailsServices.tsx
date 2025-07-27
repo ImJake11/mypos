@@ -117,9 +117,11 @@ export default class ProductDetailsServices {
     /**
      * Generates a full cart-ready object from the selected product and variant
      */
-    public generateDataForCart(): CartModel | null {
+    public generateDataForCart(): CartModel {
 
-        if (!this._cachedSelectedVariantData || !this.selectedProductData) return null;
+        if (!this._cachedSelectedVariantData || !this.selectedProductData) {
+            throw new Error("Unable to add this product to cart");
+        };
 
         const { promotionalDiscount, vatStatus } = this.selectedProductData;
         const { imageUrl,

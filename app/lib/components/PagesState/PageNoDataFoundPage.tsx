@@ -2,7 +2,7 @@ import Image from 'next/image'
 import React from 'react'
 import noFoundImage from "@/public/no-data-found.png";
 
-const PageNoDataFound = () => {
+const InventoryNoDataFound = () => {
     return (
         <div className='w-full h-full flex flex-col justify-center items-center'>
 
@@ -16,4 +16,4 @@ const PageNoDataFound = () => {
     )
 }
 
-export default PageNoDataFound
+export default InventoryNoDataFound

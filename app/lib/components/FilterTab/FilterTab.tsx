@@ -146,7 +146,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                         opacity: 0,
                     }}
                 >
-                    <motion.div className='absolute right-0 h-full w-[30vw] p-3 bg-[var(--main-bg-primary)] flex flex-col'
+                    <motion.div className='absolute right-0 h-full w-[35vw] p-5 bg-[var(--main-bg-primary)] flex flex-col'
                         initial={{
                             x: "100%",
                         }}
@@ -179,14 +179,14 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                             <div className='min-h-[3rem]' />
                             {/** stock */}
                             <TextInput value={String(minStock)} label='Min Stock' name={FilterKeys.minStock} onChange={handleChange} showDesign={true} />
-                            <div className='min-h-[4rem] border-dashed w-[1px] border-gray-600 border place-self-end -translate-x-[2rem]'></div>
+                            <div className='min-h-[4rem] border-dashed w-[1px] border-gray-300 border place-self-end -translate-x-[2rem]'></div>
                             <TextInput value={String(maxStock)} label='Max Stock' name={FilterKeys.maxStock} onChange={handleChange} showDesign={true} />
 
 
                             <div className='min-h-[3rem]' />
                             {/** pricing */}
                             <TextInput value={String(minPrice)} label='Min Price' name={FilterKeys.minPrice} onChange={handleChange} showDesign={true} />
-                            <div className='min-h-[4rem] border-dashed w-[1px] border-gray-600 border place-self-end -translate-x-[2rem]'></div>
+                            <div className='min-h-[4rem] border-dashed w-[1px] border-gray-300 border place-self-end -translate-x-[2rem]'></div>
                             <TextInput value={String(maxPrice)} label='Max Price' name={FilterKeys.maxPrice} onChange={handleChange} showDesign={true} />
 
 
@@ -198,7 +198,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                             <CheckBoxes isChecked={withBulkPricing ?? false} label='With Bulk Pricing' onClick={() => handleCheckboxes(FilterKeys.withBulkPricing)} />
                             <div className='min-h-[3rem]' />
                             {/** actions */}
-                            <div className='w-full flex gap-2 justify-end'>
+                            <div className='w-full flex gap-2 justify-end text-white'>
                                 {/** clear filter */}
                                 <button className='w-fit h-[2.5rem] rounded-[8px] button-primary-gradient p-[0_15px]'
                                     onClick={handleClearFilter}
@@ -225,7 +225,7 @@ interface CheckBoxesProp {
 
 function CheckBoxes({ isChecked, label, onClick }: CheckBoxesProp) {
     return <div className='flex w-full  gap-2.5'>
-        <div className={`w-[1.5rem] h-[1.5rem] rounded-[3px] grid place-content-center ${isChecked ? "bg-[var(--color-brand-primary)]" : "bg-[var(--main-bg-secondary)]"}`}
+        <div className={`w-[1rem] h-[1rem] rounded-[3px] grid place-content-center ${isChecked ? "bg-[var(--color-brand-primary)]" : "bg-gray-300"} text-white`}
             onClick={onClick}
         >
             {isChecked && <FontAwesomeIcon icon={faCheck} />}
@@ -249,10 +249,10 @@ function TextInput({ label, name, onChange, showDesign, value }: InputProp) {
 
         <div className='flex w-full items-center pr-1'>
             {showDesign && <>
-                <div className='w-[1rem] h-[1rem] bg-[var(--main-bg-secondary)] rounded-[2px]' />
-                <div className='w-[1rem] h-[1px] border border-[var(--main-bg-secondary)] border-dashed' />
+                <div className='w-[1rem] h-[1rem] bg-gray-300 rounded-[2px]' />
+                <div className='w-[1rem] h-[1px] border border-gray-300 border-dashed' />
             </>}
-            <input type="text" name={name} value={value === "undefined" ? "" : value} className='tf-attr flex-1 h-[2.5rem] p-3'
+            <input type="text" name={name} value={value === "undefined" ? "" : value} className='border border-gray-300 focus:outline-[var(--color-brand-primary)] rounded-[8px] flex-1 h-[2.5rem] p-3'
                 onChange={onChange}
             />
         </div>

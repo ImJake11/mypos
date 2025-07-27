@@ -18,7 +18,7 @@ const DashboardBody = () => {
     const dispatch = useDispatch();
     const dashboardService = new DashboardServices();
 
-    const { dailySummary, yesterSummary, transactionStatus } = useSelector((state: RootState) => state.dashboarSlice);
+    const { dailySummary, yesterSummary, recentTransactions } = useSelector((state: RootState) => state.dashboarSlice);
 
     const { netTotal, totalValSales, expenses, } = dailySummary;
 
@@ -26,7 +26,7 @@ const DashboardBody = () => {
     let refunded = 0;
     let voids = 0;
 
-    transactionStatus.forEach(s => {
+    recentTransactions.forEach(s => {
         if (s.status === TransactionStatus.COMPLETED) {
             successful += 1;
         } else if (s.status === TransactionStatus.REFUND) {
@@ -83,10 +83,12 @@ const DashboardBody = () => {
 
                 <div className='flex flex-1/4 flex-col gap-5'>
                     <DashboardSummaryTile
-                        title="Expenses"
+                        title="Total Expenses"
                         pastValue={expenses}
                         icon={<i className="text-[1.3rem] ri-receipt-fill"></i>}
                         currentValue={expenses}
+                        accentColor='to-red-700/40'
+                        showPerformanceIndicator={false}
                     />
 
                     <DashboardSummaryTile
@@ -126,12 +128,14 @@ const DashboardBody = () => {
                     icon={<IconArrowsTransferUpDown className='h-[1.1rem]' />}
                     title='Slow Moving Products'
                     child={<SlowMovingStock />}
+                    subTitle='No purchase records last 30 days'
                 />
                 <DashboardTransactionAndStockSummary
                     icon={<IconHistoryToggle className='h-[1.3rem]'
                     />}
                     title='Recent Transactions'
                     child={<RecentTransactions />}
+                    subTitle='Transactions Performed today'
                 />
             </div>
         </div>

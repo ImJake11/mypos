@@ -133,7 +133,6 @@ const productSlice = createSlice({
             state.isAutoComputeSellingPrice = !state.isAutoComputeSellingPrice;
         },
         formSetProductData: (state, action: PayloadAction<ProductProps>) => {
-
             state.data = action.payload;
         },
         formResetProductState: () => initialState,

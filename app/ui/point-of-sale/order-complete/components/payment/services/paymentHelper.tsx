@@ -137,6 +137,7 @@ export default class PaymentHelper {
      */
     public generateTransactionData(dynamicInput: number): TransactionDetailsModel {
         const { exempt, taxableSale, vat, zeroRated } = this.getVatSalesBreakdown();
+        
         const total = this.getCartNetTotal();
 
         const newData: TransactionDetailsModel = {

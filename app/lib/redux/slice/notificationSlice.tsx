@@ -11,6 +11,7 @@ const initialState = {
     isInitialPageDataLoad: false,
     isMaxDataReach: false,
     currentFilter: NotificationFilterType.TODAY,
+    isRead: false,
     pageNotifications: [] as NotificationModel[],
 }
 
@@ -29,7 +30,13 @@ const notificationSlice = createSlice({
             state.isClickedATile = action.payload;
         },
         notificationUpdateNotifications: (state, action: PayloadAction<NotificationModel[]>) => {
-            state.notifications = state.notifications.concat(action.payload);
+
+            action.payload.forEach(newNotif => {
+
+                if (!state.notifications.some(existing => existing.id === newNotif.id)) {
+                    state.notifications.push(newNotif);
+                }
+            })
         },
         notificationDelete: (state, action: PayloadAction<string>) => {
             state.notifications = state.notifications.filter(notif => notif.id !== action.payload);
@@ -62,6 +69,12 @@ const notificationSlice = createSlice({
         },
         notificationSetCount: (state, action: PayloadAction<number>) => {
             state.notificationCount = action.payload;
+        },
+        notificationToggleIsRead: (state, action) => {
+            state.isRead = action.payload
+        },
+        notificationResetPageNotificatons: (state) => {
+            state.pageNotifications = [];
         }
     }
 });
@@ -75,8 +88,10 @@ export const {
     notificationSetIsMaxDataReach,
     notificationAdd,
     notificationSetPageNotifications,
+    notificationResetPageNotificatons,
     notificationUpdateNotifications,
     notificationChangeVisiblity,
+    notificationToggleIsRead,
     notificationToggleFilter,
 } = notificationSlice.actions;
 export default notificationSlice.reducer;

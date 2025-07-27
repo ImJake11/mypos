@@ -23,12 +23,12 @@ const PosProductDetailsTab = () => {
 
     const [isLaoding, setIsLoading] = useState(true);
 
-    const { isProductDetailsTabVisible, selectedProduct, quantity, selectedProdctID, } = useSelector((state: RootState) => state.posSlice);
+    const { isProductDetailsTabVisible, selectedProduct, quantity, selectedProdctID, selectedVariantID } = useSelector((state: RootState) => state.posSlice);
 
 
     const productDetailsTabCalculator = useMemo(() => {
         return new ProductDetailsCalculator();
-    }, [isProductDetailsTabVisible, quantity, selectedProduct, quantity]);
+    }, [isProductDetailsTabVisible, quantity, selectedProduct, quantity, selectedVariantID]);
 
     // current price of the product if the promotional discount is applied
     // means the main price not the variants price
@@ -64,7 +64,7 @@ const PosProductDetailsTab = () => {
                 backgroundColor: "rgb(0,0,0, .6)"
             }}
         >
-            {isLaoding ? <ProductTabLoadingIndicator /> : <div className='bg-[var(--main-bg-primary)] overflow-auto scrollbar-hide absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[90vh] rounded-[11px] p-5 flex flex-col gap-3
+            {isLaoding ? <ProductTabLoadingIndicator /> : <div className='bg-[var(--main-bg-primary)] overflow-auto scrollbar-hide absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[80vh] rounded-[11px] p-5 flex flex-col gap-3
             '>
                 {/** discount and aname */}
                 <div className='flex w-full gap-2'>
@@ -84,6 +84,8 @@ const PosProductDetailsTab = () => {
                 <div className='flex-1' />
 
                 <ProductTabQuantityControl />
+
+                {!selectedVariantID && <span className='text-center text-red-500 grid place-content-center'>No Selected Variant</span>}
                 <ProductTabAddToCartButton />
             </div>}
             <AnimatePresence>

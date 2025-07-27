@@ -21,16 +21,17 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
     }
 
     return (
-        <motion.div className='w-full h-fit relative flex bg-[var(--main-bg-primary)] rounded-[4px] p-1'
+        <motion.div className='w-full min-h-[3rem] relative flex bg-[var(--main-bg-primary)] rounded-[4px] p-1'
             layout
+            whileHover={{
+                boxShadow: "1px 2px 5px rgb(0,0,0,.2)"
+            }}
             initial={{
                 opacity: 0,
             }}
             animate={{
                 opacity: 1,
-                border: `solid 1px ${isHover ? "var(--color-brand-primary)" : "transparent"}`
             }}
-
             exit={{
                 opacity: 0,
             }}
@@ -39,7 +40,7 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
         >
             {/** image container */}
             <div className='flex-1 grid place-content-center'>
-                <div className='w-[2.5rem] h-[2.5rem] bg-[var(--main-bg-primary)] rounded-[8px]  overflow-hidden'>
+                <div className='w-[2rem] h-[2rem] bg-[var(--main-bg-primary)] rounded-[4px]  overflow-hidden'>
                     <motion.img src={data.coverImage ?? null} alt="" className='object-fill w-full h-full' />
                 </div>
             </div>
@@ -76,13 +77,7 @@ const stock = (stock: number, lowStock: number) => {
 }
 
 const stockStatus = (status: StockStatusFlagProp) => {
-    return <div className='flex gap-1 items-center w-full relative p-[2px_6px] rounded-[20px] text-[.6rem] text-white tracking-wider'
-        style={{
-            backgroundColor: status.color,
-        }}
-    >
-        {status.text}
-    </div>
+    return <span className='text-[.7rem] font-semibold' style={{ color: status.color }}>{status.text}</span>
 }
 
 function TableCellTile({ flex, content }:

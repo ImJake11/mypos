@@ -50,6 +50,7 @@ model Product {
   vatId                 String               @default("48156bcc-e71b-48c6-8520-88b74b223676")
   CartCache             CartCache[]
   ProductExpenses       ProductExpenses[]
+  lastSoldDate          DateTime?
 }
 
 model Variants {
@@ -65,6 +66,7 @@ model Variants {
   details          String?
   CartCache        CartCache[]
   TransactionItems TransactionItems[]
+  lastSoldDate     DateTime?
 }
 
 model BulkTire {
@@ -155,6 +157,7 @@ model Notifications {
   isRead    Boolean  @default(false)
   relatedTo String?
   relatedID String?
+  userID    String   @default("tempo")
 }
 
 model ProductExpenses {
@@ -163,4 +166,13 @@ model ProductExpenses {
   product   Product  @relation(fields: [productID], references: [id])
   timestamp DateTime @default(now())
   total     Float
+}
+
+model ActivityLogs {
+  id        String   @id @unique @default(uuid())
+  timestamp DateTime @default(now())
+  action    String
+  status    String
+  userId    String
+  relatedId String
 }

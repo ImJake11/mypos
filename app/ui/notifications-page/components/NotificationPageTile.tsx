@@ -1,6 +1,6 @@
 import { NotificationModel } from "@/app/lib/models/notificationModel";
 import React from "react";
-
+import { motion } from "framer-motion";
 
 
 function NotificationPageTile({ tileData }: { tileData: NotificationModel }) {
@@ -11,32 +11,51 @@ function NotificationPageTile({ tileData }: { tileData: NotificationModel }) {
 
     const time = timestamp.toLocaleTimeString('en-US', { timeStyle: "short" });
 
-    const getTypeColor = (): string => {
+    const textColor = (): string => {
         switch (tileData.type) {
             case "ERROR":
-                return "var(--notification-error)";
+                return "text-red-500";
             case "SUCCESSFUL":
-                return "var(--notification-success)";
+                return "text-green-500";
             case "WARNING":
-                return "var(--notification-warning)";
+                return "text-orange-500";
             default:
-                return "var(--notification-system)";
+                return "text-gray-500";
         }
     }
 
-    return <div className='pl-[3rem] pr-[1rem] pt-[.5rem] w-full gap-2 min-h-[5rem] mb-0.5 flex flex-col  border-b mr-[2rem border-gray-300'>
+    const bgColor = (): string => {
+        switch (tileData.type) {
+            case "ERROR":
+                return "bg-red-500/10";
+            case "SUCCESSFUL":
+                return "bg-green-500/10";
+            case "WARNING":
+                return "bg-orange-500/10";
+            default:
+                return "bg-gray-500/10";
+        }
+    }
+
+    return <motion.div className='pl-[3rem] pr-[1rem] pt-[.5rem] w-full gap-2 min-h-[5rem] mb-0.5 flex flex-col mr-[2rem'
+       
+        whileHover={{
+            boxShadow: "0px 2px 5px rgb(0,0,0, .4)"
+        }}
+    >
 
         <div className='flex gap-3'>
-            <span className='text-[.6rem] text-white h-fit p-[3px_7px] rounded-[12px]' style={{ backgroundColor: getTypeColor() }}>{tileData.type}</span>
-            <span className='font-[600]'>{tileData.title}</span >
+            <span className={`${bgColor()} text-[.6rem] ${textColor()} font-[600] h-fit p-[3px_7px] rounded-[12px]`}>{tileData.type}</span>
+
+            <span className='font-[600] text-black'>{tileData.title} {!tileData.isRead && "- Unread"}</span >
             <div className="flex-1" />
-            <span className='text-[.7rem] font-[600]'>{date} - {time}</span>
+            <span className='text-[.7rem] font-[600] text-gray-400'>{date} - {time}</span>
         </div>
 
         {/** content and date */}
-        <span className='pl-[1rem] flex-1 flex text-gray-500 text-[.7rem]'>- {tileData.message}</span>
+        <span className={`pl-[1rem] flex-1 flex  text-[.7rem] ${!tileData.isRead ? "font-semibold text-black" : "text-gray-500"}`}>- {tileData.message}</span>
 
-    </div>
+    </motion.div>
 }
 
 export default NotificationPageTile;

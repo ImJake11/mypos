@@ -9,19 +9,21 @@ import ProcessDialog from './ProcessDialog/ProcessDialog';
 import Toas from './Toas';
 import Sidebar from './Sidebar/Sidebar';
 import SidebarSubmenu from './Sidebar/SidebarSubmenu';
+import SidebarFloatingTab from './Sidebar/SidebarFloatingTab';
 
 const GlobalWrapper = ({ child }: { child: React.JSX.Element }) => {
 
 
 
     return (
-        <motion.div className='w-full h-full flex relative text-black dark:text-white transition-all ease-in-out duration-300'
+        <motion.div className='w-full h-full flex relative text-black dark:text-white transition-all ease-in-out duration-300 overflow-hidden'
             data-theme="light"
         >
-            <Sidebar />
+            <Sidebar isFloating={false} />
             <div className='flex-1 flex'>
                 {child}
             </div>
+            <SidebarFloatingTab />
             <SidebarSubmenu />
             <ViewProductTab />
             <Cart />

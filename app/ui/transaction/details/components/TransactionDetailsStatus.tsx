@@ -4,6 +4,7 @@ import { PaymentMethod, PaymentProvider } from '@/app/lib/enum/paymentMethod';
 import { TransactionStatus } from '@/app/lib/enum/transactionStatus';
 import { TransactionReturned, TransactionSuccessfulIcon, TransactionVoidIcon } from '@/app/lib/icons/transactionTypeIcons';
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
+import { IconArrowBackUpDouble, IconChecks, IconProgressX } from '@tabler/icons-react';
 import React from 'react'
 
 const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) => {
@@ -29,36 +30,28 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
 
     const generateStatusIcon = (): React.JSX.Element => {
 
-        const color = "var(--main-bg-secondary)";
+        const color = "stroke-gray-300";
         const size = 70;
 
         if (status === TransactionStatus.COMPLETED) {
-            return <TransactionSuccessfulIcon color={color} size={size} />;
+            return <IconChecks size={size} className={color} />
 
         } else if (status === TransactionStatus.REFUND) {
-            return <TransactionReturned size={size} color={color} />;
+            return <IconArrowBackUpDouble size={size} className={color} />
 
         } else {
-            return <TransactionVoidIcon color={color} size={size} />;
+            return <IconProgressX size={size} className={color} /> 
         }
     }
 
     return (
         <div className='w-full flex gap-4'>
-            <div className='w-[10rem] aspect-square rounded-full relative grid place-content-center'
-                style={{
-                    backgroundColor: "var(--main-bg-primary)",
-                    border: "8px solid var(--main-bg-secondary)",
-                }}
+            <div className='w-[10rem] aspect-square rounded-full relative grid place-content-center bg-gray-100 border-white border-[5px]'
             >
                 {generateStatusIcon()}
 
                 {/** payment provider icon container */}
-                <div className='absolute -right-2 bottom-0 w-[3rem] aspect-square rounded-full grid place-content-center'
-                    style={{
-                        backgroundColor: "var(--main-bg-primary)",
-                        border: "5px solid var(--main-bg-secondary)",
-                    }}
+                <div className='absolute -right-2 bottom-0 w-[3rem] aspect-square rounded-full grid place-content-center bg-gray-100 border-[5px] border-white'
                 >
                     {getPaymentProviderIcon() ? <img src={getPaymentProviderIcon()} alt="img" width={24} height={24} /> : <span className='text-[1.5rem] font-bold'>C</span>}
                 </div>

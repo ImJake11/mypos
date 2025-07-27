@@ -1,6 +1,8 @@
 
 
 import React from 'react'
+import UserProfile from '../Sidebar/components/UserProfile'
+import NotificationButton from './components/NotificationIcon'
 
 const Appbar = ({ child, title, icon }: {
     child?: React.JSX.Element,
@@ -8,12 +10,10 @@ const Appbar = ({ child, title, icon }: {
     icon?: any,
 }) => {
     return (
-        <div className='w-full min-h-[4rem] flex justify-between items-end p-2 pr-5 gap-2 bg-[var(--main-bg-primary)]'>
-            <div className='flex gap-2 items-center'>
-                {icon}
-                <span className='font-[500] text-[1.2rem]'>{title}</span>
-            </div>
+        <div className='w-full min-h-[3rem] flex items-center p-2 pr-5 gap-2 bg-[var(--main-bg-primary)] relative'>
             {child && child}
+            <NotificationButton />
+            <UserProfile />
         </div>
     )
 }

@@ -3,6 +3,7 @@ import { PaymentMethod } from '@/app/lib/enum/paymentMethod';
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
 import React from 'react'
 import TransactionDetailsTile from './TransactionDetailsTile';
+import { IconFileDescriptionFilled } from '@tabler/icons-react';
 
 const TransactionDetailsSummary = ({ data }: { data: TransactionDetailsModel }) => {
 
@@ -26,6 +27,11 @@ const TransactionDetailsSummary = ({ data }: { data: TransactionDetailsModel }) 
 
     return (
         <div className='w-full h-fit rounded-[12px] flex flex-col gap-2 p-5 bg-gray-50'>
+            <div className='flex w-full gap-2 items-center mb-[1rem]'>
+                <IconFileDescriptionFilled size={20} className='fill-gray-500' />
+                <span className='text-[1rem]'>Details</span>
+            </div>
+
             <TransactionDetailsTile data={new Date(date!).toLocaleDateString("en-US", { dateStyle: "long" })} title='Date' />
             <TransactionDetailsTile data={new Date(date!).toLocaleTimeString("en-US", { timeStyle: "short", timeZone: "Asia/Manila" })} title='Time' />
             <TransactionDetailsTile data={getTransactionIDAsPrivate()} title='Transaction ID' />

@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { motion } from "framer-motion";
 import { inventoryServiceUpdateProductFavorite } from '../../services/inventoryServiceAddProductToFavorite';
 import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
+import { IconHeart, IconHeartFilled } from '@tabler/icons-react';
 
 interface Prop {
     data: ProductProps,
@@ -95,9 +96,7 @@ const InventoryGridTile = ({
 
                         }}
                     >
-                        <FontAwesomeIcon icon={faHeart} style={{
-                            color: data.isFavorite ? "var(--color-brand-primary)" : "var(--foreground)"
-                        }} />
+                        <IconHeartFilled size={16} className={`${data.isFavorite ? "fill-[var(--color-brand-primary)]" : "fill-gray-400"}`} />
                     </button>
 
 

@@ -6,16 +6,18 @@ import io from "socket.io-client";
 import { createNewNotification } from "../services/createNotification";
 import { NotificationFilterType } from "@/app/lib/enum/notificationType";
 import { upsertProductExpenses } from "../services/upsertProductExpenses";
+import { createNewActivityLog } from "../services/createNewActivityLog";
+import { raw } from "@/app/generated/prisma/runtime/library";
 
 const socket = io(process.env.SOCKET_URL || "");
 
 export async function POST(req: NextRequest) {
 
+    const { data } = await req.json();
+
+    const rawdata: ProductProps = data;
+
     try {
-
-        const { data } = await req.json();
-
-        const rawdata: ProductProps = data;
 
         const rawBulkTier = rawdata.bulkTier as BulkTableProp[];
 
@@ -85,9 +87,20 @@ export async function POST(req: NextRequest) {
             });
         }
 
+        await createNewActivityLog({
+            action: `Update Product ${name}`,
+            relatedId: id ?? "",
+            status: "SUCCESSFUL",
+        })
+
         return NextResponse.json({ id }, { status: 200 })
 
     } catch (e) {
+        await createNewActivityLog({
+            action: `Add New Product`,
+            relatedId: "",
+            status: "FAILED",
+        })
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 })
     }
 }
@@ -95,11 +108,12 @@ export async function POST(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
 
+
+    const { data } = await req.json();
+
+    const newData: ProductProps = data;
+
     try {
-
-        const { data } = await req.json();
-
-        const newData: ProductProps = data;
 
         const {
             bulkEnabled,
@@ -163,6 +177,7 @@ export async function PUT(req: NextRequest) {
         await upsertProductExpenses(id!, stock, costPrice);
 
         if (socket) {
+
             const payload = await createNewNotification({
                 message: `Product ${name} changes saved successfully`,
                 title: "Product Update",
@@ -176,10 +191,22 @@ export async function PUT(req: NextRequest) {
             });
         }
 
+        await createNewActivityLog({
+            action: `Update Product ${name}`,
+            relatedId: id ?? "",
+            status: "SUCCESSFUL",
+        })
+
         return NextResponse.json({ id }, { status: 200 });
 
     } catch (e) {
-        console.log(e);
+
+        await createNewActivityLog({
+            action: `Update Product ${name}`,
+            relatedId: newData.id ?? "",
+            status: "FAILED",
+        })
+
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }

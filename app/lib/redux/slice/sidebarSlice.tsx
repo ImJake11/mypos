@@ -6,6 +6,7 @@ export interface SubrouteProp {
 }
 
 const initialState = {
+    isVisible: false,
     isSidebarMinimize: false,
     isFloatingVisible: false,
     hasScreenOverlay: false,
@@ -38,6 +39,9 @@ const sidebarSlice = createSlice({
             state.isButtonHover = isHover;
             state.hoveredButtonOptions = routes;
             state.subMenuYTranslation = yValue;
+        },
+        sidebarOpen: (state, action: PayloadAction<boolean>) => {
+            state.isVisible = action.payload;
         }
     }
 })
@@ -47,5 +51,6 @@ export const {
     sidebarToggleAllowScreenOverlay,
     sidebarHandleHover,
     sidebarToggleSidebar,
+    sidebarOpen,
 } = sidebarSlice.actions;
 export default sidebarSlice.reducer;

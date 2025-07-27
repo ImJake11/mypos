@@ -27,11 +27,12 @@ interface VariantTileProp {
 }
 
 const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
-    const detailsServices = new ProductDetailsServices();
 
     const dispatch = useDispatch();
 
-    const selectedVariantID = useSelector((state: RootState) => state.posSlice.selectedVariantID);
+    const { selectedVariantID, cartItems } = useSelector((state: RootState) => state.posSlice);
+
+    const isCurrentlySelected = cartItems.filter(item => item.variantID === variant.id);
 
     const { imageUrl, isPositive, price, stock, name, id, details, isArchived } = variant;
 
@@ -50,7 +51,7 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
         <div className="flex w-full gap-3">
             {/** image */}
             <div className='w-[7rem] h-[7rem] bg-[var(--main-bg-primary)] rounded-[7px] overflow-hidden'>
-                <img src={imageUrl} alt="variant image" className='w-full h-full object-cover' />
+                <img src={imageUrl} alt="variant image" loading="lazy" className='w-full h-full object-cover' />
             </div>
             {/** details */}
             <div className="flex flex-col gap-2">
@@ -75,27 +76,52 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
             )}
         </div>
 
-        {/** add to cart */}
-
-        {isArchived ? <span className="text-center">This variant is Archived</span> : <div className={`${isSelected ? "bg-linear-0" : "button-primary-gradient text-white"} h-[2.5rem] w-full rounded-[11px] grid place-content-center`}
-            style={{
-                border: "solid 1px var(--color-brand-primary)",
-            }}
-            onClick={() => {
-                if (isSelected) {
-                    dispatch(posSelectVariant(""));
-                    return;
-                }
-
-                // reset the current quantity to avoid bypassing the current stock
-                dispatch(posUpdateSelectedvariantQuantity({
-                    isAddition: false,
-                    quantity: 1,
-                }));
-                dispatch(posSelectVariant(variant.id ?? ""));
-            }}
-        >
-            {isSelected ? "Cancel" : "Select Variant"}
-        </div>}
+        <SelectVariantButton
+            isArchive={variant.isArchived}
+            isExisting={isCurrentlySelected.length > 0}
+            isSelected={selectedVariantID === variant.id}
+            variantID={variant.id ?? ""}
+        />
     </div>;
+}
+
+function SelectVariantButton({
+    isSelected,
+    isExisting,
+    isArchive,
+    variantID,
+}: {
+    isSelected: boolean,
+    isExisting: boolean,
+    isArchive: boolean,
+    variantID: string,
+}) {
+
+    const dispatch = useDispatch();
+
+    if (isArchive) return <span className="text-center">This variant is Archived</span>;
+
+    if (isExisting) return <span className="text-center text-gray-400">
+        This Product is already on the Cart
+    </span>
+
+    return <div className={`${isSelected ? "bg-linear-0" : "button-primary-gradient text-white"} h-[2.5rem] w-full rounded-[11px] grid place-content-center`}
+        style={{
+            border: "solid 1px var(--color-brand-primary)",
+        }}
+
+        onClick={() => {
+            if (!variantID) return;
+
+            dispatch(posUpdateSelectedvariantQuantity({
+                isAddition: true,
+                quantity: 1,
+            }));
+            
+            dispatch(posSelectVariant(variantID));
+        }}
+    >
+        {isSelected ? "Cancel" : "Select Variant"}
+    </div>
+
 }

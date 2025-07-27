@@ -1,6 +1,8 @@
 import { TransactionStatus } from "@/app/lib/enum/transactionStatus";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { getStartAndEndDate } from "../../services/geCurrentTimezone";
+import { ProductSummaryProp } from "@/app/lib/redux/slice/dashboardSlice";
 
 interface Summary {
     netTotal: number,
@@ -9,66 +11,78 @@ interface Summary {
     expenses: number,
 }
 
+
 export async function GET(req: NextRequest) {
+
+    const dateTime = getStartAndEndDate(0);
+    const start = dateTime.start;
+    const end = dateTime.end;
 
     try {
 
-        const now = new Date();
-        const start = new Date(now.getDate() - 100);
-        const end = new Date(now);
+        const dailySummary = await fetchDailyTransactionSums(start, end, true)
 
-        start.setHours(0, 0, 0, 0);
-        end.setHours(23, 59, 59, 999);
-
-        let dailySummary = await handleFetch({ start, end })
-
-        const transactionStatus = await prisma.transactionDetails.findMany({
-            where: {
-                date: {
-                    lte: end,
-                    gte: start,
-                },
-            },
-            select: {
-                status: true,
-            }
-        })
-
-        console.log(transactionStatus);
-
-        // set date for yesterday
-        start.setDate(now.getDate() - 1);
-        end.setDate(now.getDate() - 1);
-
-        let yesterdaySummary = await handleFetch({ start, end });
+        const recentTransactions = await fetchRecentTransactions(start, end);
 
 
-        return NextResponse.json({ dailySummary, yesterdaySummary, transactionStatus }, { status: 200 });
+        // get timezone yesterday
+        const yesterDate = getStartAndEndDate(1);
+        const yesterdaySummary = await fetchDailyTransactionSums(yesterDate.start, yesterDate.end, false);
+
+        const data = { dailySummary, recentTransactions, yesterdaySummary };
+
+        return NextResponse.json(data, { status: 200 });
     } catch (e) {
         return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
     }
 }
 
-async function handleFetch({
-    start,
-    end,
-}: {
-    start: Date,
-    end: Date,
 
-}): Promise<Summary> {
+
+async function fetchRecentTransactions(start: Date, end: Date) {
 
     try {
-
-        const summary = await prisma.transactionDetails.aggregate({
+        const recentTransactions = await prisma.transactionDetails.findMany({
             where: {
-                status: TransactionStatus.COMPLETED,
                 date: {
                     gte: start,
                     lte: end,
                 }
             },
-            _count: true,
+            select: {
+                status: true,
+                date: true,
+                transactionId: true,
+                paymentProvider: true,
+            }
+        });
+        return recentTransactions;
+
+    } catch (e) {
+        throw new Error("Error fetching recent transactions");
+    }
+}
+
+async function fetchDailyTransactionSums(start: Date, end: Date, isCalculateExpenses: boolean): Promise<Summary> {
+
+    try {
+
+        let dailySummary: Summary = {
+            netTotal: 0,
+            taxablSales: 0,
+            totalValSales: 0,
+            expenses: 0
+        };
+
+
+        const summary = await prisma.transactionDetails.groupBy({
+            by: ['status'],
+            where: {
+                date: {
+                    gte: start,
+                    lte: end,
+                }
+            },
             _sum: {
                 netTotal: true,
                 taxablSales: true,
@@ -76,29 +90,45 @@ async function handleFetch({
             }
         });
 
-        const expenses = await prisma.productExpenses.aggregate({
-            where: {
-                timestamp: {
-                    gte: start,
-                    lte: end,
+        summary.forEach(data => {
+
+            // destructure data sums
+            const { netTotal, taxablSales, totalValSales } = data._sum;
+
+            if (data.status === TransactionStatus.COMPLETED) {
+                dailySummary = {
+                    ...dailySummary,
+                    netTotal: dailySummary.netTotal + Number(netTotal),
+                    taxablSales: dailySummary.taxablSales + Number(taxablSales),
+                    totalValSales: dailySummary.totalValSales + Number(totalValSales),
                 }
-            },
-            _sum: {
-                total: true
+            } else {
+                dailySummary = {
+                    ...dailySummary,
+                    netTotal: dailySummary.netTotal - Number(netTotal),
+                    taxablSales: dailySummary.taxablSales - Number(taxablSales),
+                    totalValSales: dailySummary.totalValSales - Number(totalValSales),
+                }
             }
-        });
 
-        const { netTotal, taxablSales, totalValSales } = summary._sum;
-        const { total } = expenses._sum;
+        })
 
-        const dataSummary: Summary = {
-            netTotal: netTotal ? Number(netTotal) : 0,
-            taxablSales: taxablSales ? Number(taxablSales) : 0,
-            totalValSales: totalValSales ? Number(totalValSales) : 0,
-            expenses: total ? total : 0,
+
+
+        let expenses = 0;
+
+        if (isCalculateExpenses) {
+            const computeExpenses = await prisma.productExpenses.aggregate({
+                _sum: {
+                    total: true
+                }
+            });
+            expenses = computeExpenses._sum.total ?? 0;
         }
 
-        return dataSummary;
+        dailySummary.expenses = expenses;
+
+        return dailySummary;
 
     } catch (e) {
         throw new Error("Server Error")

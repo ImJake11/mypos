@@ -13,9 +13,6 @@ export async function TransactionPurchasedItemsTile({ price, quantity, url, name
     return <div className='flex w-full items-center gap-5'>
         {/** image container */}
         <div className='w-[3rem] rounded-[8px] aspect-square overflow-hidden'
-            style={{
-                backgroundColor: "var(--main-bg-primary-dark)"
-            }}
         >
             <img src={url} alt="image" className="w-full h-full" />
         </div>

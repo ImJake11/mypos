@@ -28,11 +28,6 @@ const page = async ({ params }: { params: { id: string } }) => {
 
   const child = (
     <div className='w-full h-full flex flex-col'>
-      <div className='w-full' style={{
-        height: "var(--appbar-height)",
-        backgroundColor: "var(--appbar-bg)",
-      }}></div>
-
       <TransactionDetailsBody data={fetchedData} />
     </div>
   )

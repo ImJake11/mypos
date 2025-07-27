@@ -1,3 +1,4 @@
+import store from "@/app/lib/redux/store";
 import { CartCacheModel, CartModel } from "../../../../../lib/models/cartModel";
 
 
@@ -11,18 +12,11 @@ import { CartCacheModel, CartModel } from "../../../../../lib/models/cartModel";
  * - Generating cache data from the current cart list
  * - Converting cached API data into usable CartModel format
  */
-interface ClassProp {
-    cartItems: CartModel[],
-}
+
 
 export default class CartHelpers {
-    private cartList: CartModel[];
 
-    constructor({ cartItems }: ClassProp) {
-        this.cartList = cartItems;
-    }
-
-
+    private cartList = store.getState().posSlice.cartItems;
     /**
      * Checks whether a product variant already exists in the current cart list.
      * 

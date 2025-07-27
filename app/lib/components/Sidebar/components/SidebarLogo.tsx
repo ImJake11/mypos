@@ -25,7 +25,7 @@ const SidebarLogo = ({
 
     return (
         <div className='flex gap-2 justify-center items-end h-full p-2 pb-4'>
-            <motion.span className={`${audioWide.className}  text-shadow-[3px_2px_3px_rgb(0,0,0,.6)]`}
+            <motion.span className={`${audioWide.className}  text-shadow-[3px_2px_3px_rgb(0,0,0,.6)] text-white`}
             initial={{
                 fontSize: "1rem"
             }}

@@ -1,6 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import { AnnualTransactionModel } from "../../models/annualTransactionModel"
 import { AnnualChartModel } from "../../models/AnnualChartModel"
+import { TransactionDetailsModel } from "../../models/transactionModel"
+import { ProductProps } from "../../models/productModel"
+import { RootState } from "../store"
 
 interface SummaryProp {
     netTotal: number,
@@ -9,12 +12,23 @@ interface SummaryProp {
     expenses: number,
 }
 
+export interface ProductSummaryProp {
+    id: string,
+    url: string,
+    stock: number,
+    minStock: number,
+    lastSoldDate: string | null,
+    name: string,
+}
+
 interface SliceProp {
     annualTransactionData: AnnualTransactionModel[],
     annualChartData: AnnualChartModel[],
     yesterSummary: SummaryProp,
     dailySummary: SummaryProp,
-    transactionStatus: any[],
+    recentTransactions: any[],
+    slowMovingProducts: ProductSummaryProp[],
+    lowStockProducts: ProductSummaryProp[],
 }
 
 
@@ -33,7 +47,9 @@ const initialState: SliceProp = {
         totalValSales: 0,
         expenses: 0
     },
-    transactionStatus: []
+    recentTransactions: [],
+    slowMovingProducts: [],
+    lowStockProducts: []
 }
 
 const dashboardSlice = createSlice({
@@ -49,13 +65,21 @@ const dashboardSlice = createSlice({
         dashboardSetDailySummary: (state, action: PayloadAction<{
             yesterdaySummary: any,
             dailySummary: any;
-            transactionStatus: any,
+            recentTransactions: any,
         }>) => {
-            const { dailySummary, yesterdaySummary, transactionStatus } = action.payload;
+            const { dailySummary, yesterdaySummary, recentTransactions } = action.payload;
 
-            state.transactionStatus = transactionStatus;
+            state.recentTransactions = recentTransactions;
             state.dailySummary = dailySummary;
             state.yesterSummary = yesterdaySummary;
+        },
+        dashboardSetProductsSummary: (state, action: PayloadAction<{
+            slowProducts: ProductSummaryProp[],
+            lowStockProducts: ProductSummaryProp[],
+        }>) => {
+            const { lowStockProducts, slowProducts } = action.payload;
+            state.slowMovingProducts = slowProducts;
+            state.lowStockProducts = lowStockProducts;
         }
     }
 })
@@ -64,6 +88,7 @@ export const {
     dashboardSetAnnualTransactionData,
     dashboarSetChartData,
     dashboardSetDailySummary,
+    dashboardSetProductsSummary,
 } = dashboardSlice.actions;
 
 export default dashboardSlice.reducer;

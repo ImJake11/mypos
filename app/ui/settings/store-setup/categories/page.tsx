@@ -5,8 +5,8 @@ import CategoriesBody from './CategoriesBody'
 const page = () => {
     return (
         <div className='w-screen h-screen flex'>
-            <Sidebar />
-            <CategoriesBody/>
+            <Sidebar isFloating={false} />
+            <CategoriesBody />
         </div>
     )
 }

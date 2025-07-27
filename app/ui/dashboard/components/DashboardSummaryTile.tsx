@@ -33,15 +33,15 @@ const DashboardSummaryTile = ({
         <motion.div className={`flex-1/4 bg-linear-to-b from-[var(--main-bg-primary)] ${accentColor} rounded-[8px] shadow- min-h-[6rem] flex p-2 gap-2`}
 
             style={{
-                boxShadow: "0px 1px 5px rgb(0,0,0,.2)",
+                boxShadow: "0px 1px 5px rgb(0,0,0,.1)",
             }}
             whileHover={{
-                boxShadow: "0px 5px 7px rgb(0,0,0,.5)"
+                boxShadow: "0px 5px 7px rgb(0,0,0,.2)"
             }}
         >
 
             <div className='w-[2.5rem] h-full grid place-content-center'>
-                <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-300/40 grid place-content-center'>
+                <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-100 grid place-content-center'>
                     <React.Fragment>
                         {icon}
                     </React.Fragment>

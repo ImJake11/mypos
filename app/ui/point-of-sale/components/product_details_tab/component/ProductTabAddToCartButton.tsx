@@ -14,56 +14,52 @@ const ProductTabAddToCartButton = () => {
 
     const dispatch = useDispatch();
 
-    const { selectedVariantID, cartItems} = useSelector((state: RootState) => state.posSlice);
+    const { selectedVariantID, cartItems, quantity } = useSelector((state: RootState) => state.posSlice);
 
-    const cartHelper = useMemo(()=>{
-        return new CartHelpers({cartItems});
-    },[]);
+    const cartHelper = useMemo(() => {
+        return new CartHelpers();
+    }, [cartItems]);
 
-    const productTabServices = useMemo(()=>{
+    const productTabServices = useMemo(() => {
         return new ProductDetailsServices();
-    },[]);
+    }, [selectedVariantID, quantity]);
 
     const handleAddToCart = async () => {
 
-        const data = productTabServices.generateDataForCart();
+        try {
+            const data = productTabServices.generateDataForCart();
 
-        if (!data) return;
+            if (!selectedVariantID) return;
 
-        const isExisiting = cartHelper.isProductExisingInCart(data?.variantID);
+            // save variant to cart
+            dispatch(posAddProductToCart(data!));
 
-        if (isExisiting) {
+            // save new data to database as cache
+            await cartCacheSave(cartHelper.generateCartCacheData(data!));
+
+
+            // close the tab
+            dispatch(posCloseProductDetails())
+            // show toas message
+            dispatch(openToas({ message: "Product added to cart", type: ToasEnum.DEFAULT }))
+        } catch (e) {
+            console.log(e);
             dispatch(openToas({
-                message: "Product is currently existing in the list",
+                message: "Failed to add the product to cart",
                 type: ToasEnum.ERROR,
-            }));
-            return;
+            }))
         }
-
-        // save variant to cart
-        dispatch(posAddProductToCart(data));
-
-        // save new data to database as cache
-        await cartCacheSave(cartHelper.generateCartCacheData(data));
-
-
-        // close the tab
-        dispatch(posCloseProductDetails())
-        // show toas message
-        dispatch(openToas({ message: "Product added to cart", type: ToasEnum.DEFAULT }))
     }
 
     return (
-        <div className='flex w-full gap-3'>
-
-            <button className='flex-1 min-h-[3rem] border border-[var(--foreground)] rounded-[7px]'
+        <div className='flex w-full justify-end gap-3'>
+            <button className='flex-1 max-w-[10rem] min-h-[2.5rem] border border-[var(--foreground)] rounded-[7px]'
                 onClick={() => dispatch(posCloseProductDetails())}
             >Cancel</button>
-
-            {selectedVariantID !== "" ? <button className='button-primary-gradient flex-1 min-h-[2rem] text-white rounded-[7px] grid place-content-center'
+            {selectedVariantID !== "" && <button className='button-primary-gradient flex-1 min-h-[2rem] text-white rounded-[8px] grid place-content-center max-w-[10rem]'
                 onClick={handleAddToCart}
-            >Add to cart</button> :
-                <span className='bg-linear-to-br from-[var(--error-color-primary)] to-[var(--error-color-secondary)] flex-1 text-center p-[10px_0] text-white rounded-[11px]'>No Selected Variant</span>}
+            >Add to cart</button>
+            }
         </div>
     )
 }
