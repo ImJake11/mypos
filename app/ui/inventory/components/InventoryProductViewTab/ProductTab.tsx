@@ -18,6 +18,7 @@ import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
 import ProductTabLoadingState from './ProductTabLoadingState';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const ViewProductTab = () => {
 
@@ -76,9 +77,13 @@ const ViewProductTab = () => {
 
   }, [isProductViewVisible]);
 
+  const { width } = useWindowSize();
+
+  const isLarge = width >= 800;
+
   return (
     <AnimatePresence>
-      {isProductViewVisible && <motion.div className='w-screen h-screen absolute backdrop-blur-[2px]'
+      {isProductViewVisible && <motion.div className='w-screen h-screen absolute backdrop-blur-[1px]'
         style={{
           backgroundColor: "rgb(0,0,0, .8)"
         }}
@@ -100,7 +105,9 @@ const ViewProductTab = () => {
           isOpen: false,
         }))}
       >
-        <div className='w-[40vw] h-screen bg-[var(--main-bg-primary)] absolute right-0'>
+        <div className={`h-screen bg-[var(--main-bg-primary)] absolute right-0
+        ${isLarge ? "w-[40rem]" : "w-full"}
+          `}>
           {isLoading ? <ProductTabLoadingState /> : <motion.div className='w-full h-full flex flex-col overflow-auto gap-2 right-0'
             style={{
               backgroundColor: "var(--main-bg-primary)",

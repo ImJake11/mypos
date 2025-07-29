@@ -12,6 +12,7 @@ import { TransactionIcon } from '@/app/lib/icons/transactionIcon'
 import DownloadIcon from '@/app/lib/icons/DownloadIcon'
 import TransactionAppbar from '../TransactionAppbar'
 import TransactionDetailsVoidConfirmationPrompt from '../details/components/TransactionDetailsVoidConfirmationPrompt'
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize'
 
 const TransactionBody = () => {
 
@@ -25,11 +26,18 @@ const TransactionBody = () => {
 
     if (isError) return <div className='w-full h-full grid place-content-center'>ERROR BOSS!!!</div>
 
+
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
+
     return (
         <div className='flex-1 flex flex-col'>
             <TransactionAppbar />
             {/** data */}
-            <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col'>
+            <div className={`flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col
+                ${isMobile ? "text-[.6rem]" : "text-[.8rem]"}
+                `}>
                 {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
 
                     {/** filter icon and title */}
@@ -42,11 +50,11 @@ const TransactionBody = () => {
                     {/** headers */}
                     <div className='w-full flex'>
                         <HeaderTile name='Date' />
-                        <HeaderTile name='Transaction ID' flex='flex-2' />
+                        {!isMobile && <HeaderTile name='Transaction ID' flex='flex-2' />}
                         <HeaderTile name='Amount' />
                         <HeaderTile name='Status' />
                         <HeaderTile name='Method' />
-                        <HeaderTile name='Action' />
+                        {!isMobile && <HeaderTile name='Action' />}
                     </div>
 
                     {displayList.length <= 0 && !isLoading ? <NoData /> :

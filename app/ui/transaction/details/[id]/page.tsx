@@ -1,4 +1,3 @@
-import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
 import TransactionDetailsBody from '../components/TransactionDetailsBody'
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel';

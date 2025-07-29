@@ -1,3 +1,4 @@
+'use client';
 
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel';
 import React from 'react'
@@ -7,31 +8,33 @@ import TransactionDetailsItems from './TransactionDetailsItems';
 import TransactionDetailsStatus from './TransactionDetailsStatus';
 import { TransactionStatus } from '@/app/lib/enum/transactionStatus';
 import TransactionDetailsBackButton from './TransactionDetailsBackButton';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
-const TransactionDetailsBody = async ({ data }: { data: TransactionDetailsModel }) => {
+const TransactionDetailsBody = ({ data }: { data: TransactionDetailsModel }) => {
 
     const generateStatusColor = (): string => {
 
         const { status } = data;
 
         if (status === TransactionStatus.COMPLETED) {
-            return "var(--transaction-successful)";
+            return "bg-green-500/30";
 
         } else if (status === TransactionStatus.REFUND) {
-            return "var(--transaction-returned)";
+            return "bg-orange-500/30";
         } else {
-            return "var(--transaction-void)";
+            return "bg-red-500/30";
         }
     }
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
+
     return (
-        <div className='flex-1 rounded-[12px] p-5 overflow-hidden text-[.8rem]' style={{
+        <div className={`flex-1 rounded-[12px] overflow-hidden text-[.8rem] ${isMobile ? "p-3" : "p-5"}`} style={{
             backgroundColor: "var(--main-bg-secondary)"
         }}>
-            <div className='w-full h-full rounded-[12px] flex overflow-auto flex-col gap-7 p-6' style={{
-                backgroundColor: "var(--main-bg-primary)",
-                backgroundImage: `linear-gradient(180deg, ${generateStatusColor()}, var(--main-bg-primary), var(--main-bg-primary), var(--main-bg-primary))`
-            }}>
+            <div className={`w-full h-full rounded-[12px] flex overflow-auto flex-col ${generateStatusColor()} ${isMobile ? "p-3 gap-2" : "p-5 gap-5"}`}>
 
                 <TransactionDetailsStatus data={data} />
                 <TransactionDetailsSummary data={data} />

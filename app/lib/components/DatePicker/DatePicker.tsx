@@ -6,6 +6,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { RootState } from '../../redux/store';
 import monthsName from '../../constants/MonthsList';
 import { datePickerSave, datePickerToggleVisibility } from '../../redux/slice/datePickerSlice';
+import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 interface DateProp {
     month: number,
@@ -36,7 +37,7 @@ const DatePicker = () => {
         const isoDate = new Date(year, month, day).toISOString();
 
         console.log(isoDate);
-        
+
         dispatch(datePickerSave({
             context: context,
             payload: isoDate,
@@ -59,53 +60,60 @@ const DatePicker = () => {
         }
     }
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
+
     return (
         <AnimatePresence>
-            {isVisible ? <motion.div className='w-full h-full rounded-[11px] flex flex-col p-[20px_25px] bg-[var(--main-bg-primary-dark)]'
-
+            {isVisible && <motion.div className='w-full h-full absolute bg-black/20 backdrop-blur-[3px] grid place-content-center'
                 initial={{
-                    scale: 0
+                    opacity: 0
                 }}
 
                 animate={{
-                    scale: 1,
+                    opacity: 1,
                 }}
 
                 exit={{
-                    scale: 0
-                }}
-            >
-                <span className='italic font-semibold'>Pick Date</span>
-                {/** header */}
-                <div className='flex w-full mt-2.5'>
-                    {header("Month")}
-                    {header("Day")}
-                    {header("Year")}
-                </div>
-                {/** data */}
-                <div className='flex-1 flex overflow-hidden'>
-                    {/** month */}
-                    <ul className='flex-1 overflow-y-auto scrollbar-hide'>
-                        {Array.from({ length: months }).map((d, i) => <Tile key={i} isSelected={date.month === i} value={monthsName[i]} name='month' onClick={handleDateUpdate} />)}
-                    </ul>
-                    {/** days */}
-                    <ul className='flex-1 overflow-y-auto scrollbar-hide'>
-                        {Array.from({ length: days }).map((d, i) => <Tile key={i} isSelected={date.day === i + 1} value={i + 1} name='day' onClick={handleDateUpdate} />)}
-                    </ul>
+                    opacity: 0
+                }}>
+                <motion.div className={`rounded-[11px] flex flex-col p-[20px_25px] bg-[var(--main-bg-primary)]
+                ${isMobile ? "w-[90vw] h-[50vh]" : "w-[500px] h-[500px]"}
+                `}
+                >
+                    <span className='italic font-semibold'>Pick Date</span>
+                    {/** header */}
+                    <div className='flex w-full mt-2.5'>
+                        {header("Month")}
+                        {header("Day")}
+                        {header("Year")}
+                    </div>
+                    {/** data */}
+                    <div className='flex-1 flex overflow-hidden'>
+                        {/** month */}
+                        <ul className='flex-1 overflow-y-auto scrollbar-hide'>
+                            {Array.from({ length: months }).map((d, i) => <Tile key={i} isSelected={date.month === i} value={monthsName[i]} name='month' onClick={handleDateUpdate} />)}
+                        </ul>
+                        {/** days */}
+                        <ul className='flex-1 overflow-y-auto scrollbar-hide'>
+                            {Array.from({ length: days }).map((d, i) => <Tile key={i} isSelected={date.day === i + 1} value={i + 1} name='day' onClick={handleDateUpdate} />)}
+                        </ul>
 
-                    {/** years */}
-                    <ul className='flex-1 overflow-y-auto scrollbar-hide'>
-                        {Array.from({ length: yearLength }).map((_, i) => <Tile key={i} isSelected={date.year === today.getFullYear() + i} value={today.getFullYear() + i} name='year' onClick={handleDateUpdate} />)}
-                    </ul>
-                </div>
+                        {/** years */}
+                        <ul className='flex-1 overflow-y-auto scrollbar-hide'>
+                            {Array.from({ length: yearLength }).map((_, i) => <Tile key={i} isSelected={date.year === today.getFullYear() + i} value={today.getFullYear() + i} name='year' onClick={handleDateUpdate} />)}
+                        </ul>
+                    </div>
 
-                <div className='flex justify-end gap-3 mt-6'>
-                    <button className='border border-gray-400 rounded-[7px] p-[10px_15px]' onClick={() => {
-                        dispatch(datePickerToggleVisibility(null))
-                    }}>Cancel</button>
-                    <button className='button-primary-gradient rounded-[var(--button-border-radius)] p-[10px_15px]' onClick={handleSave}>Save</button>
-                </div>
-            </motion.div> : null}
+                    <div className='flex justify-end gap-3 mt-6'>
+                        <button className='border border-gray-400 rounded-[4px] p-[10px_15px]' onClick={() => {
+                            dispatch(datePickerToggleVisibility(null))
+                        }}>Cancel</button>
+                        <button className='bg-[var(--color-brand-primary)] rounded-[4px] p-[10px_15px] text-white' onClick={handleSave}>Save</button>
+                    </div>
+                </motion.div>
+            </motion.div>}
         </AnimatePresence>
     )
 }
@@ -118,10 +126,7 @@ interface TileProp {
 
 }
 function Tile({ isSelected, value, onClick, name }: TileProp) {
-    return <div className={`cursor-pointer w-full h-[3rem] ${isSelected ? "button-primary-gradient" : "button-primary-no-gradient"}  grid place-content-center`}
-        style={{
-            border: "solid 1px var(--main-bg-secondary-dark)"
-        }}
+    return <div className={`cursor-pointer w-full h-[2rem] grid place-content-center rounded-[4px] ${isSelected ? "bg-[var(--color-brand-primary)] text-white" : "bg-white"}`}
         onClick={() => onClick(name, value)}
     >
         <span>{value}</span></div>

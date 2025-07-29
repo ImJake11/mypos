@@ -7,6 +7,7 @@ import ArrowDownIcon from "../../../icons/ArrowDownIcon";
 import { RootState } from "../../../redux/store";
 import React from "react";
 import { sidebarHandleHover, SubrouteProp } from "../../../redux/slice/sidebarSlice";
+import { useWindowSize } from "@/app/lib/utils/hooks/useGetWindowSize";
 
 interface ButtonProps {
     name: string,
@@ -31,8 +32,6 @@ const SidebarMainButtonTile = React.memo(({
     const pathParts = pathName.split("/");
     const urlParts = url.split("/");
 
-    const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
-
     const isSelected = () => {
 
         if (pathParts.length > 1 && urlParts.length > 1) {
@@ -50,6 +49,8 @@ const SidebarMainButtonTile = React.memo(({
             yValue: yTranslation,
         }))
     }
+
+    const { width } = useWindowSize();
 
     return <div className='w-full h-fit flex flex-col relative'>
         <motion.div key={url} className={`w-[90%] place-self-center rounded-[6px] h-[2.5rem] flex gap-1.5 items-center p-1.5 overflow-hidden`}
@@ -89,7 +90,7 @@ const SidebarMainButtonTile = React.memo(({
             >
                 <ButtonTile icon={icon} />
                 <AnimatePresence>
-                    {!isSidebarMinimize && <motion.div
+                    <motion.div
                         className='flex-1 flex items-center'
                         initial={{
                             opacity: 0,
@@ -120,18 +121,18 @@ const SidebarMainButtonTile = React.memo(({
                         >
                             <ArrowDownIcon size={10} isSelected={isSelected()} />
                         </motion.div>}
-                    </motion.div>}
+                    </motion.div>
                 </AnimatePresence>
             </motion.div>
         </Link>
 
         {/** ssub routes */}
-        {options && !isSidebarMinimize && isSelected() && <div className="flex flex-col w-full">
+        {options && isSelected() && <div className="flex flex-col w-full">
             {options?.map((d, i) => {
 
                 const isRrouteSelected = pathName === d.route;
 
-                return <motion.div key={i} className={`w-full h-[2.5rem] grid place-content-center ${isRrouteSelected? "text-[var(--color-brand-primary)]" : "text-white"}`}
+                return <motion.div key={i} className={`w-full h-[2.5rem] grid place-content-center ${isRrouteSelected ? "text-[var(--color-brand-primary)]" : "text-white"}`}
                     whileHover={{
                         backgroundColor: "rgb(0,0,0,.1)"
                     }}

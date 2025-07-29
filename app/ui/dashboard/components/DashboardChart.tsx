@@ -4,9 +4,10 @@ import { AnnualChartModel } from '@/app/lib/models/AnnualChartModel';
 import { AnnualTransactionModel } from '@/app/lib/models/annualTransactionModel';
 import { dashboardSetAnnualTransactionData, dashboarSetChartData } from '@/app/lib/redux/slice/dashboardSlice';
 import { RootState } from '@/app/lib/redux/store';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Area, AreaChart, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 
 const DashboardChart = () => {
@@ -76,73 +77,89 @@ const DashboardChart = () => {
   }, []);
 
 
-  return (
-    <div className='flex-3/4 max-h-[21rem] bg-[var(--main-bg-primary)] rounded-[8px] shadow-[0px_1px_5px_rgb(0,0,0,.2)] grid place-content-center relative'>
+  const { width } = useWindowSize();
 
-      <AreaChart width={800} height={230}
-        style={{
-          transform: "translateX(-1%) translateY(13%)",
-        }}
-        data={annualChartData}
-        onMouseLeave={() => setHoveredIndex(null)}
-        onMouseMove={(e) => {
-          if (e.activeTooltipIndex) {
-            setHoveredIndex(Number(e.activeTooltipIndex));
-          }
-        }}
-      >
-        <defs>
-          <linearGradient id="data" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="25%" stopColor="var(--color-brand-primary)" stopOpacity={0.8} />
-            <stop offset="85%" stopColor="var(--color-brand-secondary)" stopOpacity={0} />
-          </linearGradient>
-        </defs>
-        <CartesianGrid strokeDasharray="3 3" strokeOpacity={0} />
+  const isMedium = width > 768;
+  const isSmall = width <= 768;
+  const isXSmall = width <= 490;
 
-        <Area fill='url(#data)' fillOpacity={1} dataKey="data" stroke='var(--color-brand-primary)' type="linear" dot={{
-          r: 5,
-          fill: "var(--color-brand-primary)",
-          stroke: "var(--main-bg-secondary)",
+
+  // components
+
+  const child = (
+    <AreaChart
+      className='translate-y-5'
+      data={annualChartData}
+      onMouseLeave={() => setHoveredIndex(null)}
+      onMouseMove={(e) => {
+        if (e.activeTooltipIndex) {
+          setHoveredIndex(Number(e.activeTooltipIndex));
+        }
+      }}
+    >
+      <defs>
+        <linearGradient id="data" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="25%" stopColor="var(--color-brand-primary)" stopOpacity={0.8} />
+          <stop offset="85%" stopColor="var(--color-brand-secondary)" stopOpacity={0} />
+        </linearGradient>
+      </defs>
+      <CartesianGrid strokeDasharray="3 3" strokeOpacity={0} />
+
+      <Area fill='url(#data)' fillOpacity={1} dataKey="data" stroke='var(--color-brand-primary)' type="linear" dot={{
+        r: 5,
+        fill: "var(--color-brand-primary)",
+        stroke: "var(--main-bg-secondary)",
+        strokeWidth: 2,
+      }} />
+
+
+      {/** x-axis */}
+      <XAxis dataKey="month" strokeOpacity={0} fontSize={10} tick={(props) => {  // Custom tick renderer
+        const { x, y, payload } = props;
+        const isHovered = hoveredIndex === annualChartData.findIndex(item => item.month === payload.value);
+        return (
+          <g transform={`translate(${x},${y})`}>
+            <text
+              x={0}
+              y={0}
+              dy={16}
+              textAnchor="middle"
+              className={`${isHovered ? "fill-[var(--color-brand-primary)]" : "fill-gray-500 dark:fill-black"} text-[.7rem]`}
+
+              fontWeight={isHovered ? "bold" : "normal"}
+            >
+              {payload.value}
+            </text>
+          </g>
+        );
+      }} />
+
+      {/** y-axis */}
+      <YAxis dataKey="data" width="auto" strokeOpacity={0} fontSize={10} />
+
+      <Tooltip animationDuration={340}
+        formatter={(value, name) => [
+          `${Number(value).toLocaleString('en-US', { style: "currency", currency: "PHP" })}`
+        ]}
+        cursor={{
+          stroke: "var(--color-brand-primary)",
           strokeWidth: 2,
-        }} />
+          opacity: .7,
+          strokeDasharray: "5 5",
+        }}
+      />
+    </AreaChart>
+  )
 
 
-        {/** x-axis */}
-        <XAxis dataKey="month" strokeOpacity={0} fontSize={10} tick={(props) => {  // Custom tick renderer
-          const { x, y, payload } = props;
-          const isHovered = hoveredIndex === annualChartData.findIndex(item => item.month === payload.value);
-          return (
-            <g transform={`translate(${x},${y})`}>
-              <text
-                x={0}
-                y={0}
-                dy={16}
-                textAnchor="middle"
-                className={`${isHovered ? "fill-[var(--color-brand-primary)]" : "fill-gray-500 dark:fill-black"} text-[.7rem]`}
-
-                fontWeight={isHovered ? "bold" : "normal"}
-              >
-                {payload.value}
-              </text>
-            </g>
-          );
-        }} />
-
-        {/** y-axis */}
-        <YAxis dataKey="data" width="auto" strokeOpacity={0} fontSize={10} />
-
-        <Tooltip animationDuration={340}
-          formatter={(value, name) => [
-            `${Number(value).toLocaleString('en-US', { style: "currency", currency: "PHP" })}`
-          ]}
-          cursor={{
-            stroke: "var(--color-brand-primary)",
-            strokeWidth: 2,
-            opacity: .7,
-            strokeDasharray: "5 5",
-          }}
-        />
-      </AreaChart>
+  return (
+    <div className={`flex-3/4  bg-[var(--main-bg-primary)] rounded-[8px] shadow-[0px_1px_5px_rgb(0,0,0,.2)] relative
+      ${isSmall && "max-w-[calc(100vw*0.95)] min-h-[16rem]"}
+      ${isXSmall && `max-w-[calc(100vw*0.93)] min-h-[16rem]`}
+      ${isMedium && "min-h-[74%]"}
+      `}
+    >
+      <ResponsiveContainer children={child} width="100%" height="100%" className="p-[2rem_1rem] box-border" />
 
       {/** title */}
       <span className='absolute text-[.9rem] left-4 top-2 flex flex-col'>

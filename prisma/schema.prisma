@@ -176,3 +176,17 @@ model ActivityLogs {
   userId    String
   relatedId String
 }
+
+model Users {
+  id              String   @id @unique @default(uuid())
+  email           String   @unique
+  password        String
+  username        String
+  role            String   @default("user")
+  isVerified      Boolean  @default(false)
+  isActive        Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  sessionToken    String?
+  validationToken String?
+}

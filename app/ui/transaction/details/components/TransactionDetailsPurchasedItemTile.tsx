@@ -1,7 +1,8 @@
+import { useWindowSize } from "@/app/lib/utils/hooks/useGetWindowSize";
 import { capitalizeFirtLetter } from "@/app/lib/utils/services/capitalizeFirstLetter";
 
 
-export async function TransactionPurchasedItemsTile({ price, quantity, url, name }: {
+export function TransactionPurchasedItemsTile({ price, quantity, url, name }: {
     productID: string,
     price: number,
     quantity: number,
@@ -9,8 +10,11 @@ export async function TransactionPurchasedItemsTile({ price, quantity, url, name
     url: string,
 }) {
 
+    const { width } = useWindowSize();
 
-    return <div className='flex w-full items-center gap-5'>
+    const isMobile = width < 576;
+
+    return <div className={`flex w-full items-center gap-5 ${isMobile ? "text-[.6rem]" : "text-[.8rem]"}`}>
         {/** image container */}
         <div className='w-[3rem] rounded-[8px] aspect-square overflow-hidden'
         >

@@ -12,6 +12,7 @@ import { TransactionStatus } from '@/app/lib/enum/transactionStatus';
 import LowStockChild from './components/childs/LowStockChild';
 import SlowMovingStock from './components/childs/SlowMovingStock';
 import RecentTransactions from './components/childs/RecentTransactions';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 
 const DashboardBody = () => {
@@ -36,23 +37,78 @@ const DashboardBody = () => {
         }
     })
 
+    const { width } = useWindowSize();
+
+    const isMedium = width <= 768;
+    const isXSmall = width <= 490;
 
     useEffect(() => {
         dashboardService.fetchDailySummary(dispatch);
     }, []);
 
-    return (
-        <div className='w-full h-full bg-[var(--main-bg-secondary)] rounded-[8px] flex flex-col p-5 gap-5 overflow-auto'>
 
-            <div className='flex w-full gap-5'>
+    const transactionsAndExpenses = (
+        <div className={`
+        ${isMedium ? "grid grid-cols-2 gap-3" : "flex flex-1/4 flex-col gap-5"}
+        `}>
+            <DashboardSummaryTile
+                title="Total Expenses"
+                pastValue={expenses}
+                icon={<i className="text-[1.3rem] ri-receipt-fill"></i>}
+                currentValue={expenses}
+                accentColor='to-red-700/40'
+                showPerformanceIndicator={false}
+            />
+
+            <DashboardSummaryTile
+                isCurrency={false}
+                currentValue={successful}
+                icon={<IconProgressCheck />}
+                showPerformanceIndicator={false}
+                accentColor='to-green-500/20'
+                title='Successful Transactions'
+            />
+            <DashboardSummaryTile
+                isCurrency={false}
+                currentValue={voids}
+                icon={<IconCircleDashedNumber0 />}
+                showPerformanceIndicator={false}
+                accentColor='to-red-500/20'
+                title='Void Transactions'
+            />
+            <DashboardSummaryTile
+                isCurrency={false}
+                currentValue={refunded}
+                icon={<IconArrowLeftDashed />}
+                showPerformanceIndicator={false}
+                accentColor='to-orange-500/20'
+                title='Refunded Transactions'
+            />
+        </div>
+    )
+
+    return (
+        <div className={`box-border w-full h-full bg-[var(--main-bg-secondary)] rounded-[8px] flex flex-col overflow-auto
+        ${isMedium ? "p-3 gap-3 w-screen" : "p-5 gap-5 w-full"}
+        `}>
+
+            <div className={`flex w-full
+                ${isMedium ? "gap-3" : "gap-5"}
+                `}>
 
                 {/** 
                  * GROSS SALES
                  * TAX SALES
                  * PROFIT
                  */}
-                <div className='flex flex-3/4 flex-col gap-5'>
-                    <div className='flex w-full gap-5'>
+                <div className={`flex flex-3/4 flex-col
+                ${isMedium ? "gap-3" : "gap-5"}
+                `}>
+
+                    <div className={`w-full
+                        ${isMedium ? "grid grid-cols-2 gap-3" : "flex flex-1/4 gap-5"}
+                    `}
+                    >
                         <DashboardSummaryTile
                             title="Revenue"
                             currentValue={netTotal}
@@ -81,44 +137,15 @@ const DashboardBody = () => {
                 </div>
 
 
-                <div className='flex flex-1/4 flex-col gap-5'>
-                    <DashboardSummaryTile
-                        title="Total Expenses"
-                        pastValue={expenses}
-                        icon={<i className="text-[1.3rem] ri-receipt-fill"></i>}
-                        currentValue={expenses}
-                        accentColor='to-red-700/40'
-                        showPerformanceIndicator={false}
-                    />
-
-                    <DashboardSummaryTile
-                        isCurrency={false}
-                        currentValue={successful}
-                        icon={<IconProgressCheck />}
-                        showPerformanceIndicator={false}
-                        accentColor='to-green-500/20'
-                        title='Successful Transactions'
-                    />
-                    <DashboardSummaryTile
-                        isCurrency={false}
-                        currentValue={voids}
-                        icon={<IconCircleDashedNumber0 />}
-                        showPerformanceIndicator={false}
-                        accentColor='to-red-500/20'
-                        title='Void Transactions'
-                    />
-                    <DashboardSummaryTile
-                        isCurrency={false}
-                        currentValue={refunded}
-                        icon={<IconArrowLeftDashed />}
-                        showPerformanceIndicator={false}
-                        accentColor='to-orange-500/20'
-                        title='Refunded Transactions'
-                    />
-                </div>
+                {/** transaction sales */}
+                {!isMedium && transactionsAndExpenses}
             </div>
 
-            <div className='w-full flex gap-5'>
+            {isMedium && transactionsAndExpenses}
+
+            <div className={`flex
+                ${isMedium ? "gap-3 w-full overflow-x-auto min-h-[25rem]" : "w-full gap-5"}
+                `}>
                 <DashboardTransactionAndStockSummary
                     icon={<IconArrowNarrowDownDashed />}
                     title='Low Stock Products'

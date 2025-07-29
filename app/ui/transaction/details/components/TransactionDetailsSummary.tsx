@@ -1,9 +1,11 @@
+'use client';
 
 import { PaymentMethod } from '@/app/lib/enum/paymentMethod';
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel'
 import React from 'react'
 import TransactionDetailsTile from './TransactionDetailsTile';
 import { IconFileDescriptionFilled } from '@tabler/icons-react';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const TransactionDetailsSummary = ({ data }: { data: TransactionDetailsModel }) => {
 
@@ -25,8 +27,13 @@ const TransactionDetailsSummary = ({ data }: { data: TransactionDetailsModel }) 
         return masked;
     }
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
+
+
     return (
-        <div className='w-full h-fit rounded-[12px] flex flex-col gap-2 p-5 bg-gray-50'>
+        <div className={`w-full h-fit rounded-[12px] flex flex-col gap-2 bg-gray-50 ${isMobile ? "p-3" : "p-5"}`}>
             <div className='flex w-full gap-2 items-center mb-[1rem]'>
                 <IconFileDescriptionFilled size={20} className='fill-gray-500' />
                 <span className='text-[1rem]'>Details</span>

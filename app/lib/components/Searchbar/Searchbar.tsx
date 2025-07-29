@@ -10,6 +10,7 @@ import ToasEnum from '../../enum/toastEnum';
 import { inventoryToggleProductView } from '../../redux/slice/inventorySlice';
 import Link from 'next/link';
 import { posSelectProduct } from '../../redux/slice/posSlice';
+import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 const Searchbar = ({
     context,
@@ -48,6 +49,7 @@ const Searchbar = ({
             reference.removeEventListener('blue', handleFocus);
         }
     }, []);
+
 
     const handleNameSelect = (id: string) => {
         if (context === "inventory") {
@@ -101,9 +103,16 @@ const Searchbar = ({
         return () => clearTimeout(timeout);
     }, [query]);
 
+
+    const { width } = useWindowSize();
+
+    const isMedium = width >= 576;
+
     return (
         <div className='w-fit h-fit relative'>
-            <input ref={inputRef} value={query} type="text" className='w-[25rem] h-[2.5rem] border border-gray-300 bg-gray-100 rounded-[8px] pl-10 p-1 focus:outline-gray-400' placeholder='Search'
+            <input ref={inputRef} value={query} type="text" className={`h-[2.5rem] border border-gray-300 bg-gray-100 rounded-[8px] pl-10 p-1 focus:outline-gray-400' placeholder='Search
+            ${isMedium ? "w-[25rem]" : "w-full"}
+            `}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const { value } = e.target;
                     setQuery(value);

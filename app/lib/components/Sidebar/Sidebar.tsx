@@ -12,6 +12,7 @@ import SidebarIcons from './components/SidebarIcons';
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
 import SidebarLogo from './components/SidebarLogo';
 import { usePathname } from 'next/navigation';
+import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 
 const Sidebar = ({
@@ -23,10 +24,6 @@ const Sidebar = ({
     const path = usePathname();
 
     const [isAllowed, setIsAllowed] = useState(true);
-
-    const {
-        isSidebarMinimize, hasScreenOverlay,
-    } = useSelector((state: RootState) => state.sidebarSlice);
 
     const _notifCount = useSelector((state: RootState) => state.notificationSlice.notificationCount);
     const iconSize = 22;
@@ -72,6 +69,8 @@ const Sidebar = ({
         },
     ];
 
+    const { width } = useWindowSize();
+
     useEffect(() => {
         const pagesWithOut = ['/ui/point-of-sale'];
 
@@ -90,14 +89,12 @@ const Sidebar = ({
 
     return (
         <AnimatePresence>
-            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] p-[0_.1rem] scrollbar-hide'
+            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] p-[0_.1rem] scrollbar-hide w-[10rem]'
                 initial={{
                     x: "-100%",
-                    width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)"
                 }}
                 animate={{
                     x: "0%",
-                    width: isSidebarMinimize ? "var(--sidebar-width-minimized)" : "var(--sidebar-width)",
                 }}
                 exit={{
                     opacity: 0,
@@ -108,14 +105,8 @@ const Sidebar = ({
             >
 
                 {/** logo container */}
-                <div className='w-full min-h-[4rem] relative'
-                    onMouseEnter={() => dispatch(sidebarToggleFloatingButton(true))}
-                    onMouseLeave={() => dispatch(sidebarToggleFloatingButton(false))}
-                >
-                    <SidebarLogo isSidebarMinimize={isSidebarMinimize} />
-                    {/** floating sidebar toggle */}
-                    <SidebarFloatingToggle />
-
+                <div className='w-full min-h-[4rem] relative'>
+                    <SidebarLogo isSidebarMinimize={false} />
                 </div>
                 <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
                     {sidebarButtonDetails.map((button, index) => {

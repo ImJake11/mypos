@@ -41,6 +41,7 @@ const sidebarSlice = createSlice({
             state.subMenuYTranslation = yValue;
         },
         sidebarOpen: (state, action: PayloadAction<boolean>) => {
+            console.log("hehehehe")
             state.isVisible = action.payload;
         }
     }

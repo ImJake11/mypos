@@ -6,9 +6,9 @@ import React from 'react'
 const DashboardAppbar = () => {
 
     const child = (
-        <div className='flex w-full justify-end'></div>
+        <div className='flex flex-1 justify-end'></div>
     )
-    
+
     return (
         <Appbar title='Dashboard' child={child} />
     )

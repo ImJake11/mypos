@@ -15,6 +15,7 @@ import TransactionServices from './TransactionService';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { AnimatePresence, motion } from "framer-motion";
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const TransactionFilterTab = () => {
 
@@ -27,7 +28,7 @@ const TransactionFilterTab = () => {
         const transactionService = new TransactionServices();
 
         try {
-
+            dispatch(transactionToggleFilterTab())
             dispatch(transactionSetLoading(true));
 
             const data = await transactionService.applyFilterData();
@@ -45,6 +46,9 @@ const TransactionFilterTab = () => {
         }
     }
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
 
     return (
         <AnimatePresence>
@@ -63,7 +67,9 @@ const TransactionFilterTab = () => {
                     opacity: 0,
                 }}
             >
-                <motion.div className='h-full w-[30vw] bg-[var(--main-bg-primary)] absolute right-0 p-5 flex flex-col gap-3'
+                <motion.div className={`h-full bg-[var(--main-bg-primary)] absolute right-0 p-5 flex flex-col gap-3
+                ${isMobile ? "w-full" : "w-[35-rem]"}
+                `}
                     initial={{
                         x: "100%"
                     }}
@@ -114,9 +120,7 @@ const TransactionFilterTab = () => {
                 </motion.div>
 
                 {/** date picker */}
-                <div className='absolute right-[31vw] w-[500px] h-[500px] top-1/2 -translate-y-1/2'>
-                    <DatePicker />
-                </div>
+                <DatePicker />
             </motion.div>}
         </AnimatePresence>
     )

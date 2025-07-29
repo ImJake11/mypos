@@ -5,6 +5,7 @@ import { IconArrowBackUpDouble, IconProgressX, IconTransitionLeftFilled } from '
 import Link from 'next/link';
 import React, { useState } from 'react'
 import TransactionDetailsVoidConfirmationPrompt from './TransactionDetailsVoidConfirmationPrompt';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const TransactionDetailsActions = ({
     id,
@@ -16,34 +17,65 @@ const TransactionDetailsActions = ({
     const [isVoid, setIsVoid] = useState(false);
     const isComplete = status === TransactionStatus.COMPLETED;
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
+
     if (isVoid) return <TransactionDetailsVoidConfirmationPrompt onCancel={() => setIsVoid(false)} id={id} />;
 
     return (
-        <div className='w-full flex flex-col gap-2'>
-            <div className='flex w-full gap-2'>
-                <Link href={`/ui/transaction`}>
-                    <button className='text-white w-fit min-h-[2rem] button-primary-gradient flex gap-3 items-center rounded-[4px] p-[0_10px] place-self-center'>
-                        <IconTransitionLeftFilled size={20} />
-                        Back to Transactions
-                    </button>
-                </Link>
+        <div className={`w-full flex flex-col gap-3 bg-white rounded-[12px]
+        ${isMobile ? "p-3" : "p-5"}
+        `}>
 
-                <div className='flex-1' />
-                {isComplete && <Link href={`/ui/transaction/refund-page/${id}`}>
-                    <button className='w-fit min-h-[2rem] border border-[var(--color-brand-primary)] flex gap-3 items-center rounded-[8px] p-[0_20px] text-[var(--color-brand-primary)] place-self-center' >
-                        <IconArrowBackUpDouble size={20} className='stroke-[var(--color-brand-primary)]' />
-                        Initiate Refund
-                    </button>
-                </Link>}
+            {isComplete && <Link href={`/ui/transaction/refund-page/${id}`}>
+                <ButtonTile
+                    color='orange-500'
+                    icon={<IconArrowBackUpDouble size={18} />}
+                    title='Refund'
+                />
+            </Link>}
 
-                {isComplete && <button className='w-fit min-h-[2rem] text-red-500 border border-red-500 flex gap-3 items-center rounded-[8px] p-[0_20px] place-self-center' onClick={() => setIsVoid(true)}
-                >
-                    <IconProgressX size={20} className='stroke-red-500' />
-                    Void Transaction
-                </button>}
-            </div>
+            {isComplete &&
+                <ButtonTile
+                    color='red-500'
+                    icon={<IconProgressX size={18} />}
+                    title='Void'
+                    onClick={() => setIsVoid(true)}
+                />
+            }
+
+            <Link href={`/ui/transaction`}>
+                <ButtonTile
+                    color='blue-500'
+                    icon={<IconTransitionLeftFilled size={18} />}
+                    title='Back To Transactions'
+                />
+
+            </Link>
         </div>
     )
+}
+
+function ButtonTile({
+    icon,
+    title,
+    color,
+    onClick,
+}: {
+    icon: React.JSX.Element,
+    title: string,
+    color: string,
+    onClick?: () => void,
+}) {
+
+    return <div className='w-full flex gap-2 items-center'>
+        {icon}
+        <span>{title}</span>
+        <div className='flex-1' />
+        <button className={`text-[.7rem] border border-${color} text-${color} rounded-[4px] p-[4px_7px]`} onClick={onClick}>Proceed</button>
+
+    </div>
 }
 
 export default TransactionDetailsActions

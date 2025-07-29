@@ -14,13 +14,12 @@ import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { AnimatePresence, motion } from 'framer-motion';
 import InventoryErrorState from '../../../lib/components/PagesState/PageErrorState';
 import InventoryLoadingState from './InventoryLoadingState';
-import GridTile from './InventoryProductTiles/InventoryGridTile';
-import InventoryTableViewTile from './InventoryProductTiles/InventoryTableViewTile';
-import InventoryNoDataFound from '../../../lib/components/PagesState/PageNoDataFoundPage';
 import { filterWebSocketFavoriteEvent } from '@/app/lib/redux/slice/filterSlice';
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
 import InventoryListVies from '../services/InventoryListVies';
 import InventoryGridView from '../InventoryGridView';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
+import Searchbar from '@/app/lib/components/Searchbar/Searchbar';
 
 const ProductList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,6 +60,10 @@ const ProductList = () => {
 
   if (isError) return <InventoryErrorState />;
 
+  const { width } = useWindowSize();
+
+  const isMedium = width < 768;
+
   return (
     <AnimatePresence>
       {isLoading ? (
@@ -74,7 +77,11 @@ const ProductList = () => {
         >
           <div className='bg-gray-100  flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
 
-            {isListView ? <InventoryListVies data={displayList} /> : <InventoryGridView data={displayList} />}
+            {isMedium && <div className='w-full grid place-content-center mb-2'><Searchbar context='inventory' showEditIcon={true} /></div>}
+
+            <div className='flex-1 overflow-auto'>
+              {isListView ? <InventoryListVies data={displayList} /> : <InventoryGridView data={displayList} />}
+            </div>
           </div>
         </motion.div>
       )}

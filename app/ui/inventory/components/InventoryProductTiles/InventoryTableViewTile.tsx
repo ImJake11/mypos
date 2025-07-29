@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import { generateStockStatusFlag, StockStatusFlagProp } from '../../services/generateStockStatusFlag';
 import { useDispatch } from 'react-redux';
 import { inventoryToggleProductView } from '@/app/lib/redux/slice/inventorySlice';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
 
@@ -20,8 +21,14 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
         setIsHover(false);
     }
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 700;
+
     return (
-        <motion.div className='w-full min-h-[3rem] relative flex bg-[var(--main-bg-primary)] rounded-[4px] p-1'
+        <motion.div className={`w-full min-h-[3rem] relative flex bg-[var(--main-bg-primary)] rounded-[4px] p-1 items-center gap-1
+            ${isMobile ? "text-[.7rem]" : "text-[.8rem]"}
+            `}
             layout
             whileHover={{
                 boxShadow: "1px 2px 5px rgb(0,0,0,.2)"
@@ -54,19 +61,21 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
             {/** stock status */}
             <TableCellTile content={stockStatus(generateStockStatusFlag(data.lowStock, data.stock))} flex='flex-[2]' />
 
-            {/** price */}
-            <TableCellTile content={`₱ ${data.sellingPrice.toLocaleString('en-us')}`} flex='flex-[2]' />
+            {!isMobile && <>
+                {/** price */}
+                <TableCellTile content={`₱ ${data.sellingPrice.toLocaleString('en-us')}`} flex='flex-[2]' />
 
-            {/** variants */}
-            <TableCellTile content={data.variants.length} flex='flex-[2]' />
+                {/** variants */}
+                <TableCellTile content={data.variants.length} flex='flex-[2]' />
 
-            {/** availability */}
-            <TableCellTile content={data.isActive ? "Available" : "Unavailable"} flex='flex-[2]' />
+                {/** availability */}
+                <TableCellTile content={data.isActive ? "Available" : "Unavailable"} flex='flex-[2]' />
 
-            {/** action */}
-            <button className='underline underline-offset-5 text-[var(--color-brand-primary)] flex-[1]'
-                onClick={() => dispatch(inventoryToggleProductView({ id: data.id!, isOpen: true }))}
-            >View</button>
+                {/** action */}
+                <button className='underline underline-offset-5 text-[var(--color-brand-primary)] flex-[1]'
+                    onClick={() => dispatch(inventoryToggleProductView({ id: data.id!, isOpen: true }))}
+                >View</button>
+            </>}
 
         </motion.div>
     )
@@ -83,7 +92,7 @@ const stockStatus = (status: StockStatusFlagProp) => {
 function TableCellTile({ flex, content }:
     { flex: string, content: any }
 ) {
-    return <div className={`${flex} grid place-content-center `}>
+    return <div className={`${flex} grid place-content-start `}>
         {content}
     </div>
 }

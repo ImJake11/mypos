@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { motion } from "framer-motion";
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const DashboardTransactionAndStockSummary = ({
     icon,
@@ -14,8 +15,15 @@ const DashboardTransactionAndStockSummary = ({
     child?: React.JSX.Element,
     subTitle?: string,
 }) => {
+
+    const { width } = useWindowSize();
+
+    const isMedium = width <= 768;
+
     return (
-        <motion.div className='min-h-[25rem] max-h-[25rem] flex-1/3 rounded-[8px] bg-[var(--main-bg-primary)] p-3 flex flex-col overflow-hidden'
+        <motion.div className={`rounded-[8px] bg-[var(--main-bg-primary)] p-3 flex flex-col overflow-hidden
+            ${isMedium ? "h-full min-w-[20rem]" : "min-h-[25rem] max-h-[25rem] flex-1/3"}
+            `}
 
             style={{
                 boxShadow: "0px 1px 5px rgb(0,0,0,.2)",

@@ -6,6 +6,7 @@ import { RootState } from '../redux/store';
 import ToasEnum from '../enum/toastEnum';
 import { closeToas, promptConfirmed } from '../redux/slice/toastSlice';
 import { AnimatePresence, motion } from "framer-motion";
+import { useWindowSize } from '../utils/hooks/useGetWindowSize';
 
 const Toas = () => {
 
@@ -108,6 +109,9 @@ const Toas = () => {
         dispatch(closeToas());
     }
 
+    const { width } = useWindowSize();
+
+    const isMedium = width >= 768;
 
     // close toas after 5 seconds
     useEffect(() => {
@@ -133,7 +137,9 @@ const Toas = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit w-[40rem] left-3 bottom-3 box-border p-[.2rem_.5rem] text-[.8rem]`}
+            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit left-3 bottom-3 box-border p-[.2rem_.5rem] text-[.8rem]
+            ${isMedium ? "w-[40rem]" : "w-[80%]"}
+            `}
                 style={generateColorAttr()}
 
                 initial={{

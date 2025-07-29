@@ -8,6 +8,7 @@ import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from '@/app/lib/redux/slice/processSlice';
 import { useRouter } from 'next/navigation';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const voidReasons = [
     "Customer changed mind",
@@ -74,12 +75,16 @@ const TransactionDetailsVoidConfirmationPrompt = ({
         }
     }
 
+    const { width } = useWindowSize();
+
+    const isMobile = width < 576;
+
     return (
-        <div className='w-full min-h-[15rem] border border-red-300 rounded-[12px] p-3 flex flex-col relative gap-2'>
+        <motion.div className='w-full border border-red-300 bg-white rounded-[12px] p-3 flex flex-col relative gap-2' animate={{ height: isOpen ? "20rem" : selectedReason === 4 ? "18rem" : "15rem" }}>
 
             <span className='italic'>Are you sure you want to void this transaction? This action cannot be undone.</span>
 
-            <div className='w-[30rem] h-[2.5rem] p-2 border border-gray-300 bg-gray-100 rounded-[8px] flex justify-between' onClick={() => setIsOpen(true)}>
+            <div className={`h-[2.5rem] p-2 border border-gray-300 bg-gray-100 rounded-[8px] flex justify-between ${isMobile ? "w-[70vw]" : "w-[30rem]"}`} onClick={() => setIsOpen(true)}>
                 {selectedReason === -1 ? "Select Reason" : voidReasons[selectedReason]}
                 <IconChevronDown size={20} />
             </div>
@@ -96,7 +101,9 @@ const TransactionDetailsVoidConfirmationPrompt = ({
             </AnimatePresence>
 
 
-            <motion.div key="reasons" className='w-[30rem] bg-white flex flex-col overflow-auto rounded-[8px] border-gray-300 border'
+            <motion.div key="reasons" className={`bg-white flex flex-col overflow-auto rounded-[8px] border-gray-300 border
+            ${isMobile ? "w-[70vw]" : "w-[30rem]"}
+            `}
                 initial={{ opacity: 0, height: "0rem" }}
                 animate={{
                     opacity: isOpen ? 1 : 0,
@@ -114,19 +121,24 @@ const TransactionDetailsVoidConfirmationPrompt = ({
 
             <div className='flex-1' />
 
-            <div className='w-full flex justify-end gap-3'>
+            <div className='w-full flex gap-3'>
 
-                <input type="password" className='w-[30rem] h-[2.5rem] border border-gray-300 rounded-[8px] p-2 bg-gray-100' placeholder='Input password' value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+                <input type="password" className={`h-[2.5rem] border border-gray-300 rounded-[8px] p-2 bg-gray-100
+                ${isMobile ? "w-[70vw]" : "w-[30rem]"}
+                `}
+                    placeholder='Input password'
+                    value={password}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
 
-                <div className='flex-1' />
+            </div>
 
+
+            <div className='w-full flex gap-2 justify-end'>
                 <button className='w-fit h-[2.5rem] rounded-[8px] p-[7px_15px] bg-red-500 text-white border-red-500 border' onClick={onCancel}>Cancel</button>
 
                 <button className='w-fit h-[2.5rem] rounded-[8px] p-[7px_15px] border-gray-300 border' onClick={handleVoid}>Proceed</button>
             </div>
-
-
-        </div>
+        </motion.div>
     )
 }
 
