@@ -1,13 +1,10 @@
 'use client';
 
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
-import ToasEnum from '@/app/lib/enum/toastEnum';
-import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import { IconChevronCompactLeft } from '@tabler/icons-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
-import OtpInput, { InputProps } from "react-otp-input";
-import { useDispatch } from 'react-redux';
+import OtpInput from "react-otp-input";
 
 
 const ConfirmationBody = () => {
@@ -18,11 +15,11 @@ const ConfirmationBody = () => {
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [isResendingCode, setIsResendingCode] = useState(false);
+    let email: string = "";
+
     const router = useRouter();
 
     const searchParams = useSearchParams();
-    const email = searchParams.get("email");
-    const dispatch = useDispatch();
 
     function convertTimestamp(token_exp: string): void {
         const now = new Date();
@@ -110,6 +107,8 @@ const ConfirmationBody = () => {
     }, [remainingTime]);
 
     useEffect(() => {
+        const email = searchParams.get("email");
+
         const fetchData = async () => {
 
             const res = await fetch(`/api/auth/${email}/validation`, {
