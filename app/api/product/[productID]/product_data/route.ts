@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
-export async function GET(req: NextRequest, { params }: { params: { productID: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ productID: string }> }) {
 
     const { productID } = await params;
 

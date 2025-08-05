@@ -7,7 +7,7 @@ import io from "socket.io-client";
 const socket = io(process.env.SOCKET_URL!);
 
 
-export async function PUT(req: NextRequest, { params }: { params: { productID: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: Promise<{ productID: string }> }) {
 
     try {
 

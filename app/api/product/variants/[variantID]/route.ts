@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 
 
-export async function GET(req: NextRequest, { params }: { params: { variantID: string } }) {
+export async function GET(req: NextRequest, { params }: { params: Promise<{ variantID: string }> }) {
 
     const { variantID } = await params;
     try {
