@@ -3,7 +3,7 @@ import TransactionDetailsBody from '../components/TransactionDetailsBody'
 import { TransactionDetailsModel } from '@/app/lib/models/transactionModel';
 import GlobalWrapper from '@/app/lib/components/GlobalWrapper';
 
-const page = async ({ params }: { params: { id: string } }) => {
+const page = async ({ params }: { params: Promise<{ id: string }> }) => {
 
   const { id } = await params;
 
