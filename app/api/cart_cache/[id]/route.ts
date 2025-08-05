@@ -2,13 +2,13 @@ import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { URL } from "url";
 
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: { id: string }) {
 
     try {
 
         const { searchParams } = new URL(req.url!);
 
-        const urlParms = await context.params;
+        const urlParms = await context;
 
         const { id } = urlParms;
 
