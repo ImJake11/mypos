@@ -1,11 +1,11 @@
 'use client'
 
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize'
 import { Montserrat } from 'next/font/google'
 import React from 'react'
 
 const montserrat = Montserrat({
     style: "normal",
+    subsets: ["latin"],
     weight: ["900", "500", '600', "800", "700", "400", "300"]
 })
 
