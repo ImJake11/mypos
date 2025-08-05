@@ -1,9 +1,8 @@
 import { prisma } from "@/app/lib/utils/db/prisma";
-import { NextApiRequest } from "next";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { URL } from "url";
 
-export async function DELETE(req: NextApiRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
 
     try {
 
