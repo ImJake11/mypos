@@ -1,31 +1,49 @@
+import { prisma } from "@/app/lib/utils/db/prisma";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
 export const verifyToken = async (): Promise<boolean> => {
 
-    const cookieStore = cookies();
-    const cookieHeader = (await cookieStore).getAll().map(c => `${c.name}=${c.value}`).join("; ")
+    try {
+        const cookieStore = await cookies();
 
-    const port = process.env.WEBSITE_PORT;
-    const host = process.env.WEBSITE_HOST;
-    const protocol = process.env.WEBSITE_PROTOCOL;
+        const email = cookieStore.get("email")?.value;
+        const token = cookieStore.get("session_token")?.value;
 
-    const baseUrl = `${protocol}://${host}:${port}/api/auth`
 
-    const res = await fetch(baseUrl, {
-        method: "GET",
-        headers: {
-            Cookie: cookieHeader,
-        },
-        cache: "no-store",
-    });
+        if (!email || !token) {
+            return false
+        };
 
-    if (!res.ok) {
-        const { error } = await res.json();
-        console.log(error);
-        return false;
+        const session = await prisma.sessionToken.findUnique({
+            where: { email },
+            select: {
+                token: true,
+                exp_at: true,
+            },
+        });
+
+        if (!session) {
+            return false
+        };
+
+        // compare token 
+        const isTokenVerified = token === session.token;
+
+        if (!isTokenVerified) {
+            return false
+        };
+
+        const now = new Date();
+        const exp = new Date(session.exp_at.toISOString());
+
+        if (exp < now) {
+            return false;
+        }
+
+        return true
+    } catch (e) {
+        return false
     }
-
-    return true;
 
 }
