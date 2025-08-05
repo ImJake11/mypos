@@ -2,10 +2,10 @@ import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { URL } from "url";
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
     try {
         const { searchParams } = new URL(req.url!);
-        const id = params.id;
+        const id = (await params).id;
         const userId = searchParams.get("userId");
 
         if (!userId) {
