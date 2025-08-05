@@ -7,6 +7,7 @@ import { NotificationModel } from '@/app/lib/models/notificationModel'
 import { NotificationFilterType } from '@/app/lib/enum/notificationType'
 import { prisma } from '@/app/lib/utils/db/prisma'
 
+export const dynamic = "force-dynamic";
 
 const page = async () => {
 
