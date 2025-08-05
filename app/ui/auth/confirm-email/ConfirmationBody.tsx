@@ -7,7 +7,8 @@ import React, { useEffect, useState } from 'react'
 import OtpInput from "react-otp-input";
 
 
-const ConfirmationBody = () => {
+const ConfirmationBody = ({ }) => {
+    let email = "";
 
     const [remainingTime, setRemainingTime] = useState(0);
     const [otp, setOtp] = useState('');
@@ -15,11 +16,8 @@ const ConfirmationBody = () => {
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [isResendingCode, setIsResendingCode] = useState(false);
-    let email: string = "";
 
     const router = useRouter();
-
-    const searchParams = useSearchParams();
 
     function convertTimestamp(token_exp: string): void {
         const now = new Date();
@@ -107,7 +105,6 @@ const ConfirmationBody = () => {
     }, [remainingTime]);
 
     useEffect(() => {
-        const email = searchParams.get("email");
 
         const fetchData = async () => {
 
