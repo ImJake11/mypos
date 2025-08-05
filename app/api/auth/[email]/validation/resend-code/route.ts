@@ -6,15 +6,16 @@ import { prisma } from "@/app/lib/utils/db/prisma";
 import bcrypt from "bcryptjs";
 import { NextRequest, NextResponse } from "next/server";
 
-const exp_date = new Date();
-exp_date.setMinutes(exp_date.getMinutes() + 15);
 
 export async function PUT(req: NextRequest,
     { params }: { params: Promise<{ email: string }> }
 ) {
+    const exp_date = new Date();
+    exp_date.setMinutes(exp_date.getMinutes() + 15);
+
+
     const { email } = await params;
 
-    console.log(email);
     try {
         const _otp = generateOTP();
         const hashedOtp = await bcrypt.hash(_otp, 10);
@@ -78,7 +79,6 @@ export async function PUT(req: NextRequest,
         )
 
     } catch (e) {
-        console.log(e);
         return NextResponse.json(
             { error: "Internal Server Error" },
             { status: 500 }
