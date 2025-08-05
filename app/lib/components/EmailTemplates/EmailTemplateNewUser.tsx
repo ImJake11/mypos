@@ -5,24 +5,26 @@ import { capitalizeFirtLetter } from '../../utils/services/capitalizeFirstLetter
 function EmailTemplateNewUser({
     email,
     username,
+    otp,
 }: {
     email: string,
-    username: string
+    username: string,
+    otp: string,
 }) {
 
     return (
-        <div className='flex flex-col gap-2'>
-            <strong>Welcome to Nexustock - Verify your email</strong>
+        <div className='flex h-auto flex-col gap-2'>
+            <strong>Welcome to Nexustock - Verify your email</strong><br />
 
             <strong>Hi {capitalizeFirtLetter(username)},</strong>
 
-            <p>Thank you for signing up! To activate your account and ensure it's really you, please confirm your email address by clicking below:</p>
+            <p>Thank you for signing up! To activate your account and ensure it's really you, please confirm your email address using this OTP (One Time Pin) below:</p>
 
-            <a href={`/ui/auth/confirm-email?email=${email}`}>Confirm Email Address</a>
+            <strong className='text-[1.5rem] text-[var(--color-brand-primary)]'>{otp}</strong><br />
 
-            <span>This link will expire in 24 hours for security reasons.</span>
+            <span>This code will expire in 15 minutes for security reasons.</span><br />
 
-            <span>Best Regards,</span>
+            <span>Best Regards,</span><br />
             <span>Nexustock</span>
 
         </div>

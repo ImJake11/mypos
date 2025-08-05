@@ -26,20 +26,20 @@ export default function BulkTable({ data, quantity }: Prop) {
             </span>
 
             {/** min quantity */}
-            <span className='flex-1 flex gap-2 justify-center'>
-                <span>Minimum Quantity: </span>
+            <span className='flex-1 flex gap-1 justify-center'>
+                <span>Quantity:</span>
                 <span className='font-semibold italic'>{tier.quantity}</span>
             </span>
 
             {/** discount rate */}
-            <span className='flex-1 flex gap-2 justify-center'>
-                <span>Discount Rate: </span>
+            <span className='flex-1 flex gap-1 justify-center'>
+                <span>Rate: </span>
                 <span className='font-semibold italic'>{tier.discount}%</span>
             </span>
 
             {/** status (eg. applied or not) */}
-            <span className={`flex-1 flex gap-2 justify-center ${isTierApplier ? "text-[var(--color-brand-primary)] font-semibold" : "text-[var(--foreground-lighter)]"}`}>
-                {isTierApplier ? "Applied" : "Not applicable"}
+            <span className={`flex-1 flex gap-1 justify-center ${isTierApplier ? "text-[var(--color-brand-primary)] font-semibold" : "text-[var(--foreground-lighter)]"}`}>
+                {isTierApplier ? "Applied" : "----"}
             </span>
         </div>
     }

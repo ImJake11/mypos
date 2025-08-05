@@ -11,6 +11,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { NotificationFilterType } from '../../enum/notificationType';
 import { openToas } from '../../redux/slice/toastSlice';
 import ToasEnum from '../../enum/toastEnum';
+import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 export default function CustomNotification() {
 
@@ -127,9 +128,8 @@ export default function CustomNotification() {
   }, []);
 
 
-
   return <AnimatePresence>
-    {isVisible && <motion.div className='w-[30rem] h-[55vh] absolute right-5 top-12'
+    {isVisible && <motion.div className={`h-[55vh] absolute right-5 top-12 w-[vw] m:w-[30rem]`}
 
       initial={{
         opacity: 0

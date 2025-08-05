@@ -37,7 +37,7 @@ const page = async () => {
     )
 
     return (
-        <div className='w-screen h-screen flex relative overflow-hidden'>
+        <div className='w-screen h-screen flex overflow-hidden'>
             <GlobalWrapper child={child} />
         </div>
     )

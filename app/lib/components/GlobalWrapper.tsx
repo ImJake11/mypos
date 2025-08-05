@@ -8,7 +8,6 @@ import Cart from '@/app/ui/point-of-sale/components/cart/Cart';
 import ProcessDialog from './ProcessDialog/ProcessDialog';
 import Toas from './Toas';
 import Sidebar from './Sidebar/Sidebar';
-import SidebarSubmenu from './Sidebar/SidebarSubmenu';
 import SidebarFloatingTab from './Sidebar/SidebarFloatingTab';
 import { useWindowSize } from '../utils/hooks/useGetWindowSize';
 
@@ -27,7 +26,6 @@ const GlobalWrapper = ({ child }: { child: React.JSX.Element }) => {
                 {child}
             </div>
             <SidebarFloatingTab />
-            <SidebarSubmenu />
             <ViewProductTab />
             <Cart />
             <Toas />

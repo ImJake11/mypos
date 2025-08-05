@@ -9,6 +9,8 @@ import { RootState } from '@/app/lib/redux/store';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
 import { faAdd, faCircleExclamation, faEdit, faImage } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { IconCategory, IconCategoryFilled } from '@tabler/icons-react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
@@ -20,8 +22,6 @@ interface ButtonTileProp {
 }
 
 const Category = () => {
-
-    const router = useRouter();
 
     const [isOpen, setIsOpen] = useState(false);
     const [mainData, setData] = useState<CategoryModel[]>([]);
@@ -81,12 +81,15 @@ const Category = () => {
 
     return (
         <div className='flex flex-col gap-1.5 h-fit max-h-[20rem] w-full overflow-hidden'>
-            <div className='flex justify-between w-full min-h-[3rem] border-[var(--color-brand-primary)] border rounded-[7px] items-center p-[0px_10px]'
+            <div className='flex gap-1 w-full min-h-[3rem] border-[var(--color-brand-primary)] border rounded-[7px] items-center p-[4px_10px]'
                 onClick={() => {
                     setIsOpen(!isOpen);
                 }}
             >
-                <span>{categoryPreview ? categoryPreview.content : <>Select Category</>}</span>
+                <div className='h-[2rem] aspect-square bg-gray-100 rounded-[4px] overflow-hidden'>
+                    <img src={categoryPreview?.url} />
+                </div>
+                <span className='flex-1 text-left'>{categoryPreview ? categoryPreview.content : <>Select Category</>}</span>
                 <i className="ri-arrow-down-s-fill text-[1.5rem] text-gray-700"></i>
             </div>
 
@@ -94,11 +97,11 @@ const Category = () => {
             {isOpen && <ul className='flex-col flex items-start overflow-auto rounded-[7px]'>
 
                 {/** create button */}
-                <button className='button-primary-gradient flex w-full min-h-[3rem] text-white  items-center gap-3 p-3.5'
-                    onClick={() => router.push("ui/settings/categories")}
-                >
-                    <span className='font-semibold italic'>Create </span><FontAwesomeIcon icon={faAdd} />
-                </button>
+                <Link href={"/ui/settings/store-setup/categories"} className='w-full'>
+                    <button className='button-primary-gradient flex w-full min-h-[3rem] text-white  items-center gap-3 p-3.5'>
+                        <span className='font-semibold italic'>Create </span><FontAwesomeIcon icon={faAdd} />
+                    </button>
+                </Link>
 
                 {isLoading ? <span className='w-full italic font-semibold text-center'></span> : <ReturnBody />}
             </ul>}
@@ -133,7 +136,7 @@ function ButtonTile({ isSelected, data, onClose }: ButtonTileProp) {
                 </div>
                 <span>{data.content}</span>
             </button>
-            <CategoriesIcon size={24} attr="fill-gray-400" />
+            <IconCategoryFilled size={16} className='fill-gray-400' />
         </div>
     )
 }

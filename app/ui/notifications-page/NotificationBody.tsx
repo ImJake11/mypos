@@ -83,7 +83,7 @@ const NotificationPageBody = ({ data }: { data: NotificationModel[] }) => {
     }, []);
 
     return (
-        <div ref={containerRef} className='w-full h-[85vh] rounded-[12px] overflow-x-hidden overflow-auto flex flex-col'
+        <div ref={containerRef} className='w-full h-full rounded-[12px] overflow-x-hidden overflow-auto flex flex-col '
             onScroll={handleScroll}
         >
             {

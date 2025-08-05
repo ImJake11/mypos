@@ -1,4 +1,5 @@
 import { Payload } from "@/app/generated/prisma/runtime/library";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 interface Prop {
@@ -34,5 +35,5 @@ const processSlice = createSlice({
     }
 });
 
-export const { toggleProcessDialog, updaterPocessDialogMessage, updateProcessDialogCurrentValue, resetProcessDialogState} = processSlice.actions;
+export const { toggleProcessDialog, updaterPocessDialogMessage, updateProcessDialogCurrentValue, resetProcessDialogState } = processSlice.actions;
 export default processSlice.reducer;

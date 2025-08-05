@@ -1,13 +1,13 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react'
-import Actions from './components/ProductFormActions'
-import UploadMedia from './components/ProductFormMedia'
-import Prices from './components/ProductFormPrices'
-import ProductFormStatus from './components/ProductFormStatus'
-import Stock from './components/ProductFormStock'
-import Variants from './components/ProductFormVariants'
-import ProductInformationDetails from './components/ProductInformationDetails'
+import Actions from './ProductFormActions'
+import UploadMedia from './ProductFormMedia'
+import Prices from './ProductFormPrices'
+import ProductFormStatus from './ProductFormStatus'
+import Stock from './ProductFormStock'
+import Variants from './ProductFormVariants'
+import ProductInformationDetails from './ProductInformationDetails'
 import { useSearchParams } from 'next/navigation';
 import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
 import { useDispatch, useSelector } from 'react-redux';
@@ -16,6 +16,7 @@ import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { RootState } from '@/app/lib/redux/store';
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const ProductFormBody = () => {
     const dropAreaRef = useRef<HTMLDivElement>(null);
@@ -54,10 +55,17 @@ const ProductFormBody = () => {
         fetch();
     }, []);
 
+    const w = useWindowSize().width;
+
+    const isMobile = w < 576;
+
     if (isLoading) return <LoadingState />;
 
     return (
-        <div ref={dropAreaRef} className='gap-5 flex flex-col flex-1 rounded-[11px] m-1.5 p-3 overflow-auto bg-[var(--main-bg-secondary)]'
+        <div ref={dropAreaRef} className={`
+         flex flex-col flex-1 rounded-[10px] m-1.5 overflow-auto bg-[var(--main-bg-secondary)]
+            ${isMobile ? "p-2 gap-2" : "gap-5 p-3"}
+            `}
         >
             <ProductFormStatus />
             <ProductInformationDetails />

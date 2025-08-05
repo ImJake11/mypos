@@ -8,7 +8,7 @@ import { useDeleteCartCache } from "@/app/ui/point-of-sale/services/deleteCartCa
 import { cartCacheSave } from "../../../services/saveCartCache";
 import { capitalizeFirtLetter } from "@/app/lib/utils/services/capitalizeFirstLetter";
 import { IconTrashFilled } from "@tabler/icons-react";
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
 
 interface Prop {
     data: CartModel,
@@ -33,13 +33,7 @@ export default React.memo(function CartTile({ data, index, cartHelper }: Prop) {
         dispatch(posRemoveVariant({ variantID: data.variantID }));
     }
 
-    return <motion.div className='flex items-center h-fit p-[7px_9px] w-full bg-[var(--main-bg-primary)] rounded-[7px] gap-2 text-center'
-    initial={{
-        boxShadow: "0px 2px 3px rgb(0,0,0, .2)"
-    }}
-    whileHover={{
-        boxShadow: "0px 2px 3px rgb(0,0,0, .4)"
-    }}
+    return <motion.div className='flex items-center h-fit p-[7px_9px] w-full bg-white border border-gray-200 rounded-[4px] gap-2 text-center'
     >
 
         {/** image container and name */}
@@ -52,14 +46,14 @@ export default React.memo(function CartTile({ data, index, cartHelper }: Prop) {
 
             <div className="flex-1 flex items-center gap-2">
                 {/** price */}
-                <span className="text-[1.2rem] font-semibold">{Number(data.total).toLocaleString('en-us', { currency: "PHP", style: "currency" })}</span>
+                <span className="text-[1rem] font-semibold">{Number(data.total).toLocaleString('en-us', { currency: "PHP", style: "currency" })}</span>
 
                 <div className="flex-1" />
                 <QuantityAction quantity={data.quantity} index={index} />
 
                 {/** delete button */}
                 <div className="w-[1.7rem] h-[1.7rem] rounded-[4px] bg-red-300/40 grid place-content-center">
-                    <IconTrashFilled className="fill-red-500" size={18} onClick={handleDelete}/>
+                    <IconTrashFilled className="fill-red-500" size={18} onClick={handleDelete} />
                 </div>
             </div>
         </div>

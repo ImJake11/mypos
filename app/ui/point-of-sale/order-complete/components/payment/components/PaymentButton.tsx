@@ -25,7 +25,7 @@ const PaymentButton = ({ name, icon, padding }: Prop) => {
         dispatch(posTogglePaymentMethod(name as PaymentMethod))
     }
     return (
-        <motion.div className='min-h-[2.5rem] w-full rounded-[7px] p-2 border border-gray-500 flex flex-col gap-2 items-center'
+        <motion.div className='min-h-[2.5rem] w-full rounded-[7px] p-2 border border-gray-300 flex flex-col gap-2 items-center'
             onClick={handlePayment}
 
             animate={{
@@ -33,12 +33,11 @@ const PaymentButton = ({ name, icon, padding }: Prop) => {
             }}
         >
             <div className='flex gap-2 items-center w-full'>
-                <div className='h-[1rem] w-[1rem] border-[1px] border-gray-500 rounded-full p-0.5 grid place-content-center'>
+                <div className='h-[1rem] w-[1rem] border-[1px] border-gray-300 rounded-full p-0.5 grid place-content-center'>
                     {isSelected && <div className='h-[.7rem] w-[.7rem] rounded-full bg-[var(--color-brand-primary)]' />}
                 </div>
                 {name}
                 <div className='flex-1' />
-                <span className='text-gray-400'>{icon}</span>
             </div>
 
             {name === PaymentMethod.E_WALLET && isSelected && <>

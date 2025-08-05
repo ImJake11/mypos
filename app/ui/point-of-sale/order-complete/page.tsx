@@ -1,29 +1,17 @@
-import OrderCompleteSummary from './components/OrderCompleteSummary'
-import OrderCompleteItems from './components/OrderCompleteItems'
-import OrderCompletePayment from './components/payment/OrderCompletePayment'
-import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import GlobalWrapper from '@/app/lib/components/GlobalWrapper'
 import Appbar from '@/app/lib/components/Appbar/Appbar'
+import OrderCompleteBody from './OrderCompleteBody'
+import MenuButton from '@/app/lib/components/Appbar/components/MenuButton'
+import OrderCompleteAppbar from './components/OrderCompleteAppbar'
 
 const page = () => {
 
-    const appbar = (
-        <div className='w-full'></div>
-    )
 
     const child = <div className='w-full h-full flex flex-col'>
         {/** app bar */}
-        <Appbar title='Complete Order' child={appbar} />
+        <OrderCompleteAppbar />
 
-        <div className='h-[calc(100vh-4rem)] flex'>
-            {/** cart items list */}
-            <OrderCompleteItems />
-            {/**  */}
-            <div className='bg-[var(--main-bg-secondary)] w-[35vw] min-w-[35vw] box-border p-4 overflow-auto rounded-tl-[7px]'>
-                <OrderCompleteSummary />
-                <OrderCompletePayment />
-            </div>
-        </div>
+        <OrderCompleteBody />
     </div>;
 
 

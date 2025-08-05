@@ -3,18 +3,16 @@
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { VariantsProps } from '@/app/lib/models/productModel';
 import { formDeleteVariant, formUpdateVariants } from '@/app/lib/redux/slice/productSlice';
-import { AppDispatch } from '@/app/lib/redux/store';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import { ProductActionEnums } from '@/app/lib/redux/utils/enums/productActionEnums';
 import { generateImageStringUrl } from '@/app/lib/utils/services/convertImageFileToString';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react'
 import { VariantKeys } from '@/app/lib/constants/ProductKeys';
 import { useSearchParams } from 'next/navigation';
+import { useDispatch } from 'react-redux';
+import { IconCaretDownFilled, IconCaretUpFilled, IconColumnRemove, IconRowRemove, IconTrashFilled } from '@tabler/icons-react';
 
 interface Prop {
-    appDispatch: AppDispatch,
     index: number,
     data: VariantsProps,
     sellingPrice: number, // main product price 
@@ -30,7 +28,8 @@ function generateBorderColor(condition: boolean) {
     return "border-red-400";
 }
 
-const NewVariantTile = ({ appDispatch, index, data, sellingPrice }: Prop) => {
+const NewVariantTile = ({ index, data, sellingPrice }: Prop) => {
+    const appDispatch = useDispatch();
 
     const params = useSearchParams();
 
@@ -100,58 +99,64 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice }: Prop) => {
                 name, index, data: !data.isArchived,
             }
         }));
-
     }
 
-    return (
-        <div className='w-full flex mt-3 items-start gap-1'>
-            {/** image */}
-            <div className='flex-1'>
+    const imageContainer = (
+        <div className={`h-[4rem] w-[4rem] rounded-[4px] relative border cursor-pointer overflow-hidden 
+                 ${generateBorderColor(imageUrl !== "")}`}>
+            <span className='absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 text-gray-500'>Pick Image</span>
+            {imageUrl && <img src={imageUrl} alt="variant image" className='w-full h-full absolute' />}
+            <input type="file" accept='image/*' className='inset-1 absolute opacity-0' onChange={handleImage} />
 
-                <div className={`h-[7rem] w-full rounded-[7px] relative border ${generateBorderColor(imageUrl !== "")} cursor-pointer overflow-hidden`}>
-                    <span className='absolute left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 text-gray-500'>Pick Image</span>
-                    {imageUrl && <img src={imageUrl} alt="variant image" className='w-full h-full absolute' />}
-                    <input type="file" accept='image/*' className='inset-1 absolute opacity-0' onChange={handleImage} />
+        </div>
+    );
 
-                </div>
-            </div>
+    const variantName = (
+        <div className='flex-2 flex flex-col'>
+            <span>Name</span>
+            <input type="text" value={name} className={`border h-[2.5rem] w-full rounded-[4px] p-2
+            ${generateBorderColor(name !== "")}
+            `}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
 
-            {/** name */}
-            <div className='flex-2'>
-                <input type="text" value={name} className={`border ${generateBorderColor(name !== "")} h-[3rem] w-full rounded-[7px] p-2`}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const { value } = e.target;
 
-                        const { value } = e.target;
+                    const convertedKey = VariantKeys.name as keyof VariantsProps;
 
-                        const convertedKey = VariantKeys.name as keyof VariantsProps;
+                    appDispatch(formUpdateVariants({
+                        data: value,
+                        index,
+                        name: convertedKey,
+                    }))
+                }}
+            />
+        </div>
+    )
 
-                        appDispatch(formUpdateVariants({
-                            data: value,
-                            index,
-                            name: convertedKey,
-                        }))
-                    }}
-                />
-            </div>
+    const variantDetails = (
+        <div className='w-full flex flex-col'>
+            <span>Details</span>
+            <textarea value={details ?? ""} className={`w-full max-h-[7rem] min-h-[7rem] border rounded-[4px] box-border p-2
+             ${generateBorderColor(true)}
+            `}
+                placeholder='ex. Color: red, Size: large'
+                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
 
-            {/** variant details */}
-            <div className='flex-2 flex items-end'>
-                <textarea value={details ?? ""} className={`w-full max-h-[7rem] min-h-[7rem] border ${generateBorderColor(true)} rounded-[7px] box-border p-2`}
-                    placeholder='ex. Color: red, Size: large'
-                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    const { value } = e.target;
 
-                        const { value } = e.target;
+                    const name = VariantKeys.details as keyof VariantsProps;
 
-                        const name = VariantKeys.details as keyof VariantsProps;
+                    appDispatch(formUpdateVariants({ data: value, name, index }))
+                }}
+            />
+        </div>
+    )
 
-                        appDispatch(formUpdateVariants({ data: value, name, index }))
-                    }}
-                />
-            </div>
-
-
-            {/** price adjustment */}
-            <div className={`flex-1 relative grid h-[3rem] border ${generateBorderColor(price >= 0)} rounded-[7px]`}>
+    const priceAdjustment = (
+        <div className='w-full flex flex-col'>
+            <span>Price Adjustment</span>
+            <div className={`flex-1 relative flex items-center min-h-[2.5rem] border rounded-[4px] 
+        ${generateBorderColor(price >= 0)}`}>
                 <input type="text" maxLength={3} className='border-none h-full w-full p-[0_30px] outline-none'
                     inputMode='numeric'
                     value={String(price)}
@@ -168,47 +173,74 @@ const NewVariantTile = ({ appDispatch, index, data, sellingPrice }: Prop) => {
                     }}
                 />
                 {/** arrows */}
-                <i className={`ri-arrow-up-s-fill absolute right-2.5 top-1 text-[2rem] -translate-y-[.8rem] ${isPositive ? "text-[var(--primary)]" : "text-gray-300"}`} onClick={handlePriceSign} />
-                <i className={`ri-arrow-down-s-fill absolute right-2.5 bottom-0 text-[2rem] translate-y-[.5rem] ${!isPositive ? "text-[var(--primary)]" : "text-gray-300"}`} onClick={handlePriceSign} />
+                <IconCaretUpFilled size={20} className='absolute right-2 top-1 fill-[var(--color-brand-primary)]' onClick={handlePriceSign} />
+                <IconCaretDownFilled size={20} className='fill-gray-400 absolute bottom-1 right-2' onClick={handlePriceSign} />
                 <span className='font-semibold text-[1.5rem] absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-500'>{isPositive ? "+" : "-"}</span>
+            </div>
+        </div>
+    )
 
+    const stocking = (
+        <div className={`w-full flex flex-col`}>
+            <span>Stock</span>
+            <input value={String(stock)} type="text" maxLength={5} inputMode='numeric' className={`p-2 h-[2.5rem] border rounded-[4px] w-full
+            ${generateBorderColor(stock > 0)}
+            `}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    const { value } = e.target;
+
+                    const convertedKey = VariantKeys.stock as keyof VariantsProps;
+
+                    const isNan = isNaN(Number(value));
+
+                    if (isNan) return;
+
+                    appDispatch(formUpdateVariants({ data: Number(value), index, name: convertedKey }))
+                }}
+            />
+        </div>
+    )
+
+    const total = (
+        <div className={`h-[2.5rem] flex gap-1 items-center`}>
+            <span>Total: </span>
+            <span className='text-gray-400'>Php {generateTotal()}</span>
+        </div>
+    )
+
+    return (
+        <div className={`w-full flex items-start flex-col gap-3 border border-gray-300 p-3 rounded-[4px]`}>
+            <span className='text-right font-semibold w-full text-gray-400'>Variant {index + 1}</span>
+            <div className='w-full flex gap-3 items-end'>
+                {imageContainer}
+                {variantName}
             </div>
 
+            {/** variant details */}
+            {variantDetails}
+            {/** price adjustment */}
+            {priceAdjustment}
             {/** stock */}
-            <div className='flex-1 grid place-content-center'>
-                <input value={String(stock)} type="text" maxLength={5} inputMode='numeric' className={`p-2 h-[3rem] border ${generateBorderColor(stock > 0)} rounded-[7px] w-full`}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                        const { value } = e.target;
-
-                        const convertedKey = VariantKeys.stock as keyof VariantsProps;
-
-                        const isNan = isNaN(Number(value));
-
-                        if (isNan) return;
-
-                        appDispatch(formUpdateVariants({ data: Number(value), index, name: convertedKey }))
-                    }}
-                />
-            </div>
-
+            {stocking}
             {/** total */}
-            <div className='flex-1 grid place-content-center h-[3rem]'>
-                <span className='text-gray-400'>Php {generateTotal()}</span>
-            </div>
 
-            {/** actions */}
-            <div className='flex-1 grid place-content-center'>
-
-                {/** delete */}
-                {isForUpdate ? <div className={`cursor-pointer p-[10px_15px] rounded-[7px] text-white ${data.isArchived ? "button-primary-gradient" : "button-primary-gradient-error"}`}
+            <div className='w-full flex justify-between items-center'>
+                {total}
+                {isForUpdate ? <div className={`cursor-pointer p-[10px_15px] rounded-[4px] text-white ${data.isArchived ? "bg-[var(--color-brand-primary)]" : "bg-red-500"}`}
                     onClick={handleVariantAction}
                 >{isArchived ? "UnArchive" : "Archive"}</div> :
-                    <FontAwesomeIcon icon={faTrash} className='text-[1.5rem] text-red-500 ' onClick={() => appDispatch(formDeleteVariant(index))} />
+                    <button className='flex gap-2 px-2 py-1.5 bg-red-500 rounded-[4px] text-white items-center'
+                        onClick={() => appDispatch(formDeleteVariant(index))}
+                    >
+                        <span>Remove</span>
+                        <IconColumnRemove className='text-[1.5rem] w-[1.5rem] h-[1.5rem]' />
+                    </button>
                 }
             </div>
         </div>
     )
 
 }
+
 
 export default NewVariantTile

@@ -106,13 +106,13 @@ const Searchbar = ({
 
     const { width } = useWindowSize();
 
-    const isMedium = width >= 576;
+    const isMobile = width < 576;
 
     return (
         <div className='w-fit h-fit relative'>
-            <input ref={inputRef} value={query} type="text" className={`h-[2.5rem] border border-gray-300 bg-gray-100 rounded-[8px] pl-10 p-1 focus:outline-gray-400' placeholder='Search
-            ${isMedium ? "w-[25rem]" : "w-full"}
-            `}
+            <input ref={inputRef} value={query} type="text" className={`
+            ${isMobile && "w-[90vw]"}
+            h-[2.5rem] border border-gray-300 bg-gray-100 rounded-[8px] pl-10 p-1 focus:outline-gray-400 w-[30rem]`}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const { value } = e.target;
                     setQuery(value);

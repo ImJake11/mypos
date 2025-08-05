@@ -7,7 +7,7 @@ import { RootState } from '@/app/lib/redux/store';
 import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Area, AreaChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 
 const DashboardChart = () => {
@@ -20,18 +20,18 @@ const DashboardChart = () => {
   const convertToMonthlyData = (data: AnnualTransactionModel[]) => {
 
     let chartData: AnnualChartModel[] = [
-      { data: 0, month: "January" },
-      { data: 0, month: "February" },
-      { data: 0, month: "March" },
-      { data: 0, month: "April" },
+      { data: 0, month: "Jan" },
+      { data: 0, month: "Feb" },
+      { data: 0, month: "Mar" },
+      { data: 0, month: "Apr" },
       { data: 0, month: "May" },
-      { data: 0, month: "June" },
-      { data: 0, month: "July" },
-      { data: 0, month: "August" },
-      { data: 0, month: "September" },
-      { data: 0, month: "October" },
-      { data: 0, month: "November" },
-      { data: 0, month: "December" },
+      { data: 0, month: "Jun" },
+      { data: 0, month: "Jul" },
+      { data: 0, month: "Aug" },
+      { data: 0, month: "Sep" },
+      { data: 0, month: "Oct" },
+      { data: 0, month: "Nov" },
+      { data: 0, month: "Dec" },
     ];
 
     data.forEach((t, i) => {
@@ -42,9 +42,6 @@ const DashboardChart = () => {
 
       chartData[month].data += Number(t._sum.netTotal);
     })
-
-    console.log(chartData);
-
     dispatch(dashboarSetChartData(chartData))
   }
 
@@ -83,11 +80,8 @@ const DashboardChart = () => {
   const isSmall = width <= 768;
   const isXSmall = width <= 490;
 
-
-  // components
-
   const child = (
-    <AreaChart
+    <BarChart
       className='translate-y-5'
       data={annualChartData}
       onMouseLeave={() => setHoveredIndex(null)}
@@ -100,20 +94,15 @@ const DashboardChart = () => {
       <defs>
         <linearGradient id="data" x1="0" y1="0" x2="0" y2="1">
           <stop offset="25%" stopColor="var(--color-brand-primary)" stopOpacity={0.8} />
-          <stop offset="85%" stopColor="var(--color-brand-secondary)" stopOpacity={0} />
+          <stop offset="85%" stopColor="var(--color-brand-secondary)" stopOpacity={.8} />
         </linearGradient>
       </defs>
       <CartesianGrid strokeDasharray="3 3" strokeOpacity={0} />
 
-      <Area fill='url(#data)' fillOpacity={1} dataKey="data" stroke='var(--color-brand-primary)' type="linear" dot={{
-        r: 5,
-        fill: "var(--color-brand-primary)",
-        stroke: "var(--main-bg-secondary)",
-        strokeWidth: 2,
+      <Bar dataKey="data" fill='url(#data)' radius={5} opacity={.4} activeBar={{
+        opacity: 1,
       }} />
 
-
-      {/** x-axis */}
       <XAxis dataKey="month" strokeOpacity={0} fontSize={10} tick={(props) => {  // Custom tick renderer
         const { x, y, payload } = props;
         const isHovered = hoveredIndex === annualChartData.findIndex(item => item.month === payload.value);
@@ -134,8 +123,9 @@ const DashboardChart = () => {
         );
       }} />
 
-      {/** y-axis */}
-      <YAxis dataKey="data" width="auto" strokeOpacity={0} fontSize={10} />
+      <YAxis dataKey="data" width="auto" strokeOpacity={0} fontSize={isXSmall ? 8 : 10}
+        tickFormatter={(value) => Number(value).toLocaleString('en-US', { style: "currency", currency: "PHP", })}
+      />
 
       <Tooltip animationDuration={340}
         formatter={(value, name) => [
@@ -144,16 +134,16 @@ const DashboardChart = () => {
         cursor={{
           stroke: "var(--color-brand-primary)",
           strokeWidth: 2,
-          opacity: .7,
+          opacity: .0,
           strokeDasharray: "5 5",
         }}
       />
-    </AreaChart>
+    </BarChart>
   )
 
 
   return (
-    <div className={`flex-3/4  bg-[var(--main-bg-primary)] rounded-[8px] shadow-[0px_1px_5px_rgb(0,0,0,.2)] relative
+    <div className={`flex-3/4 bg-[var(--main-bg-primary)] rounded-[8px] shadow-[0px_1px_5px_rgb(0,0,0,.2)] relative
       ${isSmall && "max-w-[calc(100vw*0.95)] min-h-[16rem]"}
       ${isXSmall && `max-w-[calc(100vw*0.93)] min-h-[16rem]`}
       ${isMedium && "min-h-[74%]"}

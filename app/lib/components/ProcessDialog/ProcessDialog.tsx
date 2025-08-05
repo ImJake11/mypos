@@ -4,6 +4,7 @@ import React from 'react';
 import { motion } from "framer-motion";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 const ProcessDialog = () => {
 
@@ -11,19 +12,18 @@ const ProcessDialog = () => {
 
     const { maxValue, currentValue, message, isOpen } = processSlice;
 
+    const w = useWindowSize().width;
+
+    const isMobile = w < 576;
+
     if (!isOpen) return null;
 
     return (
-        <div className='w-screen h-screen absolute'
-            style={{
-                backgroundColor: "rgba(0,0,0, .8)"
-            }}
+        <div className='w-screen h-screen absolute bg-gray-900/90'
         >
-
-            <div className='w-[40vw] md:w-[30vw] h-[30vh]  absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-[11px]'
-                style={{
-                    backgroundColor: "var(--main-bg-primary)"
-                }}
+            <div className={`
+            ${isMobile && "w-[70vw] h-[30vh]"}
+            w-[40vw] h-[30vh] absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 rounded-[11px] bg-white`}
             >
                 <span className='absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 font-semibold italic' >{message}</span>
 

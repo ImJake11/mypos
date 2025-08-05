@@ -6,8 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import "remixicon/fonts/remixicon.css";
 import SidebarMainButtonTile from './components/SidebarMainButtonTile';
-import SidebarFloatingToggle from './components/SidebarFloatingToggle';
-import { sidebarOpen, sidebarToggleFloatingButton } from '../../redux/slice/sidebarSlice';
 import SidebarIcons from './components/SidebarIcons';
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
 import SidebarLogo from './components/SidebarLogo';
@@ -20,13 +18,9 @@ const Sidebar = ({
 }: {
     isFloating: boolean,
 }) => {
-    const dispatch = useDispatch();
     const path = usePathname();
 
     const [isAllowed, setIsAllowed] = useState(true);
-
-    const _notifCount = useSelector((state: RootState) => state.notificationSlice.notificationCount);
-    const iconSize = 22;
 
     const sidebarButtonDetails: SidebarButtonsProp[] = [
         {
@@ -69,7 +63,6 @@ const Sidebar = ({
         },
     ];
 
-    const { width } = useWindowSize();
 
     useEffect(() => {
         const pagesWithOut = ['/ui/point-of-sale'];
@@ -79,7 +72,6 @@ const Sidebar = ({
                 setIsAllowed(false);
             } else {
                 setIsAllowed(true);
-                dispatch(sidebarOpen(false))
             }
         });
 
@@ -89,7 +81,7 @@ const Sidebar = ({
 
     return (
         <AnimatePresence>
-            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] p-[0_.1rem] scrollbar-hide w-[10rem]'
+            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] p-[0_.1rem] scrollbar-hide w-[15rem]'
                 initial={{
                     x: "-100%",
                 }}
@@ -100,7 +92,8 @@ const Sidebar = ({
                     opacity: 0,
                 }}
                 transition={{
-                    ease: "linear"
+                    ease: "easeInOut",
+                    duration: .2,
                 }}
             >
 
@@ -114,7 +107,6 @@ const Sidebar = ({
                         const icon = <SidebarIcons url={button.url} />;
 
                         return <SidebarMainButtonTile key={index}
-                            yTranslation={button.yTranslation ?? 0}
                             icon={icon}
                             name={button.name}
                             notificationLength={button.notificationCount ?? 0}

@@ -7,6 +7,7 @@ import ProductDetailsServices from '../services/productDetailsServices';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { posUpdateSelectedvariantQuantity } from '@/app/lib/redux/slice/posSlice';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const ProductTabQuantityControl = () => {
 
@@ -18,7 +19,7 @@ const ProductTabQuantityControl = () => {
         return new ProductDetailsServices();
     }, [quantity]);
 
-    const overallTotalPrice = productDetailsTabCalculator.computeOverallTotalPrice().toLocaleString('en-us');
+    const overallTotalPrice = productDetailsTabCalculator.computeOverallTotalPrice();
 
     const maxStock = productDetailsTabCalculator.getSelectedVariatMaxStock();
     //
@@ -64,11 +65,14 @@ const ProductTabQuantityControl = () => {
         }
     }
 
+    const w = useWindowSize().width;
+
+    const isXSmall = w < 576;
 
     return (
         selectedVariantID && <div className='flex w-full gap-3 justify-end items-center mb-5'>
-            <span className='text-[1rem]'>TOTAL PRICE:
-                <span> Php {overallTotalPrice}</span>
+            <span className={`${isXSmall ? "text-[.8rem]" : "text-[1rem]"}`}>TOTAL:
+                <span> {Number(overallTotalPrice).toLocaleString('en-US', { style: "currency", currency: "PHP" })}</span>
             </span>
             <div className='flex-1' />
             <StockActions isPlus={false} onClick={

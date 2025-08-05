@@ -30,7 +30,7 @@ const NotificationButton = () => {
         >
             <IconBellFilled size={18} className='fill-gray-400' />
 
-            <div className='absolute h-[1rem] w-[1rem] rounded-full bg-red-400 text-white text-[.6rem] grid place-content-center right-0'>
+            <div className={`absolute h-[1rem] w-[1rem] rounded-full bg-red-400 text-white text-[.6rem] grid place-content-center right-0 ${notificationCount > 0 ? "opacity-100" : "opacity-0"}`}>
                 {notificationCount}
             </div>
         </motion.div>

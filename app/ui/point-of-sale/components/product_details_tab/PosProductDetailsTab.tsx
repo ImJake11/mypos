@@ -1,22 +1,19 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react'
-import { posAddProductToCart, posCloseProductDetails, posSelectProduct, posSetSelectedProductData, posUpdateSelectedvariantQuantity } from '@/app/lib/redux/slice/posSlice';
+import { posSetSelectedProductData } from '@/app/lib/redux/slice/posSlice';
 import { RootState } from '@/app/lib/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
 import Variants from './component/Variants';
 import BulkTable from './component/BulkTiers';
-import { openToas } from '@/app/lib/redux/slice/toastSlice';
-import ToasEnum from '@/app/lib/enum/toastEnum';
 import ProductDetailsCalculator from './services/productDetailsServices';
-import CartHelpers from "../cart/services/cartHelper";
 import { AnimatePresence } from "framer-motion";
-import { cartCacheSave } from '../../services/saveCartCache';
 import { checkDiscountExpiration } from '@/app/lib/utils/services/checkDiscountExpirationDate';
 import ProductTabLoadingIndicator from './component/ProductTabLoadingIndicatore';
 import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
 import ProductTabQuantityControl from './component/ProductTabQuantityControl';
 import ProductTabAddToCartButton from './component/ProductTabAddToCartButton';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const PosProductDetailsTab = () => {
     const dispatch = useDispatch();
@@ -55,17 +52,13 @@ const PosProductDetailsTab = () => {
         fetchProductData();
 
     }, [isProductDetailsTabVisible]);
-    // return null if its not visible
+
     if (!isProductDetailsTabVisible) return null;
 
     return (
-        <div className='w-screen h-screen backdrop-blur-[2px] absolute'
-            style={{
-                backgroundColor: "rgb(0,0,0, .6)"
-            }}
+        <div className='w-screen h-screen bg-black/80 absolute'
         >
-            {isLaoding ? <ProductTabLoadingIndicator /> : <div className='bg-[var(--main-bg-primary)] overflow-auto scrollbar-hide absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[80vh] rounded-[11px] p-5 flex flex-col gap-3
-            '>
+            {isLaoding ? <ProductTabLoadingIndicator /> : <div className={`bg-[var(--main-bg-primary)] overflow-auto scrollbar-hide absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[11px] p-5 flex flex-col gap-3 h-[80vh] w-[90vw]`}>
                 {/** discount and aname */}
                 <div className='flex w-full gap-2'>
                     {hasDiscount && <div className='w-fit h-[2rem] button-primary-gradient grid place-content-center p-3 rounded-[7px]'>

@@ -1,14 +1,15 @@
 'use client';
 
 import React, { useMemo } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '@/app/lib/redux/store';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/lib/redux/store';
 import CartTile from './component/CartTile';
 import CartHelpers from './services/cartHelper';
 import CartOrderSummary from './component/CartOrderSummary';
 import CartIcon from '@/app/lib/icons/cartIcon';
 import { useFetchCart } from '@/app/ui/point-of-sale/services/useFetchCart';
 import { AnimatePresence, motion } from "framer-motion";
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const Cart = () => {
 
@@ -20,15 +21,15 @@ const Cart = () => {
         return new CartHelpers()
     }, [cartData]);
 
+    const w = useWindowSize().width;
+
+    const isMobile = w < 768;
+
     useFetchCart({});
 
     return (
         <AnimatePresence>
-            {posSlice.isCartVisible && <motion.div className='absolute w-screen h-screen backdrop-blur-[2px]'
-                style={{
-                backgroundColor: "rgb(0,0,0, .5)",
-                }}
-
+            {posSlice.isCartVisible && <motion.div className='absolute w-screen h-screen bg-black/70'
                 initial={{
                     opacity: 0,
                 }}
@@ -39,7 +40,9 @@ const Cart = () => {
                     opacity: 0,
                 }}
             >
-                <motion.div className='absolute right-0 w-[40vw] h-full bg-[var(--main-bg-primary)] flex flex-col p-5 gap-2'
+                <motion.div className={`absolute right-0 bg-white flex flex-col gap-2
+                ${isMobile ? "w-full h-full p-2" : "w-[40vw] h-full p-5"}
+                `}
                     initial={{
                         x: "100%"
                     }}

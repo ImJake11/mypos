@@ -60,10 +60,6 @@ const ProductList = () => {
 
   if (isError) return <InventoryErrorState />;
 
-  const { width } = useWindowSize();
-
-  const isMedium = width < 768;
-
   return (
     <AnimatePresence>
       {isLoading ? (
@@ -75,9 +71,8 @@ const ProductList = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className='bg-gray-100  flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
-
-            {isMedium && <div className='w-full grid place-content-center mb-2'><Searchbar context='inventory' showEditIcon={true} /></div>}
+          <div className='bg-gray-100 flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
+            <div className='w-full grid place-content-center mb-2 md:hidden'><Searchbar context='inventory' showEditIcon={true} /></div>
 
             <div className='flex-1 overflow-auto'>
               {isListView ? <InventoryListVies data={displayList} /> : <InventoryGridView data={displayList} />}

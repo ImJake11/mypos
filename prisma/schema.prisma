@@ -178,15 +178,33 @@ model ActivityLogs {
 }
 
 model Users {
-  id              String   @id @unique @default(uuid())
-  email           String   @unique
-  password        String
-  username        String
-  role            String   @default("user")
-  isVerified      Boolean  @default(false)
-  isActive        Boolean  @default(false)
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @default(now())
-  sessionToken    String?
-  validationToken String?
+  id               String   @id @unique @default(uuid())
+  email            String   @unique
+  password         String
+  username         String
+  role             String   @default("user")
+  isVerified       Boolean  @default(false)
+  isActive         Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @default(now())
+  otp              String?
+  provider         String
+  relateProviderID String?
+  photoUrl         String?
+}
+
+model ValidationToken {
+  id         String   @id @unique @default(uuid())
+  created_at DateTime @default(now())
+  exp_at     DateTime
+  token      String
+  email      String   @unique
+}
+
+model SessionToken {
+  id         String   @id @unique @default(uuid())
+  created_at DateTime @default(now())
+  exp_at     DateTime
+  token      String
+  email      String   @unique
 }

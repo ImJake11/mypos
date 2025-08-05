@@ -1,22 +1,15 @@
 'use client'
 
-import FilterIconTwo from '@/app/lib/icons/filter_icon_two'
 import React from 'react'
 import TransactionTile from './TransactionTile'
 import { useDispatch, useSelector } from 'react-redux'
 import { AppDispatch, RootState } from '@/app/lib/redux/store'
 import { useFetchTransactions } from '@/app/ui/transaction/services/useFetchTransactions'
-import { transactionToggleFilterTab, trnasactionTogglePDF } from '@/app/lib/redux/slice/transactionSlice'
-import Appbar from '@/app/lib/components/Appbar/Appbar'
-import { TransactionIcon } from '@/app/lib/icons/transactionIcon'
-import DownloadIcon from '@/app/lib/icons/DownloadIcon'
 import TransactionAppbar from '../TransactionAppbar'
-import TransactionDetailsVoidConfirmationPrompt from '../details/components/TransactionDetailsVoidConfirmationPrompt'
 import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize'
+import clsx from "clsx";
 
 const TransactionBody = () => {
-
-    const dispatch = useDispatch<AppDispatch>();
 
     const { transactionsData, filteredData, isError, isLoading, isFiltering } = useSelector((state: RootState) => state.transaction);
 
@@ -26,18 +19,11 @@ const TransactionBody = () => {
 
     if (isError) return <div className='w-full h-full grid place-content-center'>ERROR BOSS!!!</div>
 
-
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
     return (
         <div className='flex-1 flex flex-col'>
             <TransactionAppbar />
             {/** data */}
-            <div className={`flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col
-                ${isMobile ? "text-[.6rem]" : "text-[.8rem]"}
-                `}>
+            <div className="flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col text-[.7rem] md:text-[.8rem]">
                 {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
 
                     {/** filter icon and title */}
@@ -50,11 +36,11 @@ const TransactionBody = () => {
                     {/** headers */}
                     <div className='w-full flex'>
                         <HeaderTile name='Date' />
-                        {!isMobile && <HeaderTile name='Transaction ID' flex='flex-2' />}
+                        <HeaderTile name='Transaction ID' flex='flex-2' attr='hidden lg:grid' />
                         <HeaderTile name='Amount' />
                         <HeaderTile name='Status' />
                         <HeaderTile name='Method' />
-                        {!isMobile && <HeaderTile name='Action' />}
+                        <HeaderTile name='Action' attr='hidden md:grid' />
                     </div>
 
                     {displayList.length <= 0 && !isLoading ? <NoData /> :
@@ -70,12 +56,13 @@ const TransactionBody = () => {
     )
 }
 
-function HeaderTile({ name, flex }: {
+function HeaderTile({ name, flex, attr, }: {
     name: string,
-    flex?: string
+    flex?: string,
+    attr?: string,
 }) {
 
-    return <div className={`flex-1 h-[2rem] grid place-content-center bg-gray-100 font-[600] ${flex ?? "flex-1"}`}>
+    return <div className={clsx(`flex-1 h-[2rem] grid place-content-center bg-gray-100 font-[600] ${flex ?? "flex-1"}`, attr)}>
         {name}
     </div>
 }

@@ -1,7 +1,5 @@
 import { UserModel } from "@/app/lib/models/UserModel";
-import { createClient } from "@/app/lib/utils/supabase/supabase";
-import { AppDispatch } from "recharts/types/state/store";
-
+import { redirect } from "next/navigation";
 
 
 export class AuthServices {
@@ -13,14 +11,12 @@ export class AuthServices {
     }
 
 
-    async signInWithEmail(
+    async signUpWithEmail(
         {
-            dispatch,
             onSuccess,
             onError,
             onLoading,
         }: {
-            dispatch: AppDispatch,
             onLoading: (isLoading: boolean) => void,
             onSuccess?: (message: string) => void,
             onError?: (message: string) => void,
@@ -36,29 +32,76 @@ export class AuthServices {
                 return;
             }
 
-            const res = await fetch(`/api/auth`, {
+            const res = await fetch("/api/auth", {
                 method: "POST",
                 body: JSON.stringify({
-                    email, username, password
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
+                    email,
+                    username,
+                    password,
+                })
             });
 
             if (!res.ok) {
-                if (onError) onError("Sign up failed");
-                return;
+                const { error } = await res.json();
+                if (onError) onError(error);
+                throw new Error("Failed to Sign Up");
             }
 
-            if (onSuccess) onSuccess("User created successfully");
-            window.localStorage.setItem("email", email);
+            if (onSuccess) onSuccess("Account created successfully");
 
-        } catch (e) {
-            if (onError) onError("Something went wrong")
+        } catch (e: any) {
+            throw new Error("Failed Sign Up");
         } finally {
             onLoading(false);
         }
+    }
 
+    public async signInWithEmail({
+        onError,
+        onLoading,
+        onSuccess,
+    }: {
+        onLoading: (isLoading: boolean) => void,
+        onError?: (message: string) => void,
+        onSuccess?: () => void,
+    }) {
+
+        try {
+
+            const { email, password } = this.userCredentials;
+
+            if (!email || !password) {
+                if (onError) onError("Please fill the required fields");
+                return;
+            }
+
+            onLoading(true);
+
+            const res = await fetch("/api/auth", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email, password,
+                })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                const { error } = data;
+                onLoading(false)
+                if (onError) onError(error);
+                return;
+            }
+
+            if (onSuccess) onSuccess();
+        } catch (e) {
+            onLoading(false)
+            throw new Error("Failed to sign up");
+        }
     }
 }
+
+

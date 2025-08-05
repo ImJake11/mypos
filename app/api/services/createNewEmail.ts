@@ -1,9 +1,9 @@
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY || "");
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function resendSendEmail({
-    email = "",
+    email,
     fullname,
     subject,
     template,
@@ -14,6 +14,10 @@ export async function resendSendEmail({
     template: React.JSX.Element,
 }) {
 
+    if (!email) {
+        throw new Error("Email is Undefined");
+    }
+
     const { data, error } = await resend.emails.send({
         from: 'Nexustock <noreply@jakejug.site>',
         to: [email],
@@ -22,8 +26,7 @@ export async function resendSendEmail({
     });
 
     if (error) {
-        console.log(error)
-        throw new Error("Resend api error");
+        throw new Error(error.message);
     }
 
     return data;

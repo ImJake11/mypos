@@ -145,7 +145,7 @@ interface ButtonProp {
 }
 
 function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
-    return <motion.div className={`w-full h-fit p-[6px_8px] flex gap-2 items-center rounded-[7px] ${isSelected ? "button-primary-gradient" : "main-background-gradient"} text-nowrap whitespace-nowrap ${isSelected? "text-white" : "text-black"}`}
+    return <motion.div className={`w-full min-h-[2.5rem] px-2.5 flex gap-2 items-center rounded-[7px] ${isSelected ? "bg-[var(--color-brand-primary)]" : "bg-gray-200"} text-nowrap whitespace-nowrap ${isSelected ? "text-white" : "text-black"}`}
         style={{
             border: "solid var(--primary) 1px",
         }}
@@ -162,9 +162,9 @@ function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
             x: "-100%"
         }}
     >
-        <div className='w-[1.5rem] h-[1.5rem] rounded-full border border-[var(--foreground)] grid place-content-center text-[.8rem] overflow-hidden'>
+        {data && <div className='w-[1.5rem] h-[1.5rem] rounded-full border border-[var(--foreground)] grid place-content-center text-[.8rem] overflow-hidden'>
             {data?.url && <img src={data.url} alt="c" />}
-        </div>
+        </div>}
         {data?.content ? data?.content : "All"}
     </motion.div>
 }

@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import AuthPageMessage from './AuthPageMessage';
 import { useRouter } from 'next/navigation';
-import AuthConfirmationContainer from './AuthConfirmationContainer';
+import Toas from '@/app/lib/components/Toas';
 
 const audioWide = Audiowide({
     weight: ['400'],
@@ -41,7 +41,6 @@ const AuthTemplate = ({
         isAgree: false,
     });
 
-    const dispatch = useDispatch();
     const router = useRouter();
 
     const authServices = useMemo(() => {
@@ -156,16 +155,33 @@ const AuthTemplate = ({
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
+        // reset page message
         setPageMessage({
             ...pageMessage,
             hasMessage: false,
         })
 
-        await authServices.signInWithEmail({
-            dispatch,
-            onLoading: (isLoading) => setIsLoading(isLoading),
-            onError: (message) => setPageMessage({ hasMessage: true, isError: true, message, }),
-        })
+        if (isLoginPage) {
+            await authServices.signInWithEmail({
+                onLoading: (isLoading) => setIsLoading(isLoading),
+                onError: (error) => setPageMessage({
+                    hasMessage: true,
+                    isError: true,
+                    message: error
+                }),
+                onSuccess: () => router.push("/"),
+            });
+        } else {
+            await authServices.signUpWithEmail({
+                onLoading: (isLoading) => setIsLoading(isLoading),
+                onError: (message) => setPageMessage({ hasMessage: true, isError: true, message, }),
+                onSuccess: (message) => {
+                    setPageMessage({ hasMessage: true, isError: false, message });
+                    router.push(`/ui/auth/confirm-email?email=${userInput.email}`);
+                }
+            })
+        }
+
     }
 
     const term = (
@@ -194,17 +210,10 @@ const AuthTemplate = ({
         }
     }
 
-
-    const { width } = useWindowSize();
-
-    const isMedium = width < 768;
-
     return (
+        <div className={`h-full overflow-auto flex flex-col relative text-white justify-center gap-3 w-full py-4 px-8 md:py-4 sm:px-28 md:px-[10rem] lg:px-14`}>
 
-        <div className={`h-full overflow-auto flex flex-col relative  text-white justify-center  gap-3
-         ${isMedium ? "p-[1rem_2rem] w-screen" : "p-[1rem_7rem] w-full"}`}>
-
-            <div className='min-h-[1rem]' />
+            <div className='min-h-[5rem]' />
             <span className={`${audioWide.className} text-center text-[1.2rem]`}>Nexustock</span>
 
             <AuthTitle isLogin={isLoginPage} />
@@ -246,6 +255,7 @@ const AuthTemplate = ({
                     <span className='text-[var(--color-brand-primary)] underline underline-offset-2'>{isLoginPage ? "Sign Up" : "Sign In"}</span>
                 </Link>
             </span>
+            <Toas />
         </div>
 
     )

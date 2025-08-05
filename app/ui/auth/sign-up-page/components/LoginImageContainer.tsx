@@ -12,12 +12,8 @@ const montserrat = Montserrat({
 
 const LoginImageContainer = () => {
 
-    const { width } = useWindowSize();
-
-    if (width < 800) return null;
-
     return (
-        <div className='flex-1 relative p-5 box-border'>
+        <div className='hidden lg:flex flex-1 relative p-5 box-border'>
             {/** image icon */}
             <div className='w-full h-full overflow-hidden rounded-[20px]'>
                 <img alt='cover image' src={"/login-cover.webp"} className='w-full h-full object-[0_60%] object-cover brightness-30 brightness-20' />

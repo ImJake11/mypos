@@ -1,12 +1,12 @@
-import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import React from 'react'
 import CategoriesBody from './CategoriesBody'
+import GlobalWrapper from '@/app/lib/components/GlobalWrapper'
 
 const page = () => {
+
     return (
         <div className='w-screen h-screen flex'>
-            <Sidebar isFloating={false} />
-            <CategoriesBody />
+            <GlobalWrapper child={<CategoriesBody />} />
         </div>
     )
 }

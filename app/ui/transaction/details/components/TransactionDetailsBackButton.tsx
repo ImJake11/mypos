@@ -28,7 +28,7 @@ const TransactionDetailsActions = ({
         ${isMobile ? "p-3" : "p-5"}
         `}>
 
-            {isComplete && <Link href={`/ui/transaction/refund-page/${id}`}>
+            {isComplete && <Link href={`/ui/transaction/details/${id}/refund-page`}>
                 <ButtonTile
                     color='orange-500'
                     icon={<IconArrowBackUpDouble size={18} />}

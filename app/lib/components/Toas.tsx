@@ -14,53 +14,21 @@ const Toas = () => {
 
     const { message, isVisible, type, context, payload } = useSelector((state: RootState) => state.toasSlice);
 
-    function generateColorAttr(): React.CSSProperties {
-
-        let attr: React.CSSProperties = {};
-
+    function generateBorderColor(): string {
 
         switch (type) {
 
-            case ToasEnum.DEFAULT:
-                attr = {
-                    backgroundColor: "var(--main-bg-primary)",
-                    border: "solid 2px var(--toas-default)",
-                }
-                break;
-
             case ToasEnum.PENDING:
-                attr = {
-                    backgroundColor: "var(--backgrouxnd",
-                    border: "solid 2px var(--toas-pending)",
-                }
-                break;
+                return "border-yellow-500";
             case ToasEnum.SUCCESS:
-                attr = {
-                    backgroundColor: "var(--main-bg-primary)",
-                    border: "solid 2px var(--toas-success)",
-                }
-                break;
+                return "border-green-600"
             case ToasEnum.ERROR:
-                attr = {
-                    backgroundColor: "var(--main-bg-primary)",
-                    border: "solid 2px var(--toas-error)",
-                }
-                break;
+                return "border-red-500";
             case ToasEnum.CONFIRMATION:
-                attr = {
-                    backgroundColor: "red",
-                    border: "solid 2px var(--toas-error)",
-                }
-                break;
-
+                return "border-red-700";
             default:
-                attr = {
-                    backgroundColor: "var(--main-bg-primary)",
-                    border: "solid 2px var(--toas-primary)",
-                }
+                return "border-[var(--color-brand-primary)]"
         }
-
-        return attr;
     }
 
     function generateIcon(): { color: string, icon: string } {
@@ -71,22 +39,22 @@ const Toas = () => {
         switch (type) {
             case ToasEnum.CONFIRMATION:
                 icon = "ri-error-warning-line";
-                color = "white";
+                color = "text-white";
                 break;
             case ToasEnum.DEFAULT:
                 icon = "ri-notification-2-line"
-                color = "var(--primary)"
+                color = "text-[var(--color-brand-primary)]"
                 break;
             case ToasEnum.ERROR:
-                color = 'red'
+                color = 'text-red-500'
                 icon = "ri-error-warning-line";
                 break;
             case ToasEnum.PENDING:
-                color = 'yellow'
+                color = 'text-yellow-500'
                 icon = "ri-loader-2-line"
                 break;
             case ToasEnum.SUCCESS:
-                color = 'green'
+                color = 'text-green-600'
                 icon = "ri-check-double-line";
                 break;
 
@@ -108,10 +76,6 @@ const Toas = () => {
     const handleCancellation = () => {
         dispatch(closeToas());
     }
-
-    const { width } = useWindowSize();
-
-    const isMedium = width >= 768;
 
     // close toas after 5 seconds
     useEffect(() => {
@@ -137,11 +101,8 @@ const Toas = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`rounded-[var(--toas-border-radius)] flex items-center gap-1.5 absolute h-fit left-3 bottom-3 box-border p-[.2rem_.5rem] text-[.8rem]
-            ${isMedium ? "w-[40rem]" : "w-[80%]"}
-            `}
-                style={generateColorAttr()}
-
+            {isVisible && <motion.div className={`rounded-[8px] flex gap-1.5 absolute h-fit left-3 box-border p-2 ${type === ToasEnum.CONFIRMATION ? "bg-red-500" : "bg-white"} border text-[.8rem] text-white bottom-3 w-[80%] lg:w-[40rem]
+            ${generateBorderColor()}`}
                 initial={{
                     opacity: 0,
                     y: 20,
@@ -156,26 +117,24 @@ const Toas = () => {
                     opacity: 0,
                 }}
             >
-                <i className={generateIcon().icon}
-                    style={{
-                        fontSize: "1.3rem",
-                        color: generateIcon().color,
-                    }}
-                ></i>
-                <span>{message}</span>
-                <div className='flex-1'></div>
-                {/** actions 
-                 * show onnly f the toas type is confirmation
-                */}
-                {type === ToasEnum.CONFIRMATION && <>
-                    <button className='p-[7px_12px] bg-white rounded-[3px] text-red-500'
+                <div className={`w-full flex ${type === ToasEnum.CONFIRMATION ? 'items-start' : 'items-center'} gap-1 ${generateIcon().color}`}>
+                    <i className={generateIcon().icon}
+                        style={{
+                            fontSize: "1.3rem",
+                        }}
+                    />
+                    <span>{message}</span>
+                </div>
+
+                {type === ToasEnum.CONFIRMATION && <div className='flex justify-end gap-2 items-end'>
+                    <button className='p-[7px_12px] h-[2.5rem] bg-white rounded-[3px] text-red-500'
                         onClick={handleCancellation}
                     >Cancel</button>
 
-                    <button className='p-[7px_12px] border border-white rounded-[3px] text-white'
+                    <button className='p-[7px_12px] h-[2.5rem] border border-white rounded-[3px] text-white'
                         onClick={handleConfirmationn}
                     >Confirm</button>
-                </>}
+                </div>}
             </motion.div>}
         </AnimatePresence>
     )

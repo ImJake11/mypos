@@ -7,12 +7,12 @@ export interface SubrouteProp {
 
 const initialState = {
     isVisible: false,
+    userData: {
+        username: "",
+        photoUrl: "",
+    },
     isSidebarMinimize: false,
-    isFloatingVisible: false,
-    hasScreenOverlay: false,
-    isButtonHover: false,
-    hoveredButtonOptions: [] as SubrouteProp[] | undefined,
-    subMenuYTranslation: 0,
+    activeParentRoute: "",
 }
 
 const sidebarSlice = createSlice({
@@ -22,36 +22,25 @@ const sidebarSlice = createSlice({
         sidebarToggleSidebar: (state, action: PayloadAction<boolean>) => {
             state.isSidebarMinimize = action.payload;
         },
-        sidebarToggleFloatingButton: (state, action: PayloadAction<boolean>) => {
-            state.isFloatingVisible = action.payload;
-        },
-        sidebarToggleAllowScreenOverlay: (state, action: PayloadAction<boolean>) => {
-            state.hasScreenOverlay = action.payload;
-        },
-        sidebarHandleHover: (state, action: PayloadAction<{
-            routes?: SubrouteProp[],
-            isHover: boolean,
-            yValue: number,
-        }>) => {
-            if (!state.isSidebarMinimize) return;
-
-            const { isHover, routes, yValue } = action.payload;
-            state.isButtonHover = isHover;
-            state.hoveredButtonOptions = routes;
-            state.subMenuYTranslation = yValue;
-        },
         sidebarOpen: (state, action: PayloadAction<boolean>) => {
-            console.log("hehehehe")
             state.isVisible = action.payload;
+        },
+        sidebarSetUserData: (state, action: PayloadAction<{
+            username: string,
+            photoUrl: string,
+        }>) => {
+            state.userData = action.payload;
+        },
+        sidebarSetActiveRoute: (state, action: PayloadAction<string>) => {
+            state.activeParentRoute = action.payload;
         }
     }
 })
 
 export const {
-    sidebarToggleFloatingButton,
-    sidebarToggleAllowScreenOverlay,
-    sidebarHandleHover,
     sidebarToggleSidebar,
     sidebarOpen,
+    sidebarSetActiveRoute,
+    sidebarSetUserData,
 } = sidebarSlice.actions;
 export default sidebarSlice.reducer;

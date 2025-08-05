@@ -1,10 +1,6 @@
-import { motion } from "framer-motion";
-
-
-
 function ProductTabLoadingIndicator() {
-    return <div className='bg-[var(--main-bg-primary)] overflow-hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[50vw] h-[80vh] rounded-[11px] p-5 flex flex-col gap-3
-            '>
+
+    return <div className={`bg-[var(--main-bg-primary)] overflow-hidden absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[11px] p-5 flex flex-col gap-3 w-[90vw] h-[80vh] md:w-[50vw] md:h-[80vh]`}>
 
         <div className="w-[10rem] h-[2rem] rounded-[4px] bg-gray-200" />
         <div className="w-[10rem] h-[2rem] rounded-[4px] bg-gray-200" />

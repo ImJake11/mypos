@@ -18,16 +18,16 @@ function SettingsContentTiles({
     }[]
 }) {
     return (
-        <div className='w-full h-fit bg-white rounded-[12px] flex flex-col p-[15px_20px] gap-2'>
+        <div className='w-full h-fit bg-white rounded-[12px] flex flex-col px-3 py-4 gap-2'>
 
             {/** title */}
             <div className='w-full gap-2 flex items-center'>
                 <React.Fragment>{icon}</React.Fragment>
-                <span className='text-[1rem]'>{title}</span>
+                <span className='text-[.8rem]'>{title}</span>
             </div>
             {/** routes */}
             {buttonRoutes.map((r, i) => <Link key={i} href={r.route}>
-                <motion.div className='flex items-center w-full justify-between pl-10 h-[2.5rem] rounded-[4px]'
+                <motion.div className='flex items-center w-full justify-between pl-10 h-[2rem] rounded-[4px]'
                     initial={{
                         backgroundColor: "white"
                     }}

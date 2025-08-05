@@ -5,7 +5,6 @@ import { Provider } from "react-redux";
 import store from "../store";
 import { disconnectSocket, getSocket } from "../../utils/socket/socket";
 import NextTopLoader from "nextjs-toploader";
-import { ThemeProvider } from "../../components/ThemeProvider";
 
 interface ReduxProviderProps {
     children: ReactNode;

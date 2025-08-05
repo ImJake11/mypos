@@ -26,15 +26,11 @@ const TransactionDetailsBody = ({ data }: { data: TransactionDetailsModel }) => 
         }
     }
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
     return (
-        <div className={`flex-1 rounded-[12px] overflow-hidden text-[.8rem] ${isMobile ? "p-3" : "p-5"}`} style={{
+        <div className={`flex-1 rounded-[12px] overflow-hidden text-[.8rem] p-3 md:p-5`} style={{
             backgroundColor: "var(--main-bg-secondary)"
         }}>
-            <div className={`w-full h-full rounded-[12px] flex overflow-auto flex-col ${generateStatusColor()} ${isMobile ? "p-3 gap-2" : "p-5 gap-5"}`}>
+            <div className={`w-full h-full rounded-[12px] flex overflow-auto flex-col ${generateStatusColor()} p-3 gap-2 md:p-5 md:gap-5`}>
 
                 <TransactionDetailsStatus data={data} />
                 <TransactionDetailsSummary data={data} />

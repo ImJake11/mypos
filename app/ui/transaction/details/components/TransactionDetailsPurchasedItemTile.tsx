@@ -10,13 +10,9 @@ export function TransactionPurchasedItemsTile({ price, quantity, url, name }: {
     url: string,
 }) {
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
-    return <div className={`flex w-full items-center gap-5 ${isMobile ? "text-[.6rem]" : "text-[.8rem]"}`}>
+    return <div className={`flex w-full items-center gap-5 text-[.6rem] md:text-[.8rem]`}>
         {/** image container */}
-        <div className='w-[3rem] rounded-[8px] aspect-square overflow-hidden'
+        <div className=' w-[2rem] md:w-[3rem] rounded-[8px] aspect-square overflow-hidden'
         >
             <img src={url} alt="image" className="w-full h-full" />
         </div>

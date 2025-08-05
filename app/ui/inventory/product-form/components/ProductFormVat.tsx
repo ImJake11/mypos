@@ -3,6 +3,7 @@ import { InformationIcon } from "@/app/lib/icons/informationIcon";
 import { ProductProps } from "@/app/lib/models/productModel";
 import { VatModel } from "@/app/lib/models/vatModel";
 import { formUpdateState } from "@/app/lib/redux/slice/productSlice";
+import { IconInfoCircle, IconInfoCircleFilled } from "@tabler/icons-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -18,16 +19,14 @@ function ProductFormVAT({ vats, selectedVat }: { vats: VatModel[], selectedVat: 
 
     return <div className='flex flex-col w-full gap-1'>
 
-        <div className='flex w-full gap-2 items-center text-[var(--foreground-lighter)]'>
-            <div className='w-[1rem] h-[1rem] relative'>
-                <InformationIcon size={14} color='var(--foreground-lighter)' />
-            </div>
+        <div className='flex w-full gap-2 items-center text-gray-500'>
+            <IconInfoCircleFilled size={18} />
             <span className='underline underline-offset-4' onClick={handleDescriptionToggle}>Learn about VAT</span>
         </div>
 
         {/** vat explanation */}
         <AnimatePresence>
-            {isDesctiptionVisible && <motion.div className='w-[60%] flex flex-col p-3 gap-2 text-[var(--foreground-lighter)] ml-3'
+            {isDesctiptionVisible && <motion.div className='w-[60%] flex flex-col p-3 gap-2 text-gray-600 ml-3'
                 initial={{
                     opacity: 0
                 }}
@@ -54,7 +53,7 @@ function ProductFormVAT({ vats, selectedVat }: { vats: VatModel[], selectedVat: 
             // setting key is named by underscore
             const settingKeyParts = v.settingKey.split("_");
 
-            return <div key={i} className='ml-6 w-full h-[2.5rem] flex gap-2 items-center cursor-pointer'
+            return <div key={i} className='ml-6 w-full h-[1.7rem] flex gap-2 items-center cursor-pointer'
                 onClick={() => dispatch(formUpdateState({
                     data: v.id,
                     name: ProductKeys.vatId as keyof ProductProps,
@@ -63,7 +62,7 @@ function ProductFormVAT({ vats, selectedVat }: { vats: VatModel[], selectedVat: 
 
                 {/** radio */}
                 <div className={`w-[1rem] h-[1rem] rounded-full border border-[var(--color-brand-primary)] p-0.5`}>
-                    {isSelected && <motion.div className='w-full h-full rounded-full button-primary-gradient'
+                    {isSelected && <motion.div className='w-full h-full rounded-full bg-[var(--color-brand-primary)]'
                         initial={{
                             scale: 0,
                         }}

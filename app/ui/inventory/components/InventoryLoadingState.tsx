@@ -1,20 +1,26 @@
-
-
 import React from 'react'
-import {motion} from "framer-motion";
+import { motion } from "framer-motion";
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const InventoryLoadingState = () => {
+
+    const { width } = useWindowSize()
+
+    const isXSmall = width < 576;
+
     return (
-        <motion.div className='main-background-gradient w-full h-full overflow-hidden grid grid-cols-6 gap-2 p-2'
-           initial={{
-                    opacity: 0
-                }}
-                animate={{
-                    opacity: 1
-                }}
-                exit={{
-                    opacity: 0,
-                }}
+        <motion.div className={`main-background-gradient w-full h-full overflow-hidden grid gap-2 p-2
+            ${isXSmall ? "grid-cols-2" : "grid-cols-6 "}
+            `}
+            initial={{
+                opacity: 0
+            }}
+            animate={{
+                opacity: 1
+            }}
+            exit={{
+                opacity: 0,
+            }}
         >
             {Array.from({ length: 15 }).map((_, i) => {
 

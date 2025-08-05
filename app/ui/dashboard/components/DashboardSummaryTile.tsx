@@ -3,6 +3,7 @@
 import React from 'react'
 import { motion } from "framer-motion"
 import AnimateNumber from '@/app/lib/components/AnimateNumber';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 interface Prop {
     title?: string,
@@ -40,8 +41,8 @@ const DashboardSummaryTile = ({
             }}
         >
 
-            <div className='w-[2.5rem] h-full grid place-content-center'>
-                <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-100 grid place-content-center'>
+            <div className='w-fit h-full grid place-content-center'>
+                <div className="w-[2.5rem] h-[2.5rem] rounded-full bg-gray-100 grid place-content-center text-gray-400">
                     <React.Fragment>
                         {icon}
                     </React.Fragment>
@@ -49,7 +50,7 @@ const DashboardSummaryTile = ({
             </div>
 
             <div className='flex-1 flex flex-col justify-center'>
-                <motion.span className='text-[1rem] font-[600]'>
+                <motion.span className="font-semibold">
                     <AnimateNumber isCurrency={isCurrency} value={Number(currentValue)} />
                 </motion.span>
                 <span className='text-gray-500 text-[.7rem]'>{title}</span>

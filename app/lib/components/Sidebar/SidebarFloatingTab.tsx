@@ -14,7 +14,7 @@ const SidebarFloatingTab = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className='w-screen h-screen backdrop-blur-[2px] absolute bg-[rgb(0,0,0, .4)]'
+            {isVisible && (<motion.div className='w-screen h-screen absolute bg-black/60'
                 onClick={() => dispatch(sidebarOpen(false))}
 
                 initial={{
@@ -28,7 +28,7 @@ const SidebarFloatingTab = () => {
                 }}
             >
                 <Sidebar isFloating={true} />
-            </motion.div>}
+            </motion.div>)}
         </AnimatePresence>
     )
 }

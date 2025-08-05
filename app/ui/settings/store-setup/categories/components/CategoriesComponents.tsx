@@ -12,7 +12,7 @@ export function CategoryTile({ data, onUpdate }: {
     data: CategoryModel,
     onUpdate: () => void,
 }) {
-    return <div className='flex w-full min-h-[3rem] gap-3 items-center'>
+    return <div className='flex w-full gap-3 items-center'>
         <div className='w-[3rem] h-[3rem] rounded-[4px] bg-[var(--main-bg-secondary-dark)] overflow-hidden'>
             {data.url && <img src={data.url} alt="image" />}
         </div>

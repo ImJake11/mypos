@@ -15,6 +15,7 @@ import { fetchAllCategory } from '@/app/lib/utils/data/fetchCategories';
 import { CategoryTile, LoadingState } from './components/CategoriesComponents';
 import CategoryAppbar from './components/CategoryAppbar';
 import { IconChecks, IconUpload } from '@tabler/icons-react';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 
 const initialState = {
@@ -105,14 +106,14 @@ const CategoriesBody = () => {
     }, []);
 
     return (
-        <div className='flex-1 bg-[var(--main-bg-primary)] flex flex-col p-3 gap-2'>
+        <div className='flex-1 bg-[var(--main-bg-primary)] flex flex-col gap-2'>
             <CategoryAppbar />
             {/** body */}
             {isLoading ? <LoadingState /> :
 
-                <div className='flex-1 flex flex-col rounded-[12px] p-3'>
+                <div className='flex-1 flex flex-col rounded-[12px] p-5'>
 
-                    <div className='w-full flex gap-3'>
+                    <div className={`w-full flex gap-3 flex-col md:flex-row`}>
 
                         {/** image container */}
                         <div className='w-[7rem] h-[7rem] rounded-[7px] relative overflow-hidden border-gray-300 border bg-gray-100'>
@@ -122,7 +123,7 @@ const CategoriesBody = () => {
                                 onChange={handleImageInput}
                             />
 
-                            <IconUpload size={35} className='stroke-gray-400 absolute top-1/2  -translate-x-1/2 left-1/2 -translate-y-[2rem]' />
+                            <IconUpload size={35} className='stroke-gray-400 absolute top-1/2 -translate-x-1/2 left-1/2 -translate-y-[2rem]' />
 
                             <span className='text-gray-400 absolute left-0 text-center bottom-[2rem] w-full'>Upload Image</span>
                         </div>
@@ -130,17 +131,18 @@ const CategoriesBody = () => {
 
                         <div className='flex flex-col gap-2 justify-end flex-1'>
                             <span>Category name</span>
-                            <div className='flex justify-between'>
+                            <div className='flex justify-between gap-2'>
                                 {/** input */}
-                                <input type="text" value={categoryData.content} className='border border-gray-300  rounded-[8px] focus:outline-[var(--color-brand-primary)] p-2 w-[40rem] h-[2.5rem]' onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                                    const { value } = e.target;
+                                <input type="text" value={categoryData.content} className={`border border-gray-300  rounded-[4px] focus:outline-[var(--color-brand-primary)] p-2 h-[2.5rem]
+                                w-full md:w-[35rem]`} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                        const { value } = e.target;
 
-                                    setCategoryData({
-                                        ...categoryData, content: value,
-                                    });
-                                }} />
+                                        setCategoryData({
+                                            ...categoryData, content: value,
+                                        });
+                                    }} />
                                 {/** save button */}
-                                <button className='h-[2.5rem] w-[7rem] rounded-[20px] button-primary-gradient flex gap-2 justify-center text-white items-center' onClick={() => {
+                                <button className='h-[2.5rem] w-[7rem] rounded-[4px] button-primary-gradient flex gap-2 justify-center text-white items-center' onClick={() => {
                                     categoryServices.handleSave({
                                         onError: () => { },
                                         onLoading: (isLoading) => setIsLoading(isLoading),

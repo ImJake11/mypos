@@ -77,9 +77,9 @@ const ViewProductTab = () => {
 
   }, [isProductViewVisible]);
 
-  const { width } = useWindowSize();
+  // const { width } = useWindowSize();
 
-  const isLarge = width >= 800;
+  // const isLarge = width >= 800;
 
   return (
     <AnimatePresence>
@@ -105,9 +105,7 @@ const ViewProductTab = () => {
           isOpen: false,
         }))}
       >
-        <div className={`h-screen bg-[var(--main-bg-primary)] absolute right-0
-        ${isLarge ? "w-[40rem]" : "w-full"}
-          `}>
+        <div className="h-screen bg-[var(--main-bg-primary)] absolute right-0 w-full md:w-[60vw] xl:w-[40vw]">
           {isLoading ? <ProductTabLoadingState /> : <motion.div className='w-full h-full flex flex-col overflow-auto gap-2 right-0'
             style={{
               backgroundColor: "var(--main-bg-primary)",

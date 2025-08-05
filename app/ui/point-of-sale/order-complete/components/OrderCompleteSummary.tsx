@@ -6,6 +6,8 @@ import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux';
 import PaymentHelper from './payment/services/paymentHelper';
 import { BulkTableProp } from '@/app/lib/models/productModel';
+import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
+import { IconChecks } from '@tabler/icons-react';
 
 const OrderCompleteSummary = () => {
 
@@ -106,15 +108,26 @@ function OrderTile({
         return <span>₱ {currentTotal}</span>;
     }
 
+    const w = useWindowSize().width;
+
+    const isMobile = w < 576;
+
     return <div className='w-full flex flex-col gap-0.5'>
-        {bulkTierApplied && <span className='text-[.7rem] ml-8 italic'>Bulk pricing applied({bulkTierApplied.discount}%)</span>}
+        {bulkTierApplied && <span className='text-[.6rem] ml-9 italic'>Bulk pricing applied({bulkTierApplied.discount}%)</span>}
         <div className='flex w-full gap-4 items-center text-black'>
-            {/** icon */}
-            {ItemIcon(20)}
+            <IconChecks size={16} />
+
             <span className='flex-1.5'>{name}</span>
-            <span>x{quantity}</span>
-            <span className='flex-1 grid place-content-end'>{getItemTotal()}</span>
+            {!isMobile && <>
+                <span>x{quantity}</span>
+                <span className='flex-1 grid place-content-end'>{getItemTotal()}</span>
+            </>}
         </div>
+
+        {isMobile && <div className='w-full flex gap-1 justify-end text-[.7rem] mt-0.5'>
+            <span>x{quantity}</span>
+            <span>{getItemTotal()}</span>
+        </div>}
     </div>
 }
 

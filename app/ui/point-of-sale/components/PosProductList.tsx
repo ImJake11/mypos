@@ -1,17 +1,16 @@
 'use client'
 
-import React, { useEffect, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import PosProductTile from './PosProductTile';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '@/app/lib/redux/store';
-import { openToas } from '@/app/lib/redux/slice/toastSlice';
-import ToasEnum from '@/app/lib/enum/toastEnum';
 import { posSetRawProductData, posToggleErrorState, posToggleLoadingState } from '@/app/lib/redux/slice/posSlice';
 import PageNoDataFound from '@/app/lib/components/PagesState/PageNoDataFoundPage';
 import PageErrorState from '@/app/lib/components/PagesState/PageErrorState';
 import { ProductProps } from '@/app/lib/models/productModel';
 import PosLoadingState from './PosLoadingState';
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
+import Searchbar from '@/app/lib/components/Searchbar/Searchbar';
 
 
 export const PosProductList = () => {
@@ -19,8 +18,6 @@ export const PosProductList = () => {
     const dispatch = useDispatch<AppDispatch>();
 
     const { rawProductData, isFiltering, isLoading, isError } = useSelector((state: RootState) => state.posSlice);
-
-    const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
 
     const filteredData = useSelector((state: RootState) => state.filterSlice.filteredData);
 
@@ -35,14 +32,23 @@ export const PosProductList = () => {
         onFinal: () => dispatch(posToggleLoadingState(false)),
     });
 
+
     if (isError) return <PageErrorState />;
 
-    return isLoading ? <PosLoadingState /> : <div className='flex-1 min-h-0 bg-[var(--main-bg-secondary)] overflow-auto gap-3'>
+    return isLoading ? <PosLoadingState /> : <div className='flex-1 bg-[var(--main-bg-secondary)] gap-3'>
 
-        {/** body */}
-        {displayList.length <= 0 ? <PageNoDataFound /> : <ul className={`w-full min-h-0 flex-1 ${isSidebarMinimize? "grid-cols-7" : "grid-cols-6"} grid gap-3 p-2 items-start overflow-auto`}>
-            {displayList.map((p) => <PosProductTile key={p.id} data={p} />)}
-        </ul>}
+        {displayList.length <= 0 ? <PageNoDataFound /> : <div className='flex-1 flex flex-col'>
+
+            <div className='w-full flex justify-center m-[.5rem_0rem] md:hidden'>
+                <Searchbar context='pos' showEditIcon={false} />
+            </div>
+
+            <div className={`w-full h-[84vh] md:h-[91vh]`}>
+                <ul className={`w-full h-full grid gap-3 p-2 items-start overflow-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5`}>
+                    {displayList.map((p, index) => <PosProductTile key={p.id} index={index} data={p} />)}
+                </ul>
+            </div>
+        </div>}
 
     </div>
 }

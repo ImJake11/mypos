@@ -15,10 +15,10 @@ import {
     createdActionInventoryClearFilters,
     createdActionInventoryFiltering
 } from '@/app/lib/redux/slice/inventorySlice';
-import { FilterActionEnums } from '../../redux/utils/enums/filterActionEnums';
 import { PosActionEnum } from '../../redux/utils/enums/posActionEnum';
 import { createdActionPosClearFilter, createdActionPosFiltering } from '../../redux/slice/posSlice';
 import { FilterKeys } from '../../constants/FilterKeys';
+import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 interface Prop {
     onPrimaryButtonContext: string,  // onPrimaryButtonContext that is uses for middleware listener
@@ -127,15 +127,11 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
         }
     }
 
-
     return (
         <AnimatePresence>
             {isVisible &&
                 <motion.div
-                    className='w-screen h-screen absolute backdrop-blur-[3px]'
-                    style={{
-                        backgroundColor: "rgb(0,0,0,.5)",
-                    }}
+                    className='w-screen h-screen absolute bg-black/70'
                     initial={{
                         opacity: 0,
                     }}
@@ -146,7 +142,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                         opacity: 0,
                     }}
                 >
-                    <motion.div className='absolute right-0 h-full w-[35vw] p-5 bg-[var(--main-bg-primary)] flex flex-col'
+                    <motion.div className={`absolute right-0 bg-[var(--main-bg-primary)] flex flex-col h-full w-[85vw] p-5 sm:w-[60vw] md:w-[60vw] lg:w-[35vw]`}
                         initial={{
                             x: "100%",
                         }}

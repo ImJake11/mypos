@@ -37,10 +37,7 @@ const DashboardBody = () => {
         }
     })
 
-    const { width } = useWindowSize();
 
-    const isMedium = width <= 768;
-    const isXSmall = width <= 490;
 
     useEffect(() => {
         dashboardService.fetchDailySummary(dispatch);
@@ -48,9 +45,7 @@ const DashboardBody = () => {
 
 
     const transactionsAndExpenses = (
-        <div className={`
-        ${isMedium ? "grid grid-cols-2 gap-3" : "flex flex-1/4 flex-col gap-5"}
-        `}>
+        <div className="flex flex-col flex-1/4 gap-5 md:gap-3">
             <DashboardSummaryTile
                 title="Total Expenses"
                 pastValue={expenses}
@@ -87,27 +82,21 @@ const DashboardBody = () => {
         </div>
     )
 
-    return (
-        <div className={`box-border w-full h-full bg-[var(--main-bg-secondary)] rounded-[8px] flex flex-col overflow-auto
-        ${isMedium ? "p-3 gap-3 w-screen" : "p-5 gap-5 w-full"}
-        `}>
+    const isMedium = useWindowSize().width > 768;
 
-            <div className={`flex w-full
-                ${isMedium ? "gap-3" : "gap-5"}
-                `}>
+    return (
+        <div className={`box-border w-screen h-full bg-[var(--main-bg-secondary)] rounded-[8px] flex flex-col overflow-auto p-5 gap-5 md:p3 md:gap-3 md:w-full`}>
+
+            <div className={`flex flex-col w-full gap-5 md:flex-row md:gap-3`}>
 
                 {/** 
                  * GROSS SALES
                  * TAX SALES
                  * PROFIT
                  */}
-                <div className={`flex flex-3/4 flex-col
-                ${isMedium ? "gap-3" : "gap-5"}
-                `}>
+                <div className={`flex flex-3/4 flex-col gap-5 md:gap-3`}>
 
-                    <div className={`w-full
-                        ${isMedium ? "grid grid-cols-2 gap-3" : "flex flex-1/4 gap-5"}
-                    `}
+                    <div className={`w-full flex-col flex gap-5 md:flex-row md:gap-3`}
                     >
                         <DashboardSummaryTile
                             title="Revenue"
@@ -136,16 +125,13 @@ const DashboardBody = () => {
                     <DashboardChart />
                 </div>
 
-
                 {/** transaction sales */}
-                {!isMedium && transactionsAndExpenses}
+                {isMedium && transactionsAndExpenses}
             </div>
 
-            {isMedium && transactionsAndExpenses}
+            {!isMedium && transactionsAndExpenses}
 
-            <div className={`flex
-                ${isMedium ? "gap-3 w-full overflow-x-auto min-h-[25rem]" : "w-full gap-5"}
-                `}>
+            <div className="flex min-h-[25rem] overflow-x-auto w-full gap-5 md:gap-3 ">
                 <DashboardTransactionAndStockSummary
                     icon={<IconArrowNarrowDownDashed />}
                     title='Low Stock Products'

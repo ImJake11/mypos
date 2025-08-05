@@ -4,7 +4,7 @@
 
 :root {
   /********--- COLORS --- ******/
-  --color-brand-primary: rgb(0, 119, 182);
+  --color-brand-primary: #0077b6;
   --color-brand-secondary: #0096c7;
   --color-brand-tertiary: rgb(0, 78, 248);
 
@@ -12,74 +12,8 @@
   --main-bg-secondary: #f6f6f6;
   --main-bg-tertiary: #e1e1e1;
 
-  /*border*/
-  --border-focused: var(--color-brand-primary);
-  --border-default: #3e3b3b;
-  --border-primary: #797878;
-  --border-radius: 12px;
-
-  /* error */
-  --error-color-primary: red;
-  --error-color-secondary: rgb(115, 48, 48);
-
-  /*button*/
-  --button-primary-bg: var(--color-brand-primary);
-  --button-secondary-bg: transparent;
-  --button-border-radius: 8px;
-
-  /* toas  */
-  --toas-success: green;
-  --toas-error: red;
-  --toas-pending: yellow;
-  --toas-default: var(--color-brand-primary);
-  --toas-border-radius: 8px;
-
-  /* text input fields */
-  --tf-border-radius: 8px;
-  --tf-border-focused: var(--color-brand-primary);
-  --tf-border-default: var(--border-default-dark);
-
-  /* product card */
-  --product-card-bg: var(--main-bg-primary);
-  --product-card-border-radius: 20px;
-
-  /* typography */
-  --foreground: black;
-  --foreground-lighter: #202020;
-
-
-  /* form section */
-  --form-section-border-radius: 12px;
-  --form-section-padding: 1.5rem;
-
   /* sidebar */
   --sidebar-width: 15vw;
-  --sidebar-width-minimized: 4vw;
-  --sidebar-submenu-bg: var(--main-bg-tertiary);
-
-  /** stock status flag color */
-  --stock-flag-sold-out: red;
-  --stock-flag-critical: rgb(203, 132, 2, .7);
-  --stock-flag-near: rgb(230, 190, 11, .7);
-  --stock-flag-safe: rgb(5, 174, 5, .7);
-  --stock-flag-over-stock: rgb(2, 2, 225, .7);
-
-  --appbar-height: 5rem;
-  --appbar-bg: var(--main-bg-primary-dark);
-
-  /** transaction status colors*/
-  --transaction-returned: rgb(234, 179, 8, .4);
-  --transaction-void: rgb(239, 68, 68, .4);
-  --transaction-successful: rgb(34, 197, 94, .4);
-
-
-  /** notification */
-  --notification-bg-primary: var(--main-bg-primary);
-  --notification-bg-secondary: var(--main-bg-secondary);
-  --notification-success: rgb(1, 130, 1);
-  --notification-error: red;
-  --notification-warning: rgb(255, 191, 0);
-  --notification-system: var(--color-brand-secondary);
 }
 
 body {
@@ -89,45 +23,6 @@ body {
 
 .recharts-wrapper *:focus {
   outline: none !important;
-}
-
-/* text input fields */
-.tf-attr {
-  border-radius: var(--tf-border-radius);
-  outline: solid var(--tf-border-default) 1px;
-  border: transparent;
-}
-
-.tf-attr:focus {
-  outline: solid var(--color-brand-primary);
-}
-
-/* primary button */
-
-.button-primary-gradient {
-  background-image: linear-gradient(40deg, var(--color-brand-primary), var(--color-brand-secondary));
-}
-
-.button-primary-no-gradient {
-  background-image: unset;
-}
-
-.button-primary-disabled-gradient {
-  background-image: linear-gradient(45deg, rgb(67, 66, 66), gray);
-}
-
-.button-primary-gradient-error {
-  background-image: linear-gradient(45deg, rgb(147, 31, 31), red);
-}
-
-/* main background gradients */
-.main-background-gradient {
-  background-image: linear-gradient(to bottom right, var(--main-bg-secondary), var(--main-bg-primary));
-}
-
-/* notification bg */
-.notification-background-gradient {
-  background-image: linear-gradient(to right, var(--notification-bg-primary), var(--notification-bg-secondary));
 }
 
 
@@ -153,5 +48,16 @@ body {
   -ms-overflow-style: none;
   /* IE and Edge */
   scrollbar-width: none;
+  /* Firefox */
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
   /* Firefox */
 }

@@ -11,6 +11,8 @@ import { openToas } from "../../redux/slice/toastSlice";
 import ToasEnum from "../../enum/toastEnum";
 import { dismissNotification } from "../../utils/data/dismissNotification";
 import Link from "next/link";
+import { useWindowSize } from "../../utils/hooks/useGetWindowSize";
+import { IconSquareXFilled, IconX } from "@tabler/icons-react";
 
 
 export default function NotificationTile({ index, data, maxTotal }: {
@@ -95,7 +97,8 @@ export default function NotificationTile({ index, data, maxTotal }: {
             setIsLoading(false);
         }
     }
-    return <motion.div className='w-full h-[5rem] notification-background-gradient gap-2 rounded-[4px] absolute flex items-center p-2'
+
+    return <motion.div className='w-full h-[7rem] notification-background-gradient gap-2 rounded-[4px] absolute flex items-center p-2'
         layout
         style={{
             zIndex: relativeIndex,
@@ -144,13 +147,9 @@ export default function NotificationTile({ index, data, maxTotal }: {
 
         {/** actions */}
         <div className='flex gap-1 items-center'>
-            <motion.button className='grid place-content-center w-[5rem] h-[2rem] rounded-[4px] bg-gray-200'
-                whileHover={{
-                    border: "solid 1px var(--color-brand-primary)"
-                }}
-
+            <div className='grid place-content-center w-[2rem] h-[2rem] rounded-[4px] bg-gray-100'
                 onClick={handleDismiss}
-            >{isLoading ? <CircularLoadingIndicator borderWidth={2} size={22} /> : "Dismiss"}</motion.button>
+            >{isLoading ? <CircularLoadingIndicator borderWidth={2} size={22} /> : <IconX className="stroke-gray-400" />}</div>
         </div>
         {/** hit box for click */}
         <div className="w-[80%] h-full absolute"
