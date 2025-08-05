@@ -10,13 +10,13 @@ import { NextRequest, NextResponse } from "next/server";
 export async function PUT(req: NextRequest,
     { params }: { params: Promise<{ email: string }> }
 ) {
-    const exp_date = new Date();
-    exp_date.setMinutes(exp_date.getMinutes() + 15);
-
-
-    const { email } = await params;
-
     try {
+        const exp_date = new Date();
+        exp_date.setMinutes(exp_date.getMinutes() + 15);
+
+        const { email } = await params;
+
+
         const _otp = generateOTP();
         const hashedOtp = await bcrypt.hash(_otp, 10);
 
