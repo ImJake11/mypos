@@ -2,16 +2,10 @@ import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { URL } from "url";
 
-export async function DELETE(req: NextRequest, context: { id: string }) {
-
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
     try {
-
         const { searchParams } = new URL(req.url!);
-
-        const urlParms = await context;
-
-        const { id } = urlParms;
-
+        const id = params.id;
         const userId = searchParams.get("userId");
 
         if (!userId) {
@@ -24,7 +18,6 @@ export async function DELETE(req: NextRequest, context: { id: string }) {
             },
         });
 
-        // return the fresh data 
         const updatedCart = await prisma.cartCache.findMany({
             include: {
                 bulkPricing: true,
@@ -41,6 +34,6 @@ export async function DELETE(req: NextRequest, context: { id: string }) {
 
     } catch (e) {
         console.log(e);
-        return NextResponse.json({ error: "Interval server error" }, { status: 500 });
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
