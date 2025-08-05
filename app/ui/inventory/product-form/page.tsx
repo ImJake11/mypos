@@ -1,14 +1,16 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import GlobalWrapper from '@/app/lib/components/GlobalWrapper'
-import ProductFormBody from './ProductFormBody'
 import ProductFormAppbar from './ProductFormAppbar'
+import { ProductFormBody } from './ProductFormBody'
 
 
 const page = () => {
 
     const child = <div className='w-full h-full flex flex-col overflow-hidden'>
         <ProductFormAppbar />
-        <ProductFormBody />
+        <Suspense>
+            <ProductFormBody />
+        </Suspense>
     </div>
 
     return (

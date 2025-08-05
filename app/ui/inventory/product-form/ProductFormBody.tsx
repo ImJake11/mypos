@@ -18,7 +18,7 @@ import { RootState } from '@/app/lib/redux/store';
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
-const ProductFormBody = () => {
+export function ProductFormBody() {
     const dropAreaRef = useRef<HTMLDivElement>(null);
     const searchParams = useSearchParams();
 
@@ -90,4 +90,4 @@ function LoadingState() {
     )
 }
 
-export default ProductFormBody
+
