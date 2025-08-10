@@ -1,13 +1,22 @@
+import ToasEnum from "@/app/lib/enum/toastEnum";
 import { UserModel } from "@/app/lib/models/UserModel";
+import { toggleProcessDialog, updateProcessDialogCurrentValue, updaterPocessDialogMessage } from "@/app/lib/redux/slice/processSlice";
+import { openToas } from "@/app/lib/redux/slice/toastSlice";
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { redirect } from "next/navigation";
+import { AppDispatch } from "recharts/types/state/store";
 
 
 export class AuthServices {
 
-    private userCredentials: UserModel;
+    private userCredentials?: UserModel;
 
-    constructor({ credential }: { credential: UserModel }) {
-        this.userCredentials = credential;
+    constructor({ credential }: { credential?: UserModel }) {
+
+        if (credential) {
+            this.userCredentials = credential;
+        }
+
     }
 
 
@@ -23,8 +32,16 @@ export class AuthServices {
         }
     ) {
 
+        if (!this.userCredentials) return;
+
+        const { confirmPassword, isAgree, email, password, username } = this.userCredentials;
+
+        if (!email || confirmPassword?.trim() !== password?.trim() || !isAgree || !username) {
+            return;
+        }
+
+
         onLoading(true);
-        const { email, password, username } = this.userCredentials;
         try {
 
             if (!email || !username || !password) {
@@ -60,13 +77,16 @@ export class AuthServices {
         onError,
         onLoading,
         onSuccess,
+        router,
     }: {
         onLoading: (isLoading: boolean) => void,
         onError?: (message: string) => void,
         onSuccess?: () => void,
+        router: AppRouterInstance,
     }) {
 
         try {
+            if (!this.userCredentials) return;
 
             const { email, password } = this.userCredentials;
 
@@ -87,19 +107,65 @@ export class AuthServices {
                 })
             });
 
-            const data = await res.json();
-
             if (!res.ok) {
-                const { error } = data;
+
+                const {
+                    error,
+                    redirect
+                } = await res.json();
+
+                if (res.status === 401) {
+                    window.location.href = redirect;
+                    return;
+                }
+
                 onLoading(false)
                 if (onError) onError(error);
                 return;
             }
 
             if (onSuccess) onSuccess();
+
         } catch (e) {
-            onLoading(false)
+            onLoading(false);
+            if (onError) onError("Failed to sign up");
             throw new Error("Failed to sign up");
+        }
+    }
+
+    public async signout(
+        { dispatch }:
+            { dispatch: AppDispatch }) {
+        try {
+
+            dispatch(toggleProcessDialog(true))
+            dispatch(updaterPocessDialogMessage("Signing out"));
+            dispatch(updateProcessDialogCurrentValue(25))
+            const res = await fetch("/api/auth/logout", {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                }
+            });
+
+            if (!res.ok) {
+                dispatch(openToas({
+                    message: "Failed to signout",
+                    type: ToasEnum.ERROR,
+                }));
+                return;
+            }
+
+            const { redirect } = await res.json();
+
+            dispatch(updateProcessDialogCurrentValue(90))
+            setTimeout(() => {
+                dispatch(updateProcessDialogCurrentValue(100))
+                window.location.href = redirect;
+            }, 2000);
+
+        } catch (e) {
+            console.log(e);
         }
     }
 }

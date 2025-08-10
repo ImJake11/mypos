@@ -98,7 +98,7 @@ export default function NotificationTile({ index, data, maxTotal }: {
         }
     }
 
-    return <motion.div className='w-full h-[7rem] notification-background-gradient gap-2 rounded-[4px] absolute flex items-center p-2'
+    return <motion.div className='w-[80vw] md:w-[30rem] h-[7rem] bg-white dark:bg-[var(--main-bg-primary-dark)] gap-2 rounded-[4px] absolute flex items-center p-2 right-0'
         layout
         style={{
             zIndex: relativeIndex,
@@ -138,10 +138,10 @@ export default function NotificationTile({ index, data, maxTotal }: {
         <div className='flex-1 flex-col justify-between h-full flex'>
             <span>
                 <strong>{data.title} - </strong>
-                <span style={{ color: "var(--foreground-lighter)" }}>{data.message}</span>
+                <span>{data.message}</span>
             </span>
 
-            <span style={{ fontSize: ".6rem", color: "var(--foreground-lighter)" }}>{date} - {time}</span>
+            <span className="text-[.6rem]">{date} - {time}</span>
         </div>
 
 
@@ -158,11 +158,11 @@ export default function NotificationTile({ index, data, maxTotal }: {
 
         {/** view all notification */}
         {index === 0 && <div className="absolute h-[2rem] w-full justify-start top-0 left-0 -translate-y-10 flex gap-2">
-            <button className="rounded-[4px] p-[8px_10px] border border-gray-300 bg-gray-100"
+            <button className="rounded-[4px] p-[8px_10px] border border-gray-300 bg-gray-100 dark:bg-[var(--main-bg-primary-dark)]"
                 onClick={() => dispatch(notificationChangeVisiblity(false))}
             >Hide</button>
 
-            <button className="rounded-[4px] p-[8px_10px] border border-gray-300 bg-gray-100"
+            <button className="rounded-[4px] p-[8px_10px] border border-gray-300 bg-gray-100 dark:bg-[var(--main-bg-primary-dark)]"
             >   <Link href={"/ui/notifications-page"}>
                     View All
                 </Link>

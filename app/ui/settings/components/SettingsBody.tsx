@@ -1,7 +1,8 @@
 
 import React from 'react'
 import SettingsContentTiles from './SettingsContentTiles'
-import { IconBasketFilled, IconClipboardTextFilled } from '@tabler/icons-react';
+import { IconBasketFilled, IconClipboardTextFilled, IconUser } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 interface Prop {
   icon: React.JSX.Element,
@@ -32,12 +33,22 @@ const settingsContent: Prop[] = [
         title: "View Activities",
       }
     ]
+  },
+  {
+    icon: <IconUser size={iconSize} className={clsx(attr, "stroke-gray-400")} />,
+    title: "Profile",
+    routes: [
+      {
+        route: "",
+        title: "Manage Profile"
+      }
+    ]
   }
 ];
 
 const SettingsBody = () => {
   return (
-    <div className='flex w-full h-full bg-[var(--main-bg-secondary)] p-3 gap-2 flex-col'>
+    <div className='flex w-full h-full bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] rounded-[12px] p-3 gap-2 flex-col'>
 
       {settingsContent.map((b, i) => <SettingsContentTiles key={i} icon={b.icon} buttonRoutes={b.routes} title={b.title} />)}
     </div>

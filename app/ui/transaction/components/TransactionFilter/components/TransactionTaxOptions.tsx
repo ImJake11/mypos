@@ -50,10 +50,10 @@ function CheckBoxOptions({ name, isSelected, modelKey }: {
 
     return <div className='flex gap-3 w-full items-center'>
         {/** check box */}
-        <div className='w-[1.5rem] h-[1.5rem] rounded-[3px] border border-[var(--tf-border-default)] relative overflow-hidden'
+        <div className='w-[1.5rem] h-[1.5rem] rounded-[3px] border border-gray-500 relative overflow-hidden'
             onClick={handleAction}
         >
-            {isSelected && <div className='absolute inset-0 button-primary-gradient grid place-content-center'>
+            {isSelected && <div className='absolute inset-0 bg-[var(--color-brand-primary)] grid place-content-center'>
                 <i className="ri-check-fill" />
             </div>}
         </div>

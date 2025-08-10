@@ -1,4 +1,3 @@
-import { useWindowSize } from "@/app/lib/utils/hooks/useGetWindowSize";
 import { capitalizeFirtLetter } from "@/app/lib/utils/services/capitalizeFirstLetter";
 
 

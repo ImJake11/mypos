@@ -42,7 +42,7 @@ const UploadMedia = () => {
 
     return (
         <ProductFormCard>
-            <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[11px] bg-[var(--main-bg-primary)]'
+            <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[11px] '
             >
                 <span className='italic font-semibold '>Product Media</span>
                 <ErrorMessage isShow={!coverImage} message='Cover image is required' />

@@ -32,7 +32,7 @@ const TransactionTile = ({
 
     return (
 
-        <div className={`w-full flex items-center min-h-[3rem]  bg-[var(--main-bg-primary)] border-b-[var(--main-bg-secondary)] border-b relative
+        <div className={`w-full flex items-center min-h-[3rem] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] border-b-[var(--main-bg-secondary)] dark:border-b-[var(--main-bg-secondary-dark)] border-b relative
         `}>
 
             {/** date */}

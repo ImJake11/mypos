@@ -2,6 +2,7 @@
 import { CartModel } from '@/app/lib/models/cartModel'
 import { posUpdateCartItemQuantity } from '@/app/lib/redux/slice/posSlice';
 import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
+import { capitalizeFirtLetter } from '@/app/lib/utils/services/capitalizeFirstLetter';
 import { calculatePriceAdjustment } from '@/app/lib/utils/services/priceCalculations/calculatePriceAdjusment';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import React from 'react'
@@ -45,7 +46,7 @@ export default React.memo(function OrderCompleteItemTile({ data, index }:
 
             {/** detaills */}
             <div className='flex flex-col flex-1 gap-2'>
-                <span className={`${isMobile ? "text-[.8rem]" : "text-[1rem]"}`}>{variantName}</span>
+                <span className={`${isMobile ? "text-[.8rem]" : "text-[1rem]"}`}>{capitalizeFirtLetter(variantName)}</span>
                 {detailsParts.map((detail, i) => <span key={i} className='text-gray-500'>
                     {detail}
                 </span>)}
@@ -73,14 +74,14 @@ const QuantityAction = ({ quantity, index }: QuantityProp) => {
 
 
     return <div className='w-fit gap-2 h-[2rem] rounded-[3px] flex justify-evenly items-center text-[1rem] text-white'>
-        <button className="border border-[var(--color-brand-primary)] rounded-[4px] bg-gray-100"
+        <button className="border border-[var(--color-brand-primary)] rounded-[4px] bg-gray-100 dark:bg-[var(--main-bg-secondary-dark)] p-1"
             onClick={() => dispatch(posUpdateCartItemQuantity({
                 index,
                 isAddition: true,
             }))}
         ><IconPlus size={23} className='stroke-[var(--color-brand-primary)]' /></button>
         <span className='w-[3rem] text-center text-gray-500'>{quantity}</span>
-        <button className="border border-gray-400 rounded-[4px] bg-gray-100"
+        <button className="border border-gray-400 rounded-[4px] bg-gray-100 dark:bg-[var(--main-bg-secondary-dark)] p-1"
             onClick={() => dispatch(posUpdateCartItemQuantity({
                 index,
                 isAddition: false,

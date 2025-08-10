@@ -57,7 +57,7 @@ function OptionTile({ name }: { name: string }) {
 
     const isSelected = name === selectedTransactionStatus;
 
-    return <div className={`ml-7 flex w-full gap-2 h-[2rem] items-center ${isSelected ? "bg-gray-200" : "bg-Otransparent"} rounded-[4px] p-2`}
+    return <div className={`ml-7 flex w-full gap-2 h-[2rem] items-center ${isSelected ? "bg-gray-200 dark:bg-[var(--main-bg-secondary-dark)]" : "bg-transparent"} rounded-[4px] p-2`}
         onClick={() => dispatch(transactionUpdateFilterData({
             data: name,
             name: TransactionFilterKeys.transactionStatus

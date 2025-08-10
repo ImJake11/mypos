@@ -75,7 +75,7 @@ const CategoriesList = () => {
                         setIsOpen(!isOpen);
                     }}
                 >
-                    <div className='w-[1rem] h-[1rem] bg-gray-300 rounded-[2px]' />
+                    <div className='w-[1rem] h-[1rem] bg-gray-300  rounded-[2px]' />
                     <div className='w-[1rem] h-[1px] border border-gray-300 border-dashed' />
                     <div className='w-full h-[2.5rem] border-[2px] border-gray-300 flex items-center rounded-[8px] p-2'>
                         {categoryPreview}
@@ -83,7 +83,7 @@ const CategoriesList = () => {
                 </div>
 
                 {/** dropdown icon */}
-                <motion.div className='absolute right-4 bottom-3.5'
+                <motion.div className='absolute right-4 bottom-3'
                     animate={{
                         rotate: isOpen ? "180deg" : "0deg"
                     }}
@@ -95,7 +95,7 @@ const CategoriesList = () => {
 
             {/** input */}
             <AnimatePresence>
-                {isOpen && <motion.input type="text" className='border border-gray-300 focus:outline-[var(--color-brand-primary)] rounded-[8px] h-[2.5rem] ml-[2rem] p-2 mr-1' placeholder='Search category' value={searchQuery}
+                {isOpen && <motion.input type="text" className='border border-gray-300 outline-0 focus:border-[var(--color-brand-primary)] rounded-[8px] h-[2.5rem] ml-[2rem] p-2 mr-1' placeholder='Search category' value={searchQuery}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         const { value } = e.target;
 
@@ -145,7 +145,7 @@ interface ButtonProp {
 }
 
 function ButtonTile({ data, isSelected, onClick }: ButtonProp) {
-    return <motion.div className={`w-full min-h-[2.5rem] px-2.5 flex gap-2 items-center rounded-[7px] ${isSelected ? "bg-[var(--color-brand-primary)]" : "bg-gray-200"} text-nowrap whitespace-nowrap ${isSelected ? "text-white" : "text-black"}`}
+    return <motion.div className={`w-full min-h-[2.5rem] px-2.5 flex gap-2 items-center rounded-[7px] ${isSelected ? "bg-[var(--color-brand-primary)]" : "bg-gray-200 dark:bg-[var(--main-bg-secondary-dark)]"} text-nowrap whitespace-nowrap ${isSelected ? "text-white" : "text-black dark:text-white"}`}
         style={{
             border: "solid var(--primary) 1px",
         }}

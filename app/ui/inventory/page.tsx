@@ -8,16 +8,17 @@ import GlobalWrapper from '@/app/lib/components/GlobalWrapper';
 
 export default async function Page() {
 
-    const child = <div className='w-full h-full flex flex-col'>
-        {/** appbar */}
-        <InventoryAppar />
-        {/** body */}
-        <ProductList />
-    </div>
 
     return (
         <div className='w-screen h-screen flex overflow-hidden relative'>
-            <GlobalWrapper child={child} />
+            <GlobalWrapper>
+                <div className='w-full h-full flex flex-col relative'>
+                    {/** appbar */}
+                    <InventoryAppar />
+                    {/** body */}
+                    <ProductList />
+                </div>
+            </GlobalWrapper>
             <FilterTab
                 onPrimaryButtonContext={InventoryAction.INVENTORY_FILTER_DATA}
                 onClearFilterContext={InventoryAction.INVENTORY_CLEAR_FILTER_DATA}

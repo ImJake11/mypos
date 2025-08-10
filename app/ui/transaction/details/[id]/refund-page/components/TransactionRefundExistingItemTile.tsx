@@ -8,8 +8,8 @@ import React, { } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import "remixicon/fonts/remixicon.css";
 
-const TransactionRefundExistingItemTile = ({ data, width }:
-    { data: TransactionItemModel, width: number }
+const TransactionRefundExistingItemTile = ({ data }:
+    { data: TransactionItemModel }
 ) => {
 
     const dispatch = useDispatch();
@@ -18,14 +18,8 @@ const TransactionRefundExistingItemTile = ({ data, width }:
 
     const isSelected = returnedItems.find(item => item.id === data.id)
 
-    const isMobile = width < 768;
-
     return (
-        <div className='flex w-full h-[2.5rem] rounded-[4px] p-2 items-center gap-3 min-h-0 mb-1'
-            style={{
-                backgroundColor: "var(--main-bg-primary)"
-            }}
-        >
+        <div className='flex w-full h-[2.5rem] rounded-[4px] px-2 py-5 items-center gap-3 min-h-0 mb-1 bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]'>
             {/** checkbox */}
             <div className={`w-[1rem] h-[1rem] rounded-[4px] grid place-content-center border ${isSelected ? "border-[var(--color-brand-primary)]" : " border-gray-500"}`}
 
@@ -35,9 +29,7 @@ const TransactionRefundExistingItemTile = ({ data, width }:
             </div>
 
             {/** image container */}
-            <div className='w-[2rem] h-[2rem] rounded-[4px] overflow-hidden'
-                style={{ backgroundColor: "var(--main-bg-secondary-dark)" }}
-            >
+            <div className='w-[1.7rem] h-[1.7rem] rounded-[4px] overflow-hidden bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]'>
                 <img src={data.product?.imageUrl} alt="imiage" />
             </div>
 
@@ -45,9 +37,9 @@ const TransactionRefundExistingItemTile = ({ data, width }:
             <strong>{capitalizeFirtLetter(data.product?.name!)}</strong>
             <div className='flex-1' />
 
-            <span className={`${isMobile ? "w-[2rem]" : "w-[4rem]"}`}>x{data.quantity}</span>
+            <span className={`w-[2rem]] md:w-[4rem]`}>x{data.quantity}</span>
 
-            <span className={`text-right ${isMobile ? "w-[3rem]" : "w-[8rem]"}`}>{Number(data.unitPrice * data.quantity).toLocaleString('en-US', {
+            <span className={`text-right w-[3rem] md:w-[8rem]`}>{Number(data.unitPrice * data.quantity).toLocaleString('en-US', {
                 style: "currency",
                 currency: "PHP",
             })}</span>

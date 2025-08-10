@@ -1,6 +1,5 @@
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 
 export const verifyToken = async (): Promise<boolean> => {
 
@@ -9,7 +8,6 @@ export const verifyToken = async (): Promise<boolean> => {
 
         const email = cookieStore.get("email")?.value;
         const token = cookieStore.get("session_token")?.value;
-
 
         if (!email || !token) {
             return false

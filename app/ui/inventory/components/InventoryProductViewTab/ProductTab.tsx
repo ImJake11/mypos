@@ -18,7 +18,6 @@ import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
 import ProductTabLoadingState from './ProductTabLoadingState';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const ViewProductTab = () => {
 
@@ -77,10 +76,6 @@ const ViewProductTab = () => {
 
   }, [isProductViewVisible]);
 
-  // const { width } = useWindowSize();
-
-  // const isLarge = width >= 800;
-
   return (
     <AnimatePresence>
       {isProductViewVisible && <motion.div className='w-screen h-screen absolute backdrop-blur-[1px]'
@@ -105,11 +100,9 @@ const ViewProductTab = () => {
           isOpen: false,
         }))}
       >
-        <div className="h-screen bg-[var(--main-bg-primary)] absolute right-0 w-full md:w-[60vw] xl:w-[40vw]">
-          {isLoading ? <ProductTabLoadingState /> : <motion.div className='w-full h-full flex flex-col overflow-auto gap-2 right-0'
-            style={{
-              backgroundColor: "var(--main-bg-primary)",
-            }}
+        <div className="h-screen bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] absolute right-0 w-full md:w-[60vw] xl:w-[40vw]"
+        >
+          {isLoading ? <ProductTabLoadingState /> : <motion.div className='w-full h-full flex flex-col overflow-auto gap-2 right-0 bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] px-4 py-4'
             initial={{
               opacity: 0,
             }}
@@ -145,14 +138,14 @@ const ViewProductTab = () => {
             {/** actions */}
             <div className='flex w-full items-center justify-end gap-3 pr-5'>
 
-              <button className='p-[5px_10px] rounded-[4px] flex items-center gap-2 text-gray-500 border border-gray-500'
+              <button className='px-3 py-2 rounded-[4px] flex items-center gap-2  text-white dark:text-white border border-gray-500'
               >
                 <FontAwesomeIcon icon={faClose} />
                 <span>Close</span>
               </button>
 
               {/** update */}
-              <button className='button-primary-gradient p-[5px_10px] rounded-[4px] flex items-center gap-2 text-white'
+              <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] px-3 py-2 rounded-[4px] flex items-center gap-2 text-white'
                 onClick={handleUpdate}
               >
                 <FontAwesomeIcon icon={faEdit} />
@@ -162,7 +155,7 @@ const ViewProductTab = () => {
 
 
             {/** add to cart button */}
-            <button className='button-primary-gradient place-self-center w-[calc(100%-3rem)] mb-5 min-h-[2.5rem] rounded-[7px] flex items-center gap-2.5 justify-center text-white'>
+            <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] place-self-center w-[calc(100%-3rem)]  min-h-[2.5rem] rounded-[7px] flex items-center gap-2.5 justify-center text-white'>
               <FontAwesomeIcon icon={faCartPlus} />
               Add to cart
             </button>

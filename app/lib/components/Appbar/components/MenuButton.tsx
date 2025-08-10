@@ -10,9 +10,9 @@ const MenuButton = () => {
     const dispatch = useDispatch();
 
     return (
-        <div className='w-[2rem] h-[2rem] rounded-full bg-gray-100 border border-gray-300 grid place-content-center'
+        <div className='w-[2rem] h-[2rem] rounded-full bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] border border-gray-300 dark:border-gray-500 grid place-content-center'
             onClick={() => dispatch(sidebarOpen(true))}>
-            <IconMenu3 size={20} className='stroke-gray-400' />
+            <IconMenu3 size={20} className='stroke-gray-400 dark:stroke-gray-300' />
         </div>
     )
 }

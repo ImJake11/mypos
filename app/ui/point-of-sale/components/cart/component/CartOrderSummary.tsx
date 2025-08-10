@@ -29,7 +29,7 @@ const CartOrderSummary = ({ overallCartTotal, showCloseButton = true }:
 
 
     return (
-        <div className='bg-gray-50 flex-1 rounded-br-[8px] rounded-bl-[8px] flex flex-col p-2 gap-2 '>
+        <div className='bg-gray-50 dark:bg-[var(--main-bg-tertiary-dark)] flex-1 rounded-br-[8px] rounded-bl-[8px] flex flex-col p-2 gap-2 '>
             <div className='flex justify-between text-[.8rem]'>
                 <span>Total: </span>
                 <span className='font-[600]'>{Number(overallCartTotal).toLocaleString('en-us', { style: "currency", currency: "PHP" })}</span>

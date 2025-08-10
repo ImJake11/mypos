@@ -7,7 +7,7 @@ import DashboardTransactionAndStockSummary from './components/DashboardTransacti
 import { DashboardServices } from './services/DashboardServices'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/app/lib/redux/store';
-import { IconArrowLeftDashed, IconArrowNarrowDownDashed, IconArrowsTransferUpDown, IconCircleDashedNumber0, IconFileInvoiceFilled, IconHistoryToggle, IconProgressCheck } from "@tabler/icons-react";
+import { IconArrowLeftDashed, IconArrowNarrowDownDashed, IconArrowsTransferUpDown, IconArticleFilled, IconBriefcase2Filled, IconCircleDashedNumber0, IconCoinFilled, IconFileInvoiceFilled, IconHistoryToggle, IconProgressCheck } from "@tabler/icons-react";
 import { TransactionStatus } from '@/app/lib/enum/transactionStatus';
 import LowStockChild from './components/childs/LowStockChild';
 import SlowMovingStock from './components/childs/SlowMovingStock';
@@ -37,8 +37,6 @@ const DashboardBody = () => {
         }
     })
 
-
-
     useEffect(() => {
         dashboardService.fetchDailySummary(dispatch);
     }, []);
@@ -49,7 +47,7 @@ const DashboardBody = () => {
             <DashboardSummaryTile
                 title="Total Expenses"
                 pastValue={expenses}
-                icon={<i className="text-[1.3rem] ri-receipt-fill"></i>}
+                icon={<IconArticleFilled className='text-gray-500 dark:text-gray-200' />}
                 currentValue={expenses}
                 accentColor='to-red-700/40'
                 showPerformanceIndicator={false}
@@ -58,7 +56,7 @@ const DashboardBody = () => {
             <DashboardSummaryTile
                 isCurrency={false}
                 currentValue={successful}
-                icon={<IconProgressCheck />}
+                icon={<IconProgressCheck className='text-gray-500 dark:text-gray-200' />}
                 showPerformanceIndicator={false}
                 accentColor='to-green-500/20'
                 title='Successful Transactions'
@@ -66,7 +64,7 @@ const DashboardBody = () => {
             <DashboardSummaryTile
                 isCurrency={false}
                 currentValue={voids}
-                icon={<IconCircleDashedNumber0 />}
+                icon={<IconCircleDashedNumber0 className='text-gray-500 dark:text-gray-200' />}
                 showPerformanceIndicator={false}
                 accentColor='to-red-500/20'
                 title='Void Transactions'
@@ -74,7 +72,7 @@ const DashboardBody = () => {
             <DashboardSummaryTile
                 isCurrency={false}
                 currentValue={refunded}
-                icon={<IconArrowLeftDashed />}
+                icon={<IconArrowLeftDashed className='text-gray-500 dark:text-gray-200' />}
                 showPerformanceIndicator={false}
                 accentColor='to-orange-500/20'
                 title='Refunded Transactions'
@@ -85,8 +83,7 @@ const DashboardBody = () => {
     const isMedium = useWindowSize().width > 768;
 
     return (
-        <div className={`box-border w-screen h-full bg-[var(--main-bg-secondary)] rounded-[8px] flex flex-col overflow-auto p-5 gap-5 md:p3 md:gap-3 md:w-full`}>
-
+        <div className={`box-border w-screen h-full bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] rounded-[12px] flex flex-col overflow-auto p-5 gap-5 md:p3 md:gap-3 md:w-full`}>
             <div className={`flex flex-col w-full gap-5 md:flex-row md:gap-3`}>
 
                 {/** 
@@ -103,20 +100,20 @@ const DashboardBody = () => {
                             currentValue={netTotal}
                             pastValue={yesterSummary.netTotal}
                             icon={
-                                <IconFileInvoiceFilled />
+                                <IconFileInvoiceFilled className='text-gray-500 dark:text-gray-200' />
                             } />
 
                         <DashboardSummaryTile
                             title='Tax Sales'
                             currentValue={totalValSales}
-                            icon={<i className="ri-government-fill text-[1.4rem]"></i>}
+                            icon={<IconBriefcase2Filled className='text-gray-500 dark:text-gray-200' />}
                         />
 
                         <DashboardSummaryTile
                             title='Monetary Profit'
                             currentValue={netTotal - totalValSales}
                             pastValue={yesterSummary.netTotal - yesterSummary.totalValSales}
-                            icon={<i className="text-[1.4rem] ri-money-dollar-circle-fill"></i>}
+                            icon={<IconCoinFilled className='text-gray-500 dark:text-gray-200' />}
                         />
 
                     </div>
@@ -133,18 +130,18 @@ const DashboardBody = () => {
 
             <div className="flex min-h-[25rem] overflow-x-auto w-full gap-5 md:gap-3 ">
                 <DashboardTransactionAndStockSummary
-                    icon={<IconArrowNarrowDownDashed />}
+                    icon={<IconArrowNarrowDownDashed className='text-gray-500 dark:text-gray-200' />}
                     title='Low Stock Products'
                     child={<LowStockChild />}
                 />
                 <DashboardTransactionAndStockSummary
-                    icon={<IconArrowsTransferUpDown className='h-[1.1rem]' />}
+                    icon={<IconArrowsTransferUpDown className='text-gray-500 dark:text-gray-200' />}
                     title='Slow Moving Products'
                     child={<SlowMovingStock />}
                     subTitle='No purchase records last 30 days'
                 />
                 <DashboardTransactionAndStockSummary
-                    icon={<IconHistoryToggle className='h-[1.3rem]'
+                    icon={<IconHistoryToggle className='text-gray-500 dark:text-gray-200'
                     />}
                     title='Recent Transactions'
                     child={<RecentTransactions />}

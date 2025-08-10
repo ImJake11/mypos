@@ -67,7 +67,7 @@ function Tile({
     }
 
     return (
-        <motion.div className='text-gray-500 w-full flex gap-2.5 items-center pl-2 p-[5px_0] pr-2 rounded-[4px] min-h-[3.5rem] bg-gray-100/40'
+        <motion.div className='text-gray-500 w-full flex gap-2.5 items-center pl-2 p-[5px_0] pr-2 rounded-[4px] min-h-[3.5rem] bg-gray-100/40 dark:bg-[var(--main-bg-primary-dark)]'
         >
             <div className='w-[2.5rem] h-[1.5rem] bg-gray-200 rounded-[4px] overflow-hidden p-1.5 flex'>
                 {getIcon() ? <img src={getIcon()!} alt="i" className='object-contain w-full h-full' /> : <span className='h-full grid place-content-center w-full'>

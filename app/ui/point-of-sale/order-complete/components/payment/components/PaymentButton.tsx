@@ -25,7 +25,7 @@ const PaymentButton = ({ name, icon, padding }: Prop) => {
         dispatch(posTogglePaymentMethod(name as PaymentMethod))
     }
     return (
-        <motion.div className='min-h-[2.5rem] w-full rounded-[7px] p-2 border border-gray-300 flex flex-col gap-2 items-center'
+        <motion.div className='min-h-[2.5rem] w-full rounded-[7px] p-2 border border-gray-300 dark:border-gray-500 flex flex-col gap-2 items-center'
             onClick={handlePayment}
 
             animate={{
@@ -33,7 +33,7 @@ const PaymentButton = ({ name, icon, padding }: Prop) => {
             }}
         >
             <div className='flex gap-2 items-center w-full'>
-                <div className='h-[1rem] w-[1rem] border-[1px] border-gray-300 rounded-full p-0.5 grid place-content-center'>
+                <div className='h-[1rem] w-[1rem] border-[1px] border-gray-300 dark:border-gray-500 rounded-full p-0.5 grid place-content-center'>
                     {isSelected && <div className='h-[.7rem] w-[.7rem] rounded-full bg-[var(--color-brand-primary)]' />}
                 </div>
                 {name}
@@ -66,7 +66,7 @@ function SubButtonTile({ name, icon }: {
     return <button className='w-[90%] place-self-end flex items-center gap-3'
         onClick={() => dispatch(posTogglePaymentProvider(name as PaymentProvider))}
     >
-        <div className='h-[1rem] w-[1rem] rounded-full border-[1px] border-ray-500 grid place-content-center'>
+        <div className='h-[1rem] w-[1rem] rounded-full border-[1px] border-gray-500 grid place-content-center'>
             {isSelected && <div className='h-[.7rem] w-[.7rem]  rounded-full bg-[var(--color-brand-primary)]'></div>}
         </div>
 

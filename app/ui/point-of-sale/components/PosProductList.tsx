@@ -35,7 +35,7 @@ export const PosProductList = () => {
 
     if (isError) return <PageErrorState />;
 
-    return isLoading ? <PosLoadingState /> : <div className='flex-1 bg-[var(--main-bg-secondary)] gap-3'>
+    return isLoading ? <PosLoadingState /> : <div className='flex-1 bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] gap-3'>
 
         {displayList.length <= 0 ? <PageNoDataFound /> : <div className='flex-1 flex flex-col'>
 
@@ -43,7 +43,7 @@ export const PosProductList = () => {
                 <Searchbar context='pos' showEditIcon={false} />
             </div>
 
-            <div className={`w-full h-[84vh] md:h-[91vh]`}>
+            <div className={`w-full h-[84vh] md:h-[90vh]`}>
                 <ul className={`w-full h-full grid gap-3 p-2 items-start overflow-auto grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5`}>
                     {displayList.map((p, index) => <PosProductTile key={p.id} index={index} data={p} />)}
                 </ul>

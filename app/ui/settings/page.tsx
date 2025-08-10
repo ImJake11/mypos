@@ -7,16 +7,15 @@ import SettingsBody from './components/SettingsBody';
 
 const page = () => {
 
-    const child = (
-        <div className='flex-1 flex flex-col'>
-            <SettingsAppbar />
-            <SettingsBody />
-        </div>
-    );
 
     return (
         <div className='w-screen h-screen overflow-hidden'>
-            <GlobalWrapper child={child} />
+            <GlobalWrapper>
+                <div className='flex-1 flex flex-col'>
+                    <SettingsAppbar />
+                    <SettingsBody />
+                </div>
+            </GlobalWrapper>
         </div>
     )
 }

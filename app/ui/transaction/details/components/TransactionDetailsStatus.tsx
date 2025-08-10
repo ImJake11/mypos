@@ -47,12 +47,12 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
 
     return (
         <div className='w-full flex gap-3'>
-            <div className={` rounded-full relative grid place-content-center bg-gray-100 border-white border-[5px] w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem]`}
+            <div className={` rounded-full relative grid place-content-center bg-gray-100 dark:bg-[var(--main-bg-secondary-dark)] border-white dark:border-[var(--main-bg-primary-dark)] border-[5px] w-[5rem] h-[5rem] md:w-[8rem] md:h-[8rem]`}
             >
                 {generateStatusIcon()}
 
                 {/** payment provider icon container */}
-                <div className={`absolute -right-2 bottom-0  rounded-full grid place-content-center bg-gray-100 border-[5px] border-white w-[2rem] h-[2rem] md:w-[3rem] md:h-[3rem]`}
+                <div className={`absolute -right-2 bottom-0  rounded-full grid place-content-center bg-gray-100 dark:bg-[var(--main-bg-primary-dark)] border-[5px] border-white dark:border-[var(--main-bg-primary-dark)] w-[2rem] h-[2rem] md:w-[3rem] md:h-[3rem]`}
                 >
                     {getPaymentProviderIcon() ? <img src={getPaymentProviderIcon()} alt="img" className='w-[15px] h-[15px] md:h-[20px] md:w-[20px]' /> : <span className='text-[1.5rem] font-bold'>C</span>}
                 </div>
@@ -69,7 +69,7 @@ const TransactionDetailsStatus = ({ data }: { data: TransactionDetailsModel }) =
                     style: "currency",
                     currency: "PHP"
                 })}</span>
-                <div className={`overflow-hidden rounded-[50px] grid place-content-center bg-white h-[2rem] w-[6rem] text-[.6rem] md:text-[1rem] md:h-[3rem] md:w-[10rem]`}
+                <div className={`overflow-hidden rounded-[50px] grid place-content-center bg-white dark:bg-[var(--main-bg-primary-dark)] h-[2rem] w-[6rem] text-[.6rem] md:text-[1rem] md:h-[3rem] md:w-[10rem]`}
                 >
                     {status.toUpperCase()}
                 </div>

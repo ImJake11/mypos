@@ -8,7 +8,7 @@ import OtpInput from "react-otp-input";
 
 
 const ConfirmationBody = ({ }) => {
-    let email = "";
+    const router = useRouter();
 
     const [remainingTime, setRemainingTime] = useState(0);
     const [otp, setOtp] = useState('');
@@ -16,8 +16,7 @@ const ConfirmationBody = ({ }) => {
     const [message, setMessage] = useState("");
     const [isError, setIsError] = useState(false);
     const [isResendingCode, setIsResendingCode] = useState(false);
-
-    const router = useRouter();
+    const [email, setEmail] = useState("");
 
     function convertTimestamp(token_exp: string): void {
         const now = new Date();
@@ -38,7 +37,7 @@ const ConfirmationBody = ({ }) => {
             setMessage("");
             setIsResendingCode(true);
 
-            const res = await fetch(`/api/auth/${email}/validation/resend-code`, {
+            const res = await fetch(`/api/auth/validation/resend-code`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -65,7 +64,7 @@ const ConfirmationBody = ({ }) => {
         try {
             setMessage("")
             setIsVerifying(true);
-            const res = await fetch(`/api/auth/${email}/validation`, {
+            const res = await fetch(`/api/auth/validation`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"
@@ -107,8 +106,7 @@ const ConfirmationBody = ({ }) => {
     useEffect(() => {
 
         const fetchData = async () => {
-
-            const res = await fetch(`/api/auth/${email}/validation`, {
+            const res = await fetch(`/api/auth/validation`, {
                 method: "GET",
             });
 
@@ -116,7 +114,8 @@ const ConfirmationBody = ({ }) => {
                 router.push("/ui/auth/sign-up-page");
             }
 
-            const { token_exp } = await res.json();
+            const { token_exp, email } = await res.json();
+            setEmail(email);
             convertTimestamp(token_exp)
         }
 
@@ -131,18 +130,13 @@ const ConfirmationBody = ({ }) => {
 
 
     return (
-
         <div className='w-[20rem] h-fit gap-4 bg-[#101010] rounded-[20px] border border-[var(--color-brand-primary)] p-5 text-white flex flex-col'>
 
-            <div className='w-full'>
-                <IconChevronCompactLeft />
-            </div>
-
             <span className='text-[1.2rem] font-semibold'>Confirmation</span>
-            {message && <span className={`w-full h-[2rem] rounded-[4px] p-2 ${isError ? "bg-red-500/20 text-red-500" : "bg-green-500/20 text-green-500"}`}>
+            {message && <span className={`w-full min-h-[2rem] h-auto rounded-[4px] p-2 ${isError ? "bg-red-500/20 text-red-500" : "bg-green-500/20 text-green-500"}`}>
                 {message}
             </span>}
-            <span className='text-gray-400'>Please confirm the code we sent to {email}</span>
+            <span className='text-gray-400'>Please confirm the code we sent to your {email}</span>
 
             <div className='flex-1'>
                 <OtpInput
@@ -182,8 +176,8 @@ const ConfirmationBody = ({ }) => {
                 {isVerifying && <CircularLoadingIndicator size={20} />}
                 <span>Verify</span>
             </button>
-
         </div>
+
     )
 }
 

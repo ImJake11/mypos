@@ -76,7 +76,7 @@ const ProductInformationDetails = () => {
           </div>
 
           {/** textarea */}
-          <textarea maxLength={500} value={highlights ?? ""} className='w-full min-h-[6rem] max-h-[10rem] p-2 border border-black rounded-[8px] focus:outline-[var(--color-brand-primary)]'
+          <textarea maxLength={500} value={highlights ?? ""} className='w-full min-h-[6rem] max-h-[10rem] p-2 border border-black dark:border-gray-300 rounded-[8px] focus:outline-[var(--color-brand-primary)]'
             onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
               const { value } = e.target;
 

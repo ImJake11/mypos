@@ -104,25 +104,19 @@ const Searchbar = ({
     }, [query]);
 
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
     return (
         <div className='w-fit h-fit relative'>
-            <input ref={inputRef} value={query} type="text" className={`
-            ${isMobile && "w-[90vw]"}
-            h-[2.5rem] border border-gray-300 bg-gray-100 rounded-[8px] pl-10 p-1 focus:outline-gray-400 w-[30rem]`}
+            <input ref={inputRef} value={query} placeholder='Search Product' type="text" className={`w-[90vw] md:w-[30rem] h-[2.3rem] border border-gray-300 dark:border-gray-500 bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] rounded-[8px] pl-10 p-1 outline-0 focus:border-[var(--color-brand-primary)] focus:border-[2px]`}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const { value } = e.target;
                     setQuery(value);
                 }}
             />
 
-            <IconSearch size={22} className='stroke-gray-400 absolute left-2 top-1/2 -translate-y-1/2' />
+            <IconSearch size={18} className='stroke-gray-400 dark:stroke-gray-300 absolute left-2 top-1/2 -translate-y-1/2' />
 
             <AnimatePresence>
-                {isFocused && <motion.div className='absolute top-[3rem] rounded-[8px] z-[1] max-h-[15rem] w-full bg-white shadow-[1px_1px_5px_rgb(0,0,0,.4)] flex flex-col gap-1 overflow-auto'
+                {isFocused && <motion.div className='absolute top-[3rem] rounded-[8px] z-[1] max-h-[15rem] w-full bg-white dark:bg-[var(--main-bg-primary-dark)] shadow-[1px_1px_5px_rgb(0,0,0,.4)] flex flex-col gap-1 overflow-auto'
                     initial={{
                         opacity: 0
                     }}
@@ -138,11 +132,7 @@ const Searchbar = ({
                             <CircularLoadingIndicator size={18} borderWidth={1} />
                             <span className='text-gray-500'>Getting Results</span>
                         </div> :
-                            searchResult.map((result, i) => <motion.div key={i} className='p-[0px_10px] w-full min-h-[2rem] cursor-pointer flex justify-between bg-white  items-center'
-                                whileHover={{
-                                    backgroundColor: "#f3f4f6"
-                                }}
-                            >
+                            searchResult.map((result, i) => <motion.div key={i} className='p-[0px_10px] w-full min-h-[2rem] cursor-pointer flex justify-between hover:text-[var(--color-brand-primary)] items-center'>
                                 <span
                                     onClick={() => handleNameSelect(result.id)}
                                 >{result.name}</span>

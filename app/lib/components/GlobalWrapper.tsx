@@ -9,21 +9,21 @@ import ProcessDialog from './ProcessDialog/ProcessDialog';
 import Toas from './Toas';
 import Sidebar from './Sidebar/Sidebar';
 import SidebarFloatingTab from './Sidebar/SidebarFloatingTab';
-import { useWindowSize } from '../utils/hooks/useGetWindowSize';
+import { useTheme } from '../utils/hooks/useTheme';
+import ThemeProvider from './ThemProvider';
 
-const GlobalWrapper = ({ child }: { child: React.JSX.Element }) => {
+const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
 
-    const { width } = useWindowSize();
-
-    const isTablet = width < 1050;
+    const { theme } = useTheme();
 
     return (
-        <motion.div className='w-full h-full flex relative text-black dark:text-white transition-all ease-in-out duration-300 overflow-hidden'
-            data-theme="light"
+
+        <motion.div className='w-full h-full flex relative text-black dark:text-white transition-all ease-in duration-200 overflow-hidden bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)]'
+            data-theme={theme}
         >
-            {!isTablet && <Sidebar isFloating={false} />}
-            <div className='flex-1 flex'>
-                {child}
+            <div className='hidden lg:block'><Sidebar isFloating={false} /></div>
+            <div className='flex-1 flex p-2'>
+                {children}
             </div>
             <SidebarFloatingTab />
             <ViewProductTab />
@@ -32,7 +32,6 @@ const GlobalWrapper = ({ child }: { child: React.JSX.Element }) => {
             <ProcessDialog />
             <CustomNotification />
         </motion.div>
-
     )
 }
 

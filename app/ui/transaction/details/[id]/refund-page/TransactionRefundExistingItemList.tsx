@@ -48,18 +48,14 @@ const TransactionRefundList = () => {
     fetchData();
   }, []);
 
-  const w = useWindowSize().width;
-
-  const isMobile = w < 768;
-
   if (isLoading) return <div className='flex-1'>
     <span>Loading boss</span>
   </div>
 
   return (
-    <div className='flex-1 p-2 rounded-[8px] flex gap-4 text-[.8rem] bg-[var(--main-bg-secondary)]'>
+    <div className='flex-1 p-2 rounded-[8px] flex gap-4 text-[.8rem] bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]'>
 
-      <div className='w-full h-full flex flex-col bg-[var(--main-bg-primary)] rounded-[8px] p-4 gap-3'>
+      <div className='w-full h-full flex flex-col bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[8px] p-4 gap-3'>
         <span className='flex w-full justify-between p-[0_10px]'>
           <span>Transaction ID: 434-34324-23432</span>
           <span className='cursor-pointer' style={{ color: "var(--color-brand-primary)" }}
@@ -67,9 +63,9 @@ const TransactionRefundList = () => {
           >Mark All</span>
         </span>
 
-        <div className={`w-full h-full ${isMobile ? "overflow-visible" : "overflow-auto"}`}>
+        <div className={`w-full h-full overflow-visible md:overflow-auto`}>
           <ul>
-            {transactionData?.purchasedItems.map(item => <TransactionRefundExistingItemTile key={item.id} data={item} width={w} />)}
+            {transactionData?.purchasedItems.map(item => <TransactionRefundExistingItemTile key={item.id} data={item} />)}
           </ul>
         </div>
       </div>

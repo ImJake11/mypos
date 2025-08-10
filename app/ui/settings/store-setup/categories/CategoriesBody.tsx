@@ -1,8 +1,6 @@
 'use client'
 
-import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import ToasEnum from '@/app/lib/enum/toastEnum';
-import CategoriesIcon from '@/app/lib/icons/CategoriesIcon'
 import { CategoryModel } from '@/app/lib/models/categoryModel';
 import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import { useSocketEvent } from '@/app/lib/utils/hooks/useSocket';
@@ -15,7 +13,6 @@ import { fetchAllCategory } from '@/app/lib/utils/data/fetchCategories';
 import { CategoryTile, LoadingState } from './components/CategoriesComponents';
 import CategoryAppbar from './components/CategoryAppbar';
 import { IconChecks, IconUpload } from '@tabler/icons-react';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 
 const initialState = {
@@ -106,7 +103,7 @@ const CategoriesBody = () => {
     }, []);
 
     return (
-        <div className='flex-1 bg-[var(--main-bg-primary)] flex flex-col gap-2'>
+        <div className='flex-1 bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] flex flex-col gap-2'>
             <CategoryAppbar />
             {/** body */}
             {isLoading ? <LoadingState /> :
@@ -116,7 +113,7 @@ const CategoriesBody = () => {
                     <div className={`w-full flex gap-3 flex-col md:flex-row`}>
 
                         {/** image container */}
-                        <div className='w-[7rem] h-[7rem] rounded-[7px] relative overflow-hidden border-gray-300 border bg-gray-100'>
+                        <div className='w-[7rem] h-[7rem] rounded-[7px] relative overflow-hidden border-gray-300 dark:border-gray-500 border bg-gray-100 dark:bg-[var(--main-bg-secondary-dark)]'>
                             {categoryData.url && <img src={categoryData.url} alt="category image" className=' w-full h-full object-cover absolute' loading='lazy' />}
 
                             <input type="file" accept='image/**' className='h-full w-full opacity-0 absolute'
@@ -133,7 +130,7 @@ const CategoriesBody = () => {
                             <span>Category name</span>
                             <div className='flex justify-between gap-2'>
                                 {/** input */}
-                                <input type="text" value={categoryData.content} className={`border border-gray-300  rounded-[4px] focus:outline-[var(--color-brand-primary)] p-2 h-[2.5rem]
+                                <input type="text" value={categoryData.content} className={`border border-gray-300 dark:border-gray-500 rounded-[4px] focus:outline-[var(--color-brand-primary)] p-2 h-[2.5rem]
                                 w-full md:w-[35rem]`} onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                                         const { value } = e.target;
 

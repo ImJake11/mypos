@@ -56,7 +56,7 @@ const ProductTabAddToCartButton = () => {
             <button className='flex-1 max-w-[10rem] min-h-[2.5rem] border border-[var(--foreground)] rounded-[7px]'
                 onClick={() => dispatch(posCloseProductDetails())}
             >Cancel</button>
-            {selectedVariantID !== "" && <button className='button-primary-gradient flex-1 min-h-[2rem] text-white rounded-[8px] grid place-content-center max-w-[10rem]'
+            {selectedVariantID !== "" && <button className='bg-linear-180 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] flex-1 min-h-[2rem] text-white rounded-[8px] grid place-content-center max-w-[10rem]'
                 onClick={handleAddToCart}
             >Add to cart</button>
             }

@@ -15,7 +15,6 @@ import Searchbar from '@/app/lib/components/Searchbar/Searchbar';
 import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 import MenuButton from '@/app/lib/components/Appbar/components/MenuButton';
 
-const _buttonDefaultColor = "fill-gray-400"
 const _buttonSize = 18;
 
 const InventoryAppar = () => {
@@ -43,12 +42,12 @@ const InventoryAppar = () => {
 
         <div className='flex-1' />
         {/** tile type button */}
-        <motion.div className='flex border h-[2rem] gap-2 p-[0_10px] items-center border-gray-300 rounded-[20px] bg-gray-100' layout>
+        <motion.div className='flex border h-[2rem] gap-2 p-[0_10px] items-center border-gray-300 dark:border-gray-500 rounded-[20px] bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)]' layout>
 
 
-            <IconLayoutGridFilled size={_buttonSize} className={`${!isListView ? "fill-[var(--color-brand-primary)]" : "fill-gray-400"}`} onClick={handleListViewToggle} />
+            <IconLayoutGridFilled size={_buttonSize} className={`${!isListView ? "fill-[var(--color-brand-primary)]" : "fill-gray-400 dark:fill-gray-300"}`} onClick={handleListViewToggle} />
 
-            <IconLayoutListFilled size={_buttonSize} className={` ${isListView ? "fill-[var(--color-brand-primary)]" : "fill-gray-400"}`} onClick={handleListViewToggle} />
+            <IconLayoutListFilled size={_buttonSize} className={` ${isListView ? "fill-[var(--color-brand-primary)]" : "fill-gray-400 dark:fill-gray-300"}`} onClick={handleListViewToggle} />
 
         </motion.div>
         <CartIndicator />

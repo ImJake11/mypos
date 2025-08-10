@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import store from "../store";
 import { disconnectSocket, getSocket } from "../../utils/socket/socket";
 import NextTopLoader from "nextjs-toploader";
+import ThemeProvider from "../../components/ThemProvider";
 
 interface ReduxProviderProps {
     children: ReactNode;
@@ -29,6 +30,8 @@ export default function ReduxProvider({ children }: ReduxProviderProps) {
             showSpinner={false}
             crawlSpeed={300}
         />
-        {children}
+        <ThemeProvider>
+            {children}
+        </ThemeProvider>
     </Provider>;
 }

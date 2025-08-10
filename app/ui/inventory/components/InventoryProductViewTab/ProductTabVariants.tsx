@@ -30,11 +30,7 @@ export default function VariantsTable({ variants, lowStock }: VarintsProp) {
 
             {/** header */}
             <div className='w-full grid grid-cols-4'>
-                {variantHeaders.map((h, i) => <div key={i} className='h-[2rem]  uppercase grid place-content-center'
-                    style={{
-                        border: "solid 1px var(--main-bg-secondary)"
-                    }}
-                >
+                {variantHeaders.map((h, i) => <div key={i} className='h-[2rem]  uppercase grid place-content-center border border-[var(--main-bg-secondary)] dark:border-gray-300'>
                     <span>{h}</span>
                 </div>)}
             </div>
@@ -42,17 +38,9 @@ export default function VariantsTable({ variants, lowStock }: VarintsProp) {
             {/** body */}
             <div className='flex flex-col w-full gap-3'>
                 {variants.map((v, i) => {
-                    return <div key={i} className="h-[5rem] w-full grid grid-cols-4 p-2"
-                        style={{
-                            border: "solid 1px var(--main-bg-secondary)"
-                        }}
-                    >
+                    return <div key={i} className="h-[5rem] w-full grid grid-cols-4 p-2 border border-[var(--main-bg-secondary)] dark:border-gray-300">
                         {/** image */}
-                        <div className='h-full w-full grid place-content-center'
-                            style={{
-                                backgroundColor: "var(--secondary-background)"
-                            }}
-                        >
+                        <div className='h-full w-full grid place-content-center'>
                             {/** return a icon if image is null */}
                             <div className="h-[4rem] aspect-square rounded-[8px] overflow-hidden">
                                 {v.imageUrl ? <img src={v.imageUrl} alt="variant image" className='object-fill h-[5rem] aspect-square rounded-[8px]' /> :
@@ -73,13 +61,13 @@ export default function VariantsTable({ variants, lowStock }: VarintsProp) {
             </div>
 
             {/** instock units */}
-            <div className='button-primary-gradient w-fit h-fit rounded-[8px] text-white p-[3px_5px] flex gap-3 items-center'>
+            <div className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] w-fit h-fit rounded-[4px] text-white p-[3px_5px] flex gap-3 items-center'>
                 <i className="ri-stock-fill text-[1.2rem]" /><span>Stock in units: {totalStock}</span>
             </div>
 
             {/** low stock treshold */}
-            <div className='border border-[var(--main-bg-secondary-dark)] w-fit h-fit rounded-[8px] text-white p-[3px_5px] flex gap-3 items-center'>
-                <i className="ri-stock-fill text-[1.2rem]" /><span>Low stock treshhold: {lowStock}</span>
+            <div className='border border-gray-400 dark:border-white w-fit h-fit rounded-[4px] text-white p-[3px_5px] flex gap-3 items-center'>
+                <i className="ri-stock-fill text-[1.2rem]" /><span>Low stock treshold: {lowStock}</span>
             </div>
         </div>
     )

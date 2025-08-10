@@ -13,21 +13,17 @@ const TransactionAppbar = () => {
 
   const dispatch = useDispatch();
 
-  const w = useWindowSize().width;
-
-  const isMobile = w < 576;
-
   const child = (
     <div className='flex w-full justify-end gap-2'>
 
-      {isMobile && <MenuButton />}
+      <div className='block md:hidden'><MenuButton /></div>
       <div className='flex-1' />
 
-      <button className='min-w-[2rem] h-[2rem] rounded-full border border-gray-300 bg-gray-100 grid place-content-center' onClick={() => dispatch(transactionToggleFilterTab())}>
+      <button className='min-w-[2rem] h-[2rem] rounded-full border dark:border-gray-500 border-gray-300 bg-gray-100 grid place-content-center dark:bg-[var(--main-bg-tertiary-dark)]' onClick={() => dispatch(transactionToggleFilterTab())}>
         <IconAdjustments size={20} className='stroke-gray-400' />
       </button>
 
-      <button className='w-[2rem] h-[2rem] 5 grid place-content-center rounded-full border border-gray-300 bg-gray-100'
+      <button className='w-[2rem] h-[2rem] 5 grid place-content-center rounded-full border border-gray-300 dark:border-gray-500 bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)]'
         onClick={() => dispatch(trnasactionTogglePDF())}
       >
         <IconDownload size={20} className='stroke-gray-400' />

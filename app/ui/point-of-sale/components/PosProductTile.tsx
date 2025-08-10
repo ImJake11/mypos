@@ -30,20 +30,17 @@ const PosProductTile = React.memo(({ data, index }: Prop) => {
     }, [data.coverImage]);
 
     return (
-        <motion.div className='w-full min-h-[13rem] h-[15rem] bg-[var(--main-bg-primary)] rounded-[8px] flex flex-col relative text-center gap-1.5 shadow-[1px_1px_5px_rgb(0,0,0,.2)] overflow-hidden'
+        <motion.div className='w-full min-h-[13rem] h-[15rem] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[8px] flex flex-col relative text-center gap-1.5 shadow-[1px_1px_5px_rgb(0,0,0,.2)] dark:shadow-[1px_1px_5px_rgb(0,0,0,.5)] overflow-hidden hover:shadow-[1px_1px_5px_rgb(0,0,0,.8)]'
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ delay: index * .25, duration: .3 }}
-            whileHover={{
-                boxShadow: "1px 1px 5px rgb(0,0,0,.4)",
-            }}
         >
 
             {/** image container */}
             <div className='h-[7rem] w-full p-2'>
-                <div className='w-full h-full bg-[var(--tertiary)] overflow-hidden rounded-[7px]'>
-                    {imgSrc && isImageLoad ? <img src={data.coverImage} loading='lazy' alt='cover image' className='w-full h-full object-fill' /> : <div className='w-full h-full grid place-content-center bg-gray-100 text-gray-300'>
+                <div className='w-full h-full overflow-hidden rounded-[7px]'>
+                    {imgSrc && isImageLoad ? <img src={data.coverImage} loading='lazy' alt='cover image' className='w-full h-full object-fill' /> : <div className='w-full h-full grid place-content-center bg-gray-100 dark:bg-gray-500 text-gray-300'>
                         Nexustock</div>}
                 </div>
             </div>

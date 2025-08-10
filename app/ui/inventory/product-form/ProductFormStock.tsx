@@ -50,7 +50,7 @@ const Stock = () => {
 
     return (
         <ProductFormCard>
-            <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)] bg-[var(--main-bg-primary)]'
+            <div className='flex flex-col w-full gap-3 p-[var(--form-section-padding)] rounded-[var(--form-section-border-radius)]'
             >
                 <div className={`w-full flex gap-2 flex-col md:flex-row md:items-center`}>
                     <div className='flex-1 flex flex-col'>

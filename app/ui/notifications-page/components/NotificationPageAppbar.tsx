@@ -47,7 +47,7 @@ const NotificationPageAppbar = () => {
     const child = (
         <div className='flex gap-2 w-full justify-end'>
 
-            <button className='flex gap-2 h-[2rem] rounded-[20px] border border-gray-300 bg-gray-100 p-[0_10px]
+            <button className='flex gap-2 h-[2rem] rounded-[20px] border dark:border-gray-500 border-gray-300 bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] p-[0_10px]
             items-center' onClick={handleMarkAll}>
                 {isLoading ? <CircularLoadingIndicator size={20} borderWidth={1} /> : <IconChecks size={20} className='stroke-gray-400' />}
                 <span className='text-gray-400'>Mark All as Read</span>

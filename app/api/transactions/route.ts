@@ -5,6 +5,8 @@ import io from "socket.io-client"
 import { createNewNotification } from "../services/createNotification";
 import { NotificationFilterType } from "@/app/lib/enum/notificationType";
 import { createNewActivityLog } from "../services/createNewActivityLog";
+import { cookies } from "next/headers";
+import { getUserId } from "../services/getUserID";
 /**
  * API Route: POST /api/transaction
  * 
@@ -38,7 +40,6 @@ export async function POST(req: NextRequest) {
 
     const { transactionData } = await req.json();
 
-
     if (transactionData === undefined) {
         return NextResponse.json({ error: "Transaction data is undefined" }, { status: 400 });
     }
@@ -47,7 +48,7 @@ export async function POST(req: NextRequest) {
 
 
     try {
-
+        const user = await getUserId();
 
         const { transactionId } = await prisma.transactionDetails.create({
 
@@ -63,7 +64,7 @@ export async function POST(req: NextRequest) {
                 taxablSales: details.taxablSales,
                 totalValSales: details.totalValSales,
                 referenceId: details.referenceId ?? undefined,
-                userid: details.userid,
+                userid: user ?? "",
                 discountID: details.discountID,
             },
             select: {
@@ -81,7 +82,6 @@ export async function POST(req: NextRequest) {
                     unitPrice: item.unitPrice,
                     vatStatus: item.vatStatus,
                     transactionId: transactionId,
-
                 }
             })
 
@@ -122,7 +122,7 @@ export async function POST(req: NextRequest) {
         await createNewActivityLog({
             action: "Complete Transaction",
             relatedId: transactionId,
-            status: "SUCCESSFUL"
+            status: "SUCCESSFUL",
         });
 
 
@@ -143,11 +143,11 @@ export async function POST(req: NextRequest) {
 export async function GET() {
 
     try {
+        const userid = await getUserId() ?? "no-user";
 
         const transactions = await prisma.transactionDetails.findMany({
-            orderBy: {
-                date: "desc"
-            },
+            where: { userid },
+            orderBy: { date: "desc" },
             select: {
                 date: true,
                 transactionId: true,

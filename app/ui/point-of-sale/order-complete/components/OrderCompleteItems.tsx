@@ -8,7 +8,6 @@ import { useFetchCart } from '@/app/ui/point-of-sale/services/useFetchCart';
 import OrderComepleteLoadingTile from './OrderComepleteLoadingTile';
 import Image from 'next/image';
 import emptyImage from "../../../../../public/no-data-found.png";
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const OrderCompleteItems = () => {
 

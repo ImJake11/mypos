@@ -1,6 +1,5 @@
 'use client';
 
-import ItemIcon from '@/app/lib/icons/itemIcon';
 import { RootState } from '@/app/lib/redux/store';
 import React, { useMemo } from 'react'
 import { useSelector } from 'react-redux';
@@ -25,8 +24,8 @@ const OrderCompleteSummary = () => {
     const { exempt, vat, zeroRated, taxableSale } = paymentService.getVatSalesBreakdown();
 
     return (
-        <div className='w-full h-fit bg-[var(--main-bg-primary)] rounded-[12px] p-5 flex flex-col gap-2 text-gray-500'>
-            <span className='text-[1rem] text-black'>Transaction Summary</span>
+        <div className='w-full h-fit bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5 flex flex-col gap-2 text-gray-500 dark:text-gray-200'>
+            <span className='text-[1rem]'>Transaction Summary</span>
             <div className='h-[1rem]' />
             {/** items list */}
             <div className='flex flex-col w-full gap-3'>
@@ -40,7 +39,7 @@ const OrderCompleteSummary = () => {
             <div className='h-[3rem]' />
 
             {/**dashed line */}
-            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary)]' />
+            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary)] dark:border-gray-600' />
 
             {/** sales */}
             <SalesTile title='VATable sales (Net)' total={taxableSale} />
@@ -48,15 +47,15 @@ const OrderCompleteSummary = () => {
             <SalesTile title='Zero-rated sales ' total={zeroRated} />
 
             {/** dashed line */}
-            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary)]' />
+            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary)] dark:border-gray-600' />
 
             {/** sub total && total vat */}
             <SalesTile title='Sub Total' total={paymentService.getCartSubTotal()} />
             <SalesTile title='Total VAT (12%)' total={vat} />
 
             {/** total */}
-            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary)]' />
-            <span className='w-full flex justify-between m-[.5rem_0] text-[1rem] text-black font-semibold'>
+            <div className='w-full h-[1px] border border-dashed border-[var(--main-bg-secondary)] dark:border-gray-600' />
+            <span className='w-full flex justify-between m-[.5rem_0] text-[1rem]  font-semibold'>
                 <span>Total:</span>
                 <span>{Number(paymentService.getCartNetTotal()).toLocaleString('en-US', {
                     currency: "PHP",
@@ -72,7 +71,7 @@ function SalesTile({ title, total }: {
     total: number
 }) {
     return <span className='flex justify-between items-center text-[.7rem]'>
-        <span className='text-black'>{title}</span>
+        <span>{title}</span>
         <span>{total.toLocaleString('en-US', { style: "currency", currency: "PHP" })}</span>
     </span>
 }
@@ -114,7 +113,7 @@ function OrderTile({
 
     return <div className='w-full flex flex-col gap-0.5'>
         {bulkTierApplied && <span className='text-[.6rem] ml-9 italic'>Bulk pricing applied({bulkTierApplied.discount}%)</span>}
-        <div className='flex w-full gap-4 items-center text-black'>
+        <div className='flex w-full gap-4 items-center '>
             <IconChecks size={16} />
 
             <span className='flex-1.5'>{name}</span>

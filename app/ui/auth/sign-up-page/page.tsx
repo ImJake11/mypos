@@ -7,7 +7,9 @@ import { redirect } from 'next/navigation'
 const page = async () => {
     const isVerified = await verifyToken();
 
-    if (isVerified) redirect("/");
+    if (isVerified) {
+        redirect("/")
+    };
 
     return (
         <div className='w-screen h-screen flex overflow-hidden bg-linear-120 from-black to-[#0C2340]'>

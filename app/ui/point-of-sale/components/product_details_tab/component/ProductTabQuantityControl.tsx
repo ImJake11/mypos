@@ -79,7 +79,7 @@ const ProductTabQuantityControl = () => {
                 () => handleQuantity(false)
             } />
             {/** quantity input */}
-            <input type="text" maxLength={4} value={String(quantity) ?? "0"} className='w-[5rem] border border-gray-300 h-full rounded-[8px] text-center'
+            <input type="text" maxLength={4} value={String(quantity) ?? "0"} className='w-[5rem] border border-gray-300 dark:border-gray-400 h-full rounded-[8px] text-center'
                 onChange={handleQuantityInput}
             />
             <StockActions isPlus={true} onClick={() => handleQuantity(true)} />
@@ -93,7 +93,7 @@ interface StockActionProp {
 }
 
 function StockActions({ isPlus, onClick }: StockActionProp) {
-    return <div className={`${isPlus ? "button-primary-gradient text-white" : "border border-gray-300 text-[var(--color-brand-primary)]"} h-[2rem] w-[2rem] rounded-full grid place-content-center`}
+    return <div className={`${isPlus ? "bg-linear-60 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] text-white" : "border border-gray-300 dark:border-gray-400 text-[var(--color-brand-primary)]"} h-[2rem] w-[2rem] rounded-full grid place-content-center`}
 
         onClick={onClick}
     >

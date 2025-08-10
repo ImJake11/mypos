@@ -16,7 +16,7 @@ const NotificationButton = () => {
     const { notificationCount, notifications } = useSelector((state: RootState) => state.notificationSlice);
 
     return (
-        <motion.div className='min-w-[2rem] h-[2rem] rounded-full  border border-gray-300 grid place-content-center bg-gray-100 relative text-nowrap' onClick={() => {
+        <motion.div className='min-w-[2rem] h-[2rem] rounded-full  border border-gray-300 dark:border-gray-500 grid place-content-center bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] relative text-nowrap' onClick={() => {
 
             if (notifications.length <= 0) {
                 dispatch(openToas({
@@ -28,7 +28,7 @@ const NotificationButton = () => {
             dispatch(notificationChangeVisiblity(true))
         }}
         >
-            <IconBellFilled size={18} className='fill-gray-400' />
+            <IconBellFilled size={18} className='fill-gray-400 dark:fill-gray-300' />
 
             <div className={`absolute h-[1rem] w-[1rem] rounded-full bg-red-400 text-white text-[.6rem] grid place-content-center right-0 ${notificationCount > 0 ? "opacity-100" : "opacity-0"}`}>
                 {notificationCount}

@@ -1,11 +1,12 @@
 import { TransactionFilterKeys } from "@/app/lib/constants/TransactionFilterKeys";
 import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
+import { getUserId } from "../../services/getUserID";
 
 
 export async function GET(req: NextRequest) {
     try {
-
+        const user = await getUserId();
         const params = req.nextUrl.searchParams;
 
         const {
@@ -22,7 +23,9 @@ export async function GET(req: NextRequest) {
             zeroRatedTran,
         } = TransactionFilterKeys;
 
-        let where: any = {};
+        let where: any = {
+            userid: user,
+        };
 
         const paramMinNetTotal = params.get(minimunNetTotal);
         const paramMaxNetTotal = params.get(maximumNetTotal);
@@ -82,19 +85,19 @@ export async function GET(req: NextRequest) {
 
         const data = await prisma.transactionDetails.findMany({
             where,
-           include: {
-           purchasedItems:{
-                include: {
-                    product:{
-                        select: {
-                            imageUrl:true,
-                            name: true,
-                            price: true,
+            include: {
+                purchasedItems: {
+                    include: {
+                        product: {
+                            select: {
+                                imageUrl: true,
+                                name: true,
+                                price: true,
+                            }
                         }
                     }
                 }
-           }
-           }
+            }
         });
 
         return NextResponse.json({ data }, { status: 200 });

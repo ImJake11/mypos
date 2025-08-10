@@ -18,13 +18,10 @@ import { filterWebSocketFavoriteEvent } from '@/app/lib/redux/slice/filterSlice'
 import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
 import InventoryListVies from '../services/InventoryListVies';
 import InventoryGridView from '../InventoryGridView';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 import Searchbar from '@/app/lib/components/Searchbar/Searchbar';
 
 const ProductList = () => {
   const dispatch = useDispatch<AppDispatch>();
-
-  const { isSidebarMinimize } = useSelector((state: RootState) => state.sidebarSlice);
 
   const {
     isListView,
@@ -71,7 +68,7 @@ const ProductList = () => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
         >
-          <div className='bg-gray-100 flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
+          <div className='bg-gray-100 dark:bg-[var(--main-bg-secondary-dark)] flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
             <div className='w-full grid place-content-center mb-2 md:hidden'><Searchbar context='inventory' showEditIcon={true} /></div>
 
             <div className='flex-1 overflow-auto'>

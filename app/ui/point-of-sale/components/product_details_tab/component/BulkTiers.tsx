@@ -19,7 +19,7 @@ export default function BulkTable({ data, quantity }: Prop) {
 
         const isTierApplier = indexOfTierApplied === index;
 
-        return <div className='flex w-full h-[3rem] border border-gray-300 rounded-[8px] items-center text-gray-700'>
+        return <div className='flex w-full h-[3rem] border border-gray-300 dark:border-gray-400 rounded-[8px] items-center text-gray-700 dark:text-gray-400'>
             {/** tier */}
             <span className='flex-1 flex gap-2 justify-center'>
                 <span className='font-semibold text-[var(--color-brand-primary)]'>Tier {index + 1} </span>

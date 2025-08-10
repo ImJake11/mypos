@@ -40,7 +40,7 @@ const Cart = () => {
                     opacity: 0,
                 }}
             >
-                <motion.div className={`absolute right-0 bg-white flex flex-col gap-2
+                <motion.div className={`absolute right-0 bg-white dark:bg-[var(--main-bg-primary-dark)] flex flex-col gap-2
                 ${isMobile ? "w-full h-full p-2" : "w-[40vw] h-full p-5"}
                 `}
                     initial={{

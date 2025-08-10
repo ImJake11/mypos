@@ -1,20 +1,19 @@
 'use client'
 
 import { Audiowide } from 'next/font/google';
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import { LogosGoogleIcon } from './GoogleIcon';
-import { IconChecks, IconExclamationCircle } from '@tabler/icons-react';
+import { IconChecks } from '@tabler/icons-react';
 import AuthTextfield from './AuthTextInput';
 import AuthTitle from './AuthTitle';
 import Link from 'next/link';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 import { UserModel } from '@/app/lib/models/UserModel';
 import { AuthServices } from '../services/auth-service';
-import { useDispatch } from 'react-redux';
 import CircularLoadingIndicator from '@/app/lib/components/CircularLoadingIndicator';
 import AuthPageMessage from './AuthPageMessage';
 import { useRouter } from 'next/navigation';
 import Toas from '@/app/lib/components/Toas';
+import Logo from '@/app/lib/components/Logo';
 
 const audioWide = Audiowide({
     weight: ['400'],
@@ -152,6 +151,15 @@ const AuthTemplate = ({
         }
     }
 
+    const handleUsername = () => {
+        if (!userInput.username) {
+            setErrorMsg({
+                ...errorMsg,
+                username: "Username is required",
+            })
+        }
+    }
+
     const handleAuth = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
@@ -170,6 +178,7 @@ const AuthTemplate = ({
                     message: error
                 }),
                 onSuccess: () => router.push("/"),
+                router,
             });
         } else {
             await authServices.signUpWithEmail({
@@ -177,7 +186,7 @@ const AuthTemplate = ({
                 onError: (message) => setPageMessage({ hasMessage: true, isError: true, message, }),
                 onSuccess: (message) => {
                     setPageMessage({ hasMessage: true, isError: false, message });
-                    router.push(`/ui/auth/confirm-email?email=${userInput.email}`);
+                    router.push(`/ui/auth/confirm-email`);
                 }
             })
         }
@@ -201,27 +210,18 @@ const AuthTemplate = ({
     )
 
 
-    function handleUsername(): void {
-        if (!userInput.username) {
-            setErrorMsg({
-                ...errorMsg,
-                username: "Username is required",
-            })
-        }
-    }
 
     return (
-        <div className={`h-full overflow-auto flex flex-col relative text-white justify-center gap-3 w-full py-4 px-8 md:py-4 sm:px-28 md:px-[10rem] lg:px-14`}>
+        <div className={`h-screen overflow-auto flex flex-col relative text-white gap-3 w-full py-4 px-8 md:py-4 sm:px-28 md:px-[10rem] lg:px-14`}>
 
-            <div className='min-h-[5rem]' />
-            <span className={`${audioWide.className} text-center text-[1.2rem]`}>Nexustock</span>
-
+            <div className='min-h-[2rem]' />
+            <Logo />
             <AuthTitle isLogin={isLoginPage} />
-            <div className='min-h-[.1rem]' />
+            <div className='min-h-[.5rem]' />
 
             <AuthPageMessage hasMessage={pageMessage.hasMessage} isError={pageMessage.isError} message={pageMessage.message} />
 
-            <form className='flex flex-col gap-4' onSubmit={handleAuth} method='POST' action={"/ui/auth/sign-up-page"}>
+            <form className='flex flex-col gap-5' onSubmit={handleAuth} method='POST' action={"/ui/auth/sign-up-page"}>
 
                 {!isLoginPage && <AuthTextfield name="username" value={userInput.username ?? ""} onChange={handleInput} errorMsg={errorMsg.username} title='Username' type='text' onBlur={handleUsername} />
                 }
@@ -231,9 +231,14 @@ const AuthTemplate = ({
 
                 {!isLoginPage && <AuthTextfield name='confirmPassword' value={userInput.confirmPassword ?? ""} onChange={handleInput} type='password' errorMsg={errorMsg.confirmPassword} title='Confirm Password' onBlur={handleConfirmPassword} />}
 
-                {!isLoginPage && term}
+                {isLoginPage ? <span className='w-full text-center'>Forgot password?
+                    <span className='text-[var(--color-brand-primary)] ml-1'><Link href={"/ui/auth/reset-password"}>
+                        Click here
+                    </Link></span></span> : term}
 
-                <div className='flex flex-col gap-3 mt-5'>
+                <div className='min-h-[1rem]' />
+
+                <div className='flex flex-col gap-3'>
                     <button className='w-[50%] min-h-[2.5rem] min-w-[15rem] bg-[var(--color-brand-primary)] rounded-[8px] place-self-center text-white flex justify-center items-center gap-3 font-[700]'>
                         {isLoading && <CircularLoadingIndicator borderWidth={2} size={20} />}
                         {isLoading && <span> Signing in</span>}
@@ -249,12 +254,13 @@ const AuthTemplate = ({
                 </div>
             </form>
 
-            <div className='flex-1' />
+            <div className='min-h-[2rem]' />
             <span className='w-full text-right'>
                 {isLoginPage ? "Doesn't have an account?" : "Have an Account?"} <Link href={isLoginPage ? "/ui/auth/sign-up-page" : "/ui/auth/sign-in-page"}>
                     <span className='text-[var(--color-brand-primary)] underline underline-offset-2'>{isLoginPage ? "Sign Up" : "Sign In"}</span>
                 </Link>
             </span>
+            <div className='min-h-[2rem]' />
             <Toas />
         </div>
 

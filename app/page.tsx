@@ -10,19 +10,15 @@ const page = async () => {
 
   if (!isVerified) redirect("/ui/auth/sign-in-page");
 
-  const child = <div className='w-full h-full flex flex-col'>
-    {/** appbar */}
-    <DashboardAppbar />
-    <DashboardBody />
-  </div>
-
   return (
-    <div className='w-screen h-screen flex relative'
-      style={{
-
-      }}
-    >
-      <GlobalWrapper child={child} />
+    <div className='w-screen h-screen flex relative'>
+      <GlobalWrapper>
+        <div className='w-full h-full flex flex-col'>
+          {/** appbar */}
+          <DashboardAppbar />
+          <DashboardBody />
+        </div>
+      </GlobalWrapper>
     </div>
   )
 }

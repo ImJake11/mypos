@@ -17,9 +17,9 @@ const PosCartList = () => {
     if (isLoading) return null;
 
     return (
-        <div className='hidden lg:block min-w-[25rem] h-full bg-[var(--main-bg-secondary)] pl-0 p-2'>
+        <div className='hidden lg:block min-w-[25rem] h-full bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] pl-0 p-2'>
 
-            <div className='w-full h-full bg-white rounded-[12px] shadow-[1px_1px_5px_rgb(0,0,0,.3)] flex flex-col p-2'>
+            <div className='w-full h-full bg-white dark:bg-[var(--main-bg-primary-dark)] rounded-[12px] shadow-[1px_1px_5px_rgb(0,0,0,.3)] flex flex-col p-2'>
                 <span>Current Orders</span>
 
                 <div className='w-full h-[60rem] flex flex-col overflow-auto pt-2 gap-2 p-0.5'>

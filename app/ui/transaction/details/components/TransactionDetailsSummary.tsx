@@ -29,7 +29,7 @@ const TransactionDetailsSummary = ({ data }: { data: TransactionDetailsModel }) 
 
 
     return (
-        <div className={`w-full h-fit rounded-[12px] flex flex-col gap-2 bg-gray-50 p-3 md:p-5`}>
+        <div className={`w-full h-fit rounded-[12px] flex flex-col gap-2 bg-gray-50 dark:bg-[var(--main-bg-primary-dark)] p-3 md:p-5`}>
             <div className='flex w-full gap-2 items-center mb-[1rem]'>
                 <IconFileDescriptionFilled size={20} className='fill-gray-500' />
                 <span className='text-[1rem]'>Details</span>

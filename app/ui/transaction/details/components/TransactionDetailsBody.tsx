@@ -8,9 +8,8 @@ import TransactionDetailsItems from './TransactionDetailsItems';
 import TransactionDetailsStatus from './TransactionDetailsStatus';
 import { TransactionStatus } from '@/app/lib/enum/transactionStatus';
 import TransactionDetailsBackButton from './TransactionDetailsBackButton';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
-const TransactionDetailsBody = ({ data }: { data: TransactionDetailsModel }) => {
+const TransactionDetailsBody = ({ data }: { data: any }) => {
 
     const generateStatusColor = (): string => {
 
@@ -27,9 +26,7 @@ const TransactionDetailsBody = ({ data }: { data: TransactionDetailsModel }) => 
     }
 
     return (
-        <div className={`flex-1 rounded-[12px] overflow-hidden text-[.8rem] p-3 md:p-5`} style={{
-            backgroundColor: "var(--main-bg-secondary)"
-        }}>
+        <div className={`flex-1 rounded-[12px] overflow-hidden text-[.8rem] p-3 md:p-5 bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]`}>
             <div className={`w-full h-full rounded-[12px] flex overflow-auto flex-col ${generateStatusColor()} p-3 gap-2 md:p-5 md:gap-5`}>
 
                 <TransactionDetailsStatus data={data} />

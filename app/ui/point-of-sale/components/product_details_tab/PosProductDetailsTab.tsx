@@ -13,7 +13,6 @@ import ProductTabLoadingIndicator from './component/ProductTabLoadingIndicatore'
 import { fetchSingleProductData } from '@/app/lib/utils/data/fetchSingeProductData';
 import ProductTabQuantityControl from './component/ProductTabQuantityControl';
 import ProductTabAddToCartButton from './component/ProductTabAddToCartButton';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const PosProductDetailsTab = () => {
     const dispatch = useDispatch();
@@ -58,7 +57,7 @@ const PosProductDetailsTab = () => {
     return (
         <div className='w-screen h-screen bg-black/80 absolute'
         >
-            {isLaoding ? <ProductTabLoadingIndicator /> : <div className={`bg-[var(--main-bg-primary)] overflow-auto scrollbar-hide absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[11px] p-5 flex flex-col gap-3 h-[80vh] w-[90vw]`}>
+            {isLaoding ? <ProductTabLoadingIndicator /> : <div className={`bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] overflow-auto scrollbar-hide absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[11px] p-5 flex flex-col gap-3 h-[80vh] w-[90vw] md:w-[50vw]`}>
                 {/** discount and aname */}
                 <div className='flex w-full gap-2'>
                     {hasDiscount && <div className='w-fit h-[2rem] button-primary-gradient grid place-content-center p-3 rounded-[7px]'>
@@ -78,7 +77,7 @@ const PosProductDetailsTab = () => {
 
                 <ProductTabQuantityControl />
 
-                {!selectedVariantID && <span className='text-center text-red-500 grid place-content-center'>No Selected Variant</span>}
+                {!selectedVariantID && <span className='border border-red-500 rounded-[8px] py-2 w-fit px-5 place-self-center text-center text-red-500 grid place-content-center'>No Selected Variant</span>}
                 <ProductTabAddToCartButton />
             </div>}
             <AnimatePresence>

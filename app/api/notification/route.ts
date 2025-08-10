@@ -3,6 +3,7 @@ import { prisma } from "@/app/lib/utils/db/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getStartAndEndDate } from "../services/geCurrentTimezone";
 import io from "socket.io-client";
+import { getUserId } from "../services/getUserID";
 
 const socket = io(process.env.SOCKET_URL || "");
 
@@ -20,8 +21,11 @@ export async function GET(req: NextRequest) {
     const isReadParams = searchParams.get("isread");
 
     try {
+        const userID = await getUserId();
+
         let where: any = {
             isRead: isReadParams === 'true' ? true : false,
+            userID,
         };
 
         if (filterParams) {
@@ -60,8 +64,11 @@ export async function GET(req: NextRequest) {
 export async function PUT(req: NextRequest) {
 
     try {
+        const userID = await getUserId();
+
         await prisma.notifications.updateMany({
             where: {
+                userID,
                 isRead: {
                     equals: false,
                 }

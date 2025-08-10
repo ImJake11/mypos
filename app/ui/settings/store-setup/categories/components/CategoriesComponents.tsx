@@ -17,10 +17,10 @@ export function CategoryTile({ data, onUpdate }: {
             {data.url && <img src={data.url} alt="image" />}
         </div>
         <span className='flex-1'>{data.content}</span>
-        <button className='w-[2rem] h-[2rem] rounded-full border border-gray-300 bg-gray-100 grid place-content-center'>
+        <button className='w-[2rem] h-[2rem] rounded-full border border-gray-300 bg-gray-100 dark:border-[var(--main-bg-secondary-dark)] dark:bg-[var(--main-bg-secondary-dark)] grid place-content-center'>
             <IconEditCircle size={20} className="stroke-[var(--color-brand-primary)]" />
         </button>
-        <button className='w-[2rem] h-[2rem] rounded-full border border-gray-300 bg-gray-100 grid place-content-center'>
+        <button className='w-[2rem] h-[2rem] rounded-full border border-gray-300 bg-gray-100 dark:border-[var(--main-bg-secondary-dark)] dark:bg-[var(--main-bg-secondary-dark)] grid place-content-center'>
             <IconArchive size={20} className="stroke-red-500" />
         </button>
     </div>

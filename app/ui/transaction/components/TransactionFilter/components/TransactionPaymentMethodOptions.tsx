@@ -65,10 +65,10 @@ function SubButtonTile({ name, icon }: {
     }
 
     return <div className='ml-5 flex w-full gap-3 p-[0_25px]'>
-        <div className='w-[1.5rem] h-[1.5rem] border border-[var(--border-default-dark)] rounded-[4px] overflow-hidden relative'
+        <div className='w-[1.5rem] h-[1.5rem] border border-gray-500 rounded-[4px] overflow-hidden relative'
             onClick={handleAction}
         >
-            {isSelected && <div className='absolute inset-0 button-primary-gradient grid place-content-center'>
+            {isSelected && <div className='absolute inset-0 bg-[var(--color-brand-primary)] grid place-content-center'>
                 <i className="ri-check-fill"></i>
             </div>}
         </div>
@@ -94,12 +94,12 @@ function ButtonTile({ name, icon, isSelected, paymentMethodKey }: {
         }))
     }
 
-    return <div className='flex w-full h-[2rem] rounded-[8px] border border-[var(--border-default-dark)] items-center gap-3 p-2'
+    return <div className='flex w-full h-[2rem] rounded-[8px] border border-gray-500 items-center gap-3 p-2'
         onClick={handleHandleAction}
     >
 
-        <div className='w-[1rem] h-[1rem] rounded-full border border-[var(--border-default-dark)] relative'>
-            {isSelected && <div className='absolute inset-0.5 button-primary-gradient rounded-full' />}
+        <div className='w-[1rem] h-[1rem] rounded-full border border-gray-500 relative'>
+            {isSelected && <div className='absolute inset-0.5 bg-[var(--color-brand-primary)] rounded-full' />}
         </div>
         <span>{name}</span>
         <div className='flex-1' />

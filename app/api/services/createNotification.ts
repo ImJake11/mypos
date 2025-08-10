@@ -1,6 +1,7 @@
 import { NotificationFilterType } from "@/app/lib/enum/notificationType";
 import { NotificationModel } from "@/app/lib/models/notificationModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
+import { cookies } from "next/headers";
 
 
 export async function createNewNotification({
@@ -14,6 +15,9 @@ export async function createNewNotification({
 }): Promise<NotificationModel> {
 
     try {
+        const cookieStore = await cookies();
+        const user = cookieStore.get("email")?.value;
+
         const newData = await prisma.notifications.create({
             data: {
                 message: message,
@@ -21,6 +25,7 @@ export async function createNewNotification({
                 type: type,
                 relatedID: relatedID,
                 relatedTo: relatedTo,
+                userID: user,
             },
         });
 

@@ -12,6 +12,9 @@ import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Too
 
 const DashboardChart = () => {
   const dispatch = useDispatch();
+  const theme = localStorage.getItem("theme") ?? "dark";
+
+  const isDark = theme === "dark";
 
   const { annualChartData } = useSelector((state: RootState) => state.dashboarSlice);
 
@@ -74,12 +77,6 @@ const DashboardChart = () => {
   }, []);
 
 
-  const { width } = useWindowSize();
-
-  const isMedium = width > 768;
-  const isSmall = width <= 768;
-  const isXSmall = width <= 490;
-
   const child = (
     <BarChart
       className='translate-y-5'
@@ -103,7 +100,7 @@ const DashboardChart = () => {
         opacity: 1,
       }} />
 
-      <XAxis dataKey="month" strokeOpacity={0} fontSize={10} tick={(props) => {  // Custom tick renderer
+      <XAxis dataKey="month" className='text-black dark:text-white' tick={(props) => {  // Custom tick renderer
         const { x, y, payload } = props;
         const isHovered = hoveredIndex === annualChartData.findIndex(item => item.month === payload.value);
         return (
@@ -113,7 +110,7 @@ const DashboardChart = () => {
               y={0}
               dy={16}
               textAnchor="middle"
-              className={`${isHovered ? "fill-[var(--color-brand-primary)]" : "fill-gray-500 dark:fill-black"} text-[.7rem]`}
+              className={`${isHovered ? "fill-[var(--color-brand-primary)]" : "fill-gray-500 dark:fill-white"} text-[.7rem] `}
 
               fontWeight={isHovered ? "bold" : "normal"}
             >
@@ -123,14 +120,19 @@ const DashboardChart = () => {
         );
       }} />
 
-      <YAxis dataKey="data" width="auto" strokeOpacity={0} fontSize={isXSmall ? 8 : 10}
-        tickFormatter={(value) => Number(value).toLocaleString('en-US', { style: "currency", currency: "PHP", })}
+      <YAxis dataKey="data" className='w-auto stroke-0 text-[.6rem] md:text-[.6rem]'
+        tickFormatter={(value) => toShortNumber(value)}
       />
 
       <Tooltip animationDuration={340}
         formatter={(value, name) => [
           `${Number(value).toLocaleString('en-US', { style: "currency", currency: "PHP" })}`
         ]}
+        contentStyle={{
+          borderRadius: "12px",
+          border: "solid var(--color-brand-primary) 1px",
+          backgroundColor: isDark ? "var(--main-bg-primary-dark)" : "var(--main-bg-primary)"
+        }}
         cursor={{
           stroke: "var(--color-brand-primary)",
           strokeWidth: 2,
@@ -143,11 +145,7 @@ const DashboardChart = () => {
 
 
   return (
-    <div className={`flex-3/4 bg-[var(--main-bg-primary)] rounded-[8px] shadow-[0px_1px_5px_rgb(0,0,0,.2)] relative
-      ${isSmall && "max-w-[calc(100vw*0.95)] min-h-[16rem]"}
-      ${isXSmall && `max-w-[calc(100vw*0.93)] min-h-[16rem]`}
-      ${isMedium && "min-h-[74%]"}
-      `}
+    <div className={`flex-3/4 bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[8px] shadow-[0px_1px_5px_rgb(0,0,0,.2)] relative min-h-[16rem] max-w-[calc(100vw*0.95)] sm:max-w-[calc(100vw*0.93)] md:"max-w-[calc(100vw*0.95)] lg:min-h-[74%]`}
     >
       <ResponsiveContainer children={child} width="100%" height="100%" className="p-[2rem_1rem] box-border" />
 
@@ -160,6 +158,13 @@ const DashboardChart = () => {
   )
 }
 
+function toShortNumber(num: number) {
 
+  if (num >= 1000) {
+    return "₱" + (num / 1000) + "k";
+  }
+
+  return num.toLocaleString("en-US", { currency: "PHP", style: "currency" });
+}
 
 export default DashboardChart;

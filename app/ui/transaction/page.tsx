@@ -8,7 +8,9 @@ const page = () => {
 
     return (
         <div className='w-screen h-screen flex overflow-hidden relative'>
-            <GlobalWrapper child={<TransactionBody />} />
+            <GlobalWrapper>
+                <TransactionBody />
+            </GlobalWrapper>
             <TransactionFilterTab />
             <TransactionPDFLayout />
         </div>

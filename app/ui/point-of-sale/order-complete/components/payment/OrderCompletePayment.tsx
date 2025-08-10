@@ -147,11 +147,11 @@ const OrderCompletePayment = () => {
                     }}
                 >Transaction/Reference ID</motion.span>}
             </AnimatePresence>
-            <input type="text" maxLength={20} value={input} className='border border-gray-500 focus:outline-[var(--color-brand-primary)] rounded-[8px] w-full h-[2.5rem] p-2'
+            <input type="text" maxLength={20} value={input} className='border border-gray-500 outline-0 focus:border-[2px] focus:border-[var(--color-brand-primary)] rounded-[8px] w-full h-[2.5rem] p-2'
                 onChange={isCashMethod ? handleExchangeInput : handleReferenceInput}
             />
             <div className='h-[.5rem]' />
-            <button className='w-fit h-[2.5rem] button-primary-gradient rounded-[8px] text-white p-[0_10px] place-self-end'
+            <button className='w-fit h-[2.5rem] bg-linear-150 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] rounded-[4px] text-white p-[0_10px] place-self-end'
                 onClick={handleFinishTransaction}
             >
                 Finish Transaction

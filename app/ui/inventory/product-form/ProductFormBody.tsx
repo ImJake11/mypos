@@ -55,17 +55,11 @@ export function ProductFormBody() {
         fetch();
     }, []);
 
-    const w = useWindowSize().width;
-
-    const isMobile = w < 576;
-
     if (isLoading) return <LoadingState />;
 
     return (
         <div ref={dropAreaRef} className={`
-         flex flex-col flex-1 rounded-[10px] m-1.5 overflow-auto bg-[var(--main-bg-secondary)]
-            ${isMobile ? "p-2 gap-2" : "gap-5 p-3"}
-            `}
+         flex flex-col flex-1 rounded-[10px] m-1.5 overflow-auto bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] p-2 gap-2 md:p-5 md:gap-5`}
         >
             <ProductFormStatus />
             <ProductInformationDetails />

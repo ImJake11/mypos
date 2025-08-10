@@ -17,14 +17,14 @@ const TransactionBody = () => {
 
     const displayList = isFiltering ? filteredData : transactionsData;
 
-    if (isError) return <div className='w-full h-full grid place-content-center'>ERROR BOSS!!!</div>
+    if (isError) return <div className='w-full h-full grid place-content-center'>PAGE ERROR</div>
 
     return (
         <div className='flex-1 flex flex-col'>
             <TransactionAppbar />
             {/** data */}
-            <div className="flex-1 min-h-0 bg-[var(--main-bg-secondary)] rounded-[8px] p-3 flex flex-col text-[.7rem] md:text-[.8rem]">
-                {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
+            <div className="flex-1 min-h-0 bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] rounded-[8px] p-3 flex flex-col text-[.7rem] md:text-[.8rem]">
+                {isLoading ? <LoadingTile /> : <div className='flex-1 min-h-0 w-full bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[8px] flex flex-col p-5 overflow-hidden'>
 
                     {/** filter icon and title */}
                     <div className='flex w-full justify-between items-center min-h-0'>
@@ -62,13 +62,13 @@ function HeaderTile({ name, flex, attr, }: {
     attr?: string,
 }) {
 
-    return <div className={clsx(`flex-1 h-[2rem] grid place-content-center bg-gray-100 font-[600] ${flex ?? "flex-1"}`, attr)}>
+    return <div className={clsx(`flex-1 h-[2rem] grid place-content-center dark:bg-[var(--main-bg-primary-dark)] bg-gray-100 font-[600] ${flex ?? "flex-1"}`, attr)}>
         {name}
     </div>
 }
 
 function LoadingTile() {
-    return <div className='w-full h-full flex flex-col gap-3 bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5'>
+    return <div className='w-full h-full flex flex-col gap-3 bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5'>
         <div className='flex w-full gap-3'>
             {Array.from({ length: 6 }).map((_, i) => <div key={i} className='flex-1 min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary-dark)]'>
             </div>)}

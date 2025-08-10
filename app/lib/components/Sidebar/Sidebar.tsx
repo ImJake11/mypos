@@ -2,15 +2,18 @@
 
 import React, { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from "framer-motion";
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../redux/store';
 import "remixicon/fonts/remixicon.css";
 import SidebarMainButtonTile from './components/SidebarMainButtonTile';
 import SidebarIcons from './components/SidebarIcons';
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
 import SidebarLogo from './components/SidebarLogo';
-import { usePathname } from 'next/navigation';
-import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
+import { usePathname, useRouter } from 'next/navigation';
+import { IconLogout2 } from '@tabler/icons-react';
+import { AuthServices } from '@/app/ui/auth/services/auth-service';
+import CircularLoadingIndicator from '../CircularLoadingIndicator';
+import { useDispatch } from 'react-redux';
+import { openToas } from '../../redux/slice/toastSlice';
+import ToasEnum from '../../enum/toastEnum';
 
 
 const Sidebar = ({
@@ -19,8 +22,12 @@ const Sidebar = ({
     isFloating: boolean,
 }) => {
     const path = usePathname();
+    const dispatch = useDispatch();
 
     const [isAllowed, setIsAllowed] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const authService = new AuthServices({});
 
     const sidebarButtonDetails: SidebarButtonsProp[] = [
         {
@@ -79,9 +86,13 @@ const Sidebar = ({
 
     if (!isAllowed && !isFloating) return null;
 
+    async function handleSignOut() {
+        await authService.signout({ dispatch });
+    }
+
     return (
         <AnimatePresence>
-            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] p-[0_.1rem] scrollbar-hide w-[15rem]'
+            <motion.div key="sidebar-component" className='h-screen flex flex-col relative bg-[#353535] dark:bg-[var(--main-bg-primary-dark)] scrollbar-hide w-[15rem]'
                 initial={{
                     x: "-100%",
                 }}
@@ -99,7 +110,7 @@ const Sidebar = ({
 
                 {/** logo container */}
                 <div className='w-full min-h-[4rem] relative'>
-                    <SidebarLogo isSidebarMinimize={false} />
+                    <SidebarLogo />
                 </div>
                 <div className='w-full flex-1 flex flex-col overflow-auto gap-1 relative'>
                     {sidebarButtonDetails.map((button, index) => {
@@ -115,6 +126,16 @@ const Sidebar = ({
                         />
                     })}
                 </div>
+
+                <div className='flex-1' />
+
+                <button className='items-center w-auto h-[3rem] text-white flex justify-center gap-2 bg-black/20 m-2 rounded-[10px]'
+                    onClick={handleSignOut}>
+                    {isLoading ? <CircularLoadingIndicator size={20} borderWidth={1} />
+                        : <IconLogout2 className='text-gray-300' />
+                    }
+                    <span>Sign out</span>
+                </button>
             </motion.div>
         </AnimatePresence>
     )

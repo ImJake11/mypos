@@ -51,13 +51,13 @@ function NotificationPageTile({ tileData }: { tileData: NotificationModel }) {
         <div className='flex gap-2'>
             <span className={`${bgColor()} text-[.6rem] ${textColor()} font-[600] h-fit p-[3px_7px] rounded-[12px]`}>{tileData.type}</span>
 
-            <span className='font-[600] text-black'>{tileData.title} {!tileData.isRead && "- Unread"}</span >
+            <span className='font-[600] text-black dark:text-white'>{tileData.title} {!tileData.isRead && "- Unread"}</span >
             <div className="flex-1" />
             <div className="hidden md:block">{dateTime}</div>
         </div>
 
         {/** content and date */}
-        <span className={`pl-[1rem] flex-1 flex text-[.6rem] md:text-[.8rem] ${!tileData.isRead ? "font-semibold text-black" : "text-gray-500"}`}>- {tileData.message}</span>
+        <span className={`pl-[1rem] flex-1 flex text-[.6rem] md:text-[.8rem] ${!tileData.isRead ? "font-semibold text-black" : "text-gray-500 dark:text-gray-50"}`}>- {tileData.message}</span>
 
         {/** date and time in mobile view */}
         <div className="md:hidden w-full flex justify-end">{dateTime}</div>

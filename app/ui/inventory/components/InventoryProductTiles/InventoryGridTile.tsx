@@ -47,7 +47,7 @@ const InventoryGridTile = React.memo(({
 
 
     return (
-        <motion.div className='w-full h-[250px] bg-[var(--product-card-bg)] flex-col rounded-[8px] flex p-2 gap-1 relative shadow-[1px_1px_5px_rgb(0,0,0,.3)]  transition-all duration-300 ease-in-out'
+        <motion.div className='w-full h-[250px] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] flex-col rounded-[8px] flex p-2 gap-1 relative shadow-[1px_1px_5px_rgb(0,0,0,.3)] dark:shadow-[1px_1px_5px_rgb(0,0,0,.7)]  transition-all duration-300 ease-in-out'
             layout
             initial={{
                 opacity: 0,
@@ -100,10 +100,7 @@ const InventoryGridTile = React.memo(({
                     }}
                 >
                     {/** favorite */}
-                    <button className='h-[2rem] w-[2rem] rounded-full grid place-content-center'
-                        style={{
-                            backgroundColor: "var(--main-bg-secondary)"
-                        }}
+                    <button className='h-[2rem] w-[2rem] rounded-full grid place-content-center bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]'
                         onClick={() => {
                             inventoryServiceUpdateProductFavorite(
                                 {
@@ -120,7 +117,7 @@ const InventoryGridTile = React.memo(({
 
 
                     {/** add to cart */}
-                    <button className='button-primary-gradient h-[2rem] w-[2rem] rounded-full grid place-content-center'
+                    <button className='bg-linear-150 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] h-[2rem] w-[2rem] rounded-full grid place-content-center'
                     >
                         <FontAwesomeIcon icon={faCartPlus} className='text-white' />
                     </button>

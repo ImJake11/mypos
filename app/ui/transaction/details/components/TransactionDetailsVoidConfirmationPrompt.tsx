@@ -75,16 +75,12 @@ const TransactionDetailsVoidConfirmationPrompt = ({
         }
     }
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
     return (
-        <motion.div className='w-full border border-red-300 bg-white rounded-[12px] p-3 flex flex-col relative gap-2' animate={{ height: isOpen ? "20rem" : selectedReason === 4 ? "18rem" : "15rem" }}>
+        <motion.div className='w-full border border-red-500 shadow-[0_0_10px_red] bg-white dark:bg-[var(--main-bg-primary-dark)] rounded-[12px] p-3 flex flex-col relative gap-2' animate={{ height: isOpen ? "20rem" : selectedReason === 4 ? "18rem" : "15rem" }}>
 
             <span className='italic'>Are you sure you want to void this transaction? This action cannot be undone.</span>
 
-            <div className={`h-[2.5rem] p-2 border border-gray-300 bg-gray-100 rounded-[8px] flex justify-between ${isMobile ? "w-[70vw]" : "w-[30rem]"}`} onClick={() => setIsOpen(true)}>
+            <div className={`h-[2.5rem] p-2 border border-gray-300 bg-gray-100 dark:bg-[var(--main-bg-primary-dark)] rounded-[8px] flex justify-between w-[70vw] md:w-[30rem]`} onClick={() => setIsOpen(true)}>
                 {selectedReason === -1 ? "Select Reason" : voidReasons[selectedReason]}
                 <IconChevronDown size={20} />
             </div>
@@ -101,9 +97,7 @@ const TransactionDetailsVoidConfirmationPrompt = ({
             </AnimatePresence>
 
 
-            <motion.div key="reasons" className={`bg-white flex flex-col overflow-auto rounded-[8px] border-gray-300 border
-            ${isMobile ? "w-[70vw]" : "w-[30rem]"}
-            `}
+            <motion.div key="reasons" className={`bg-white dark:bg-[var(--main-bg-primary-dark)] flex flex-col overflow-auto rounded-[8px] border-gray-300 border w-[70vw] md:w-[30rem]`}
                 initial={{ opacity: 0, height: "0rem" }}
                 animate={{
                     opacity: isOpen ? 1 : 0,
@@ -111,7 +105,7 @@ const TransactionDetailsVoidConfirmationPrompt = ({
                     padding: isOpen ? "8px" : "0px",
                 }}
             >
-                {voidReasons.map((reason, index) => <motion.div key={index} className='min-h-[2rem] bg-white hover:bg-gray-100 p-1 items-center' onClick={() => {
+                {voidReasons.map((reason, index) => <motion.div key={index} className='min-h-[2rem]  hover:text-[var(--color-brand-primary)] p-1 items-center' onClick={() => {
                     setSelectedReason(index);
                     setIsOpen(false);
                 }}>
@@ -123,9 +117,7 @@ const TransactionDetailsVoidConfirmationPrompt = ({
 
             <div className='w-full flex gap-3'>
 
-                <input type="password" className={`h-[2.5rem] border border-gray-300 rounded-[8px] p-2 bg-gray-100
-                ${isMobile ? "w-[70vw]" : "w-[30rem]"}
-                `}
+                <input type="password" className={`h-[2.5rem] border border-gray-300 rounded-[8px] p-2 w-[70vw] md:w-[30rem]`}
                     placeholder='Input password'
                     value={password}
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />

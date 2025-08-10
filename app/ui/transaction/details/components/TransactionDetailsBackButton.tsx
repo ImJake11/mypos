@@ -24,7 +24,7 @@ const TransactionDetailsActions = ({
     if (isVoid) return <TransactionDetailsVoidConfirmationPrompt onCancel={() => setIsVoid(false)} id={id} />;
 
     return (
-        <div className={`w-full flex flex-col gap-3 bg-white rounded-[12px]
+        <div className={`w-full flex flex-col gap-3 bg-white dark:bg-[var(--main-bg-primary-dark)] rounded-[12px]
         ${isMobile ? "p-3" : "p-5"}
         `}>
 

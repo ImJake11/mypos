@@ -68,7 +68,7 @@ const SidebarMainButtonTile = React.memo(({
             }}
         />
 
-        <div className={`absolute inset-0 h-[2.5rem] top-0 flex gap-2 items-center p-[0_1rem] transition-all ease-in-out duration-200 ${!isSelected() && "hover:bg-gray-800"}`}
+        <div className={`absolute inset-0 h-[2.5rem] top-0 flex gap-2 items-center px-5 transition-all ease-in-out duration-200 ${!isSelected() && "hover:bg-gray-800"}`}
         >
             <ButtonTile icon={icon} />
             <AnimatePresence>

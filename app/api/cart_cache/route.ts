@@ -1,12 +1,16 @@
 import { CartCacheModel, CartModel } from "@/app/lib/models/cartModel";
 import { prisma } from "@/app/lib/utils/db/prisma";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import io from "socket.io-client";
 import { URL } from "url";
+import { getUserId } from "../services/getUserID";
 
 const socket = io(process.env.SOCKET_URL || "");
 
 export async function POST(req: NextRequest) {
+    const cookieStore = await cookies();
+    const user = cookieStore.get('email')?.value;
 
     try {
         const { cartCacheData } = await req.json();
@@ -19,7 +23,7 @@ export async function POST(req: NextRequest) {
                 data: {
                     quantity: data.quantity,
                     total: data.total,
-                    userId: data.userId,
+                    userId: user ?? "",
                     vatStatus: data.vatStatus,
                     variantUnitPrice: data.variantUnitPrice,
                     bulkPricingID: data.bulkPricingID ? data.bulkPricingID : null,
@@ -61,8 +65,6 @@ export async function POST(req: NextRequest) {
             }
         }
 
-        console.log("Product updated");
-
         return NextResponse.json({ message: "Successfully updated the product" }, { status: 200 });
     } catch (e) {
 
@@ -75,9 +77,7 @@ export async function DELETE(req: NextRequest) {
 
     try {
 
-        const { searchParams } = new URL(req.url);
-
-        const userId = searchParams.get("userId");
+        const userId = await getUserId();
 
         if (!userId) {
             return NextResponse.json({ error: "User id required" }, { status: 400 });
@@ -101,15 +101,12 @@ export async function DELETE(req: NextRequest) {
 export async function GET() {
 
     try {
+        const userId = await getUserId();
 
         const cachedData = await prisma.cartCache.findMany({
 
-            where: {
-                userId: "tempo"
-            },
-            orderBy: {
-                total: "desc",
-            },
+            where: { userId },
+            orderBy: { total: "desc" },
             include: {
                 product: true,
                 mainProduct: true,

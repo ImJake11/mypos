@@ -21,7 +21,7 @@ const DashboardTransactionAndStockSummary = ({
     const isMedium = width <= 768;
 
     return (
-        <motion.div className={`rounded-[8px] bg-[var(--main-bg-primary)] p-3 flex flex-col overflow-hidden
+        <motion.div className={`rounded-[8px] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] p-3 flex flex-col overflow-hidden
             ${isMedium ? "h-full min-w-[20rem]" : "min-h-[25rem] max-h-[25rem] flex-1/3"}
             `}
 
@@ -34,7 +34,7 @@ const DashboardTransactionAndStockSummary = ({
             }}
         >
             <div className='flex w-full gap-3 items-center'>
-                <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-300/40 grid place-content-center'>
+                <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-300/40 dark:bg-[var(--main-bg-secondary-dark)] grid place-content-center'>
                     <React.Fragment>
                         {icon}
                     </React.Fragment>

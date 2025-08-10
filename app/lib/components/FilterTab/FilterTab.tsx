@@ -131,7 +131,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
         <AnimatePresence>
             {isVisible &&
                 <motion.div
-                    className='w-screen h-screen absolute bg-black/70'
+                    className='inset-0 absolute bg-black/70'
                     initial={{
                         opacity: 0,
                     }}
@@ -142,7 +142,8 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                         opacity: 0,
                     }}
                 >
-                    <motion.div className={`absolute right-0 bg-[var(--main-bg-primary)] flex flex-col h-full w-[85vw] p-5 sm:w-[60vw] md:w-[60vw] lg:w-[35vw]`}
+                    <motion.div className={`absolute right-0 dark:bg-[var(--main-bg-primary-dark)] bg-[var(--main-bg-primary)] flex flex-col h-full w-[85vw] p-5 sm:w-[60vw] md:w-[60vw] lg:w-[35vw] text-black dark:text-white`}
+                        data-theme={"dark"}
                         initial={{
                             x: "100%",
                         }}
@@ -162,7 +163,7 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                             Product Filter
 
                             {/** close icon */}
-                            <div className='w-[1.5rem] h-[1.5rem] rounded-[4px] grid place-content-center border border-[var(--foreground)]'>
+                            <div className='w-[1.5rem] h-[1.5rem] rounded-[4px] grid place-content-center border border-gray-500'>
                                 <FontAwesomeIcon icon={faClose} onClick={() => dispatch(filterToggleFilterTab(false))} />
                             </div>
                         </span>
@@ -196,13 +197,13 @@ const FilterTab = ({ onPrimaryButtonContext, onClearFilterContext }: Prop) => {
                             {/** actions */}
                             <div className='w-full flex gap-2 justify-end text-white'>
                                 {/** clear filter */}
-                                <button className='w-fit h-[2.5rem] rounded-[8px] button-primary-gradient p-[0_15px]'
+                                <button className='w-fit h-[2.5rem] rounded-[8px] border border-gray-300 p-[0_15px]'
                                     onClick={handleClearFilter}
                                 >
                                     Clear All
                                 </button>
                                 {/** filter button */}
-                                <button className={`${checkFilterData() ? "button-primary-gradient" : "button-primary-disabled-gradient"} h-[2.5rem] w-fit p-[0px_15px] rounded-[8px]`}
+                                <button className={`${checkFilterData() ? "bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)]" : "bg-linear-120 from-gray-400 to-gray-600"} h-[2.5rem] w-fit p-[0px_15px] rounded-[8px]`}
                                     onClick={handleFilter}>Filter Products</button>
                             </div>
                         </div>
@@ -248,7 +249,7 @@ function TextInput({ label, name, onChange, showDesign, value }: InputProp) {
                 <div className='w-[1rem] h-[1rem] bg-gray-300 rounded-[2px]' />
                 <div className='w-[1rem] h-[1px] border border-gray-300 border-dashed' />
             </>}
-            <input type="text" name={name} value={value === "undefined" ? "" : value} className='border border-gray-300 focus:outline-[var(--color-brand-primary)] rounded-[8px] flex-1 h-[2.5rem] p-3'
+            <input type="text" name={name} value={value === "undefined" ? "" : value} className='border border-gray-300 outline-0 focus:border-[var(--color-brand-primary)] rounded-[8px] flex-1 h-[2.5rem] p-3'
                 onChange={onChange}
             />
         </div>

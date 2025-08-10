@@ -26,7 +26,7 @@ const InventoryTableViewTile = ({ data }: { data: ProductProps }) => {
     const isMobile = width < 700;
 
     return (
-        <motion.div className={`w-full min-h-[3rem] relative flex bg-[var(--main-bg-primary)] rounded-[4px] p-1 items-center gap-1
+        <motion.div className={`w-full min-h-[3rem] relative flex bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[4px] p-1 items-center gap-1
             ${isMobile ? "text-[.7rem]" : "text-[.8rem]"}
             `}
             layout

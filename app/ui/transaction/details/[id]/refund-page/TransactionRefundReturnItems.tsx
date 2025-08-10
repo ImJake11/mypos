@@ -33,7 +33,7 @@ const TransactionRefundReturnItems = () => {
     const isMobile = useWindowSize().width < 768;
 
     return (
-        <div className='w-full h-full flex-1 flex flex-col pl-5 pr-5 text-[.8rem]' style={{ backgroundColor: "var(--main-bg-primary)" }}>
+        <div className='w-full h-full flex-1 flex flex-col pl-5 pr-5 text-[.8rem] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)]'>
 
             <span>Returned Items: </span>
             <div className='h-[1rem]' />
@@ -89,7 +89,7 @@ const TransactionRefundReturnItems = () => {
                         onClick={() => router.back()}
                     >Cancel</button>
 
-                    <button className='button-primary-gradient min-h-[2rem] w-[7rem] rounded-[8px] text-white'
+                    <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] min-h-[2rem] w-[7rem] rounded-[8px] text-white'
                         onClick={() => refundServices.saveTransaction(dispatch as AppDispatch, router)}
                     >Process Return</button>
                 </div>

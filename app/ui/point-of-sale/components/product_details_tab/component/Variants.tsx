@@ -38,8 +38,8 @@ const VariantTile = ({ variant, sellingPrice }: VariantTileProp) => {
 
     const variantPrice = calculatePriceAdjustment(sellingPrice, price, isPositive);
 
-    return <div className={`w-full bg-gray-50 h-fit flex flex-col p-4 gap-4 rounded-[11px] 
-        ${isArchived ? "text-gray-500" : "text-black"}`}
+    return <div className={`w-full bg-gray-50 dark:bg-[var(--main-bg-secondary-dark)] h-fit flex flex-col p-4 gap-4 rounded-[11px] 
+        ${isArchived ? "text-gray-500" : "text-black dark:text-white"}`}
         style={{
             transform: isArchived ? "scale(0.9)" : "scale(1)"
         }}
@@ -121,11 +121,7 @@ function SelectVariantButton({
         This Product is already on the Cart
     </span>
 
-    return <div className={`${isSelected ? "bg-linear-0" : "button-primary-gradient text-white"} h-[2.5rem] w-full rounded-[8px] grid place-content-center`}
-        style={{
-            border: "solid 1px var(--color-brand-primary)",
-        }}
-
+    return <div className={`${isSelected ? "bg-[var(--color-brand-primary)] text-white " : "bg-transparent text-[var(--color-brand-primary)]"} h-[2.5rem] w-full rounded-[8px] grid place-content-center border border-[var(--color-brand-primary)]`}
         onClick={() => {
             if (!variantID) return;
 

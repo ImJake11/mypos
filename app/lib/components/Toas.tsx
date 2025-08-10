@@ -101,7 +101,7 @@ const Toas = () => {
 
     return (
         <AnimatePresence>
-            {isVisible && <motion.div className={`rounded-[8px] flex gap-1.5 absolute h-fit left-3 box-border p-2 ${type === ToasEnum.CONFIRMATION ? "bg-red-500" : "bg-white"} border text-[.8rem] text-white bottom-3 w-[80%] lg:w-[40rem]
+            {isVisible && <motion.div className={`rounded-[8px] flex gap-1.5 absolute h-fit left-3 box-border p-2 ${type === ToasEnum.CONFIRMATION ? "bg-red-500" : "bg-white dark:bg-[var(--main-bg-primary-dark)]"} border text-[.8rem] text-white bottom-3 w-[80%] lg:w-[40rem]
             ${generateBorderColor()}`}
                 initial={{
                     opacity: 0,

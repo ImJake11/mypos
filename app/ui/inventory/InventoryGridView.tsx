@@ -24,7 +24,7 @@ const InventoryGridView = ({ data }: {
     const isXSmall = width <= 650;
 
     return (
-        <div className='flex-1 bg-[var(--main-bg-secondary)] flex'>
+        <div className='flex-1 bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] flex'>
             {isLoading ? <InventoryLoadingState /> : <ul className={`h-full w-full gap-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5`}>
                 <AnimatePresence>
                     {data.map((product, index) => <InventoryGridTile index={index} data={product} key={product.id} />

@@ -51,7 +51,7 @@ function Tile({
   const displayDate = soldDate.toLocaleDateString('en-US', { dateStyle: "long" })
 
   return (
-    <motion.div className='text-gray-500 w-full flex gap-2.5 items-center p-2 rounded-[4px] bg-gray-100/40'
+    <motion.div className='text-gray-500 w-full flex gap-2.5 items-center p-2 rounded-[4px] bg-gray-100/40 dark:bg-[var(--main-bg-primary-dark)]'
     >
       <div className='w-[2.5rem] h-[2.5rem] rounded-full bg-gray-200 overflow-hidden'>
         <img src={data.url} alt="i" className='w-full h-full object-contain' />

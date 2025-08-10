@@ -13,10 +13,10 @@ const CartIndicator = () => {
     const cart = useSelector((state: RootState) => state.posSlice.cartItems);
 
     return (
-        <div className='h-[2rem] w-[2rem] bg-gray-100 border border-gray-300 rounded-full grid place-content-center relative'
+        <div className='h-[2rem] w-[2rem] bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] border border-gray-300 dark:border-gray-500 rounded-full grid place-content-center relative'
             onClick={() => dispatch(posToggleCartTab(true))}
         >
-            <IconShoppingCartFilled size={19} className=' fill-gray-400' />
+            <IconShoppingCartFilled size={19} className=' fill-gray-400 dark:fill-gray-300' />
             {/** items number indicator
                     * show cart indicator if cart items is more than 0
                     */}

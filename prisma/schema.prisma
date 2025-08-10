@@ -194,11 +194,12 @@ model Users {
 }
 
 model ValidationToken {
-  id         String   @id @unique @default(uuid())
-  created_at DateTime @default(now())
-  exp_at     DateTime
-  token      String
-  email      String   @unique
+  id                    String   @id @unique @default(uuid())
+  created_at            DateTime @default(now())
+  exp_at                DateTime
+  token                 String
+  email                 String   @unique
+  verification_attempts Int?     @default(0)
 }
 
 model SessionToken {
@@ -207,4 +208,12 @@ model SessionToken {
   exp_at     DateTime
   token      String
   email      String   @unique
+}
+
+model AccountManagement {
+  id                        String   @id @unique @default(uuid())
+  ip                        String   @unique
+  account_creation_attempts Int
+  reset_at                  DateTime
+  user_agent                String?
 }

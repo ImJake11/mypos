@@ -18,10 +18,6 @@ const CustomTextArea = ({ onChange, placeholder, value, name, label }: Props) =>
             // Reset height to 'auto' first to calculate the true scrollHeight
             textareaRef.current.style.height = 'auto';
 
-            // Set height to the scrollHeight, but clamp it between min-h and max-h
-            // We need to calculate min/max height in pixels if using rem in CSS
-            // 6rem = 96px (assuming 1rem = 16px)
-            // 10rem = 160px (assuming 1rem = 16px)
             const minHeightPx = 96; // 6rem * 16px/rem
             const maxHeightPx = 160; // 10rem * 16px/rem
 
@@ -53,7 +49,7 @@ const CustomTextArea = ({ onChange, placeholder, value, name, label }: Props) =>
             value={value}
             placeholder={placeholder}
             onChange={onChange}
-            className='rounded-[8px] border border-black p-1.5 w-full h-[3rem] max-h-[7rem] min-h-[3rem]
+            className='rounded-[8px] border border-black dark:border-gray-300 p-1.5 w-full h-[3rem] max-h-[7rem] min-h-[3rem]
             focus:outline-[var(--color-brand-primary)]
             '
         >

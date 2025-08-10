@@ -6,7 +6,9 @@ const page = () => {
 
     return (
         <div className='w-screen h-screen flex'>
-            <GlobalWrapper child={<CategoriesBody />} />
+            <GlobalWrapper>
+                <CategoriesBody />
+            </GlobalWrapper>
         </div>
     )
 }

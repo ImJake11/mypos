@@ -16,6 +16,8 @@ import { openToas } from '@/app/lib/redux/slice/toastSlice';
 import ToasEnum from '@/app/lib/enum/toastEnum';
 import { AnimatePresence, motion } from "framer-motion";
 import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
+import { IconX } from '@tabler/icons-react';
+import clsx from 'clsx';
 
 const TransactionFilterTab = () => {
 
@@ -46,10 +48,6 @@ const TransactionFilterTab = () => {
         }
     }
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
     return (
         <AnimatePresence>
             {isFilterVisible && <motion.div className='w-screen h-screen absolute backdrop-blur-[5px]'
@@ -67,9 +65,8 @@ const TransactionFilterTab = () => {
                     opacity: 0,
                 }}
             >
-                <motion.div className={`h-full bg-[var(--main-bg-primary)] absolute right-0 p-5 flex flex-col gap-3
-                ${isMobile ? "w-full" : "w-[35-rem]"}
-                `}
+                <motion.div className={`h-full bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] absolute right-0 p-5 flex flex-col gap-3 w-full md:w-[35rem] text-black dark:text-white`}
+                    data-theme={"dark"}
                     initial={{
                         x: "100%"
                     }}
@@ -88,7 +85,7 @@ const TransactionFilterTab = () => {
                 >
                     <div className='w-full flex items-center justify-between'>
                         Filter Transaction
-                        <button onClick={() => dispatch(transactionToggleFilterTab())}><CloseIcon attr='stroke-gray-600' size={25} /></button>
+                        <button onClick={() => dispatch(transactionToggleFilterTab())}><IconX className='text-gray-400 dark:text-white' /></button>
                     </div >
 
 
@@ -111,8 +108,8 @@ const TransactionFilterTab = () => {
 
                         {/** actions */}
                         <div className='flex w-full justify-end items-center gap-2'>
-                            <ActionButton name='Clear All' borderColor="var(--tf-default-border)" />
-                            <ActionButton name='Apply Filter' bgColor='button-primary-gradient'
+                            <ActionButton name='Clear All' attr='border border-gray-500' />
+                            <ActionButton name='Apply Filter' attr='bg-[var(--color-brand-primary)]'
                                 onClick={handleApplyFilter}
                             />
                         </div>
@@ -129,14 +126,13 @@ const TransactionFilterTab = () => {
 
 
 function ActionButton({
-    name, onClick, bgColor, borderColor,
+    name, onClick, attr,
 }: {
     name: string,
-    borderColor?: string,
-    bgColor?: string,
+    attr: string,
     onClick?: () => void,
 }) {
-    return <button className={`w-fit p-[0_10px] h-[2.5rem] rounded-[8px] grid place-content-center ${bgColor ?? "bg-transparent"} border border-[${borderColor ?? "var(--color-brand-primary)"}] text-white`}
+    return <button className={clsx("w-fit p-[0_10px] h-[2.5rem] rounded-[8px] grid place-content-center", attr)}
         onClick={onClick}
     >
         {name}

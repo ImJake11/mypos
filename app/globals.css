@@ -12,6 +12,10 @@
   --main-bg-secondary: #f6f6f6;
   --main-bg-tertiary: #e1e1e1;
 
+  --main-bg-primary-dark: #232B2B;
+  --main-bg-secondary-dark: #3A4444;
+  --main-bg-tertiary-dark: #404A4A;
+
   /* sidebar */
   --sidebar-width: 15vw;
 }

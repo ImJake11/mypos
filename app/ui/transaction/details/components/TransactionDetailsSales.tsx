@@ -17,7 +17,7 @@ const TransactionDetailsSales = ({ data }: { data: TransactionDetailsModel }) =>
 
     return (
         <div
-            className={`w-full rounded-[12px] h-fit flex flex-col gap-3 bg-gray-50 p-3 md:p-5`}>
+            className={`w-full rounded-[12px] h-fit flex flex-col gap-3 bg-gray-50 dark:bg-[var(--main-bg-primary-dark)] p-3 md:p-5`}>
 
             <div className='flex w-full gap-2 items-center mb-[1rem]'>
                 <IconCoinFilled size={20} className='fill-gray-500' />

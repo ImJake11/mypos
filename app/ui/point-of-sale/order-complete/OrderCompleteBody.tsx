@@ -11,7 +11,7 @@ const OrderCompleteBody = () => {
         <div className={`flex-1 flex flex-col lg:flex-row overflow-auto`}>
             {/** cart items list */}
             <OrderCompleteItems />
-            <div className={`bg-[var(--main-bg-secondary)] box-border p-4 rounded-tl-[7px] w-full overflow-visible lg:w-[35vw] lg:overflow-auto`}>
+            <div className={`bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] box-border p-4 rounded-tl-[7px] w-full overflow-visible lg:w-[35vw] lg:overflow-auto`}>
                 <OrderCompleteSummary />
                 <OrderCompletePayment />
             </div>

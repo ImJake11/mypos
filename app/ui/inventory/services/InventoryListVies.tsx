@@ -17,9 +17,9 @@ const InventoryListVies = ({
     const isMobile = width < 700;
 
     return (
-        <div className='h-full w-full bg-[var(--main-bg-secondary)]'>
+        <div className='h-full w-full bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] overflow-hidden'>
             <motion.div
-                className='flex w-full h-[3rem] p-[0_0.5rem] bg-[var(--main-bg-primary)] rounded-tr-[12px] rounded-tl-[12px]'
+                className='flex w-full h-[3rem] p-[0_0.5rem] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-tr-[12px] rounded-tl-[12px] mb-2'
                 initial={{ y: "-100%" }}
                 animate={{ y: "0%" }}
                 exit={{ y: "-100%" }}

@@ -33,7 +33,7 @@ export default React.memo(function CartTile({ data, index, cartHelper }: Prop) {
         dispatch(posRemoveVariant({ variantID: data.variantID }));
     }
 
-    return <motion.div className='flex items-center h-fit p-[7px_9px] w-full bg-white border border-gray-200 rounded-[4px] gap-2 text-center'
+    return <motion.div className='flex items-center h-fit p-[7px_9px] w-full bg-white dark:bg-[var(--main-bg-secondary-dark)] border border-gray-200  dark:border-gray-600 rounded-[4px] gap-2 text-center'
     >
 
         {/** image container and name */}
@@ -52,7 +52,7 @@ export default React.memo(function CartTile({ data, index, cartHelper }: Prop) {
                 <QuantityAction quantity={data.quantity} index={index} />
 
                 {/** delete button */}
-                <div className="w-[1.7rem] h-[1.7rem] rounded-[4px] bg-red-300/40 grid place-content-center">
+                <div className="w-[1.7rem] h-[1.7rem] rounded-[4px] bg-red-300/20 grid place-content-center">
                     <IconTrashFilled className="fill-red-500" size={18} onClick={handleDelete} />
                 </div>
             </div>
@@ -90,11 +90,11 @@ const QuantityAction = ({ quantity, index }:
 
     return <div className='h-[2rem] rounded-[3px] flex justify-evenly items-center gap-2'>
         <button
-            className="text-[1.2rem] text-[var(--color-brand-primary)] bg-gray-100 h-[1.7rem] w-[1.7rem] grid place-content-center rounded-[4px]"
+            className="text-[1.2rem] text-[var(--color-brand-primary)] bg-gray-100 dark:bg-[var(--main-bg-primary-dark)] h-[1.7rem] w-[1.7rem] grid place-content-center rounded-[4px]"
             onClick={() => handlePlusMinus(true)}>+</button>
         <span className="text-[]">{quantity}</span>
         <button
-            className="text-[1.4rem] text-gray-500 bg-gray-100 h-[1.7rem] w-[1.7rem] grid place-content-center rounded-[4px]"
+            className="text-[1.4rem] text-gray-500 dark:text-white bg-gray-100 dark:bg-[var(--main-bg-primary-dark)] h-[1.7rem] w-[1.7rem] grid place-content-center rounded-[4px]"
             onClick={() => handlePlusMinus(false)}>-</button>
     </div>
 }

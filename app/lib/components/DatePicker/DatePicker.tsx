@@ -60,10 +60,6 @@ const DatePicker = () => {
         }
     }
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 576;
-
     return (
         <AnimatePresence>
             {isVisible && <motion.div className='w-full h-full absolute bg-black/20 backdrop-blur-[3px] grid place-content-center'
@@ -78,10 +74,8 @@ const DatePicker = () => {
                 exit={{
                     opacity: 0
                 }}>
-                <motion.div className={`rounded-[11px] flex flex-col p-[20px_25px] bg-[var(--main-bg-primary)]
-                ${isMobile ? "w-[90vw] h-[50vh]" : "w-[500px] h-[500px]"}
-                `}
-                >
+                <motion.div className={`rounded-[11px] flex flex-col p-[20px_25px] bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] w-[90vw] h-[50vh] md:w-[500px] md:h-[500px] text-black dark:text-white
+                `} data-theme={"dark"}>
                     <span className='italic font-semibold'>Pick Date</span>
                     {/** header */}
                     <div className='flex w-full mt-2.5'>
@@ -126,7 +120,7 @@ interface TileProp {
 
 }
 function Tile({ isSelected, value, onClick, name }: TileProp) {
-    return <div className={`cursor-pointer w-full h-[2rem] grid place-content-center rounded-[4px] ${isSelected ? "bg-[var(--color-brand-primary)] text-white" : "bg-white"}`}
+    return <div className={`cursor-pointer w-full h-[2rem] grid place-content-center rounded-[4px] ${isSelected ? "bg-[var(--color-brand-primary)] text-white" : "bg-white dark:bg-[var(--main-bg-primary-dark)]"}`}
         onClick={() => onClick(name, value)}
     >
         <span>{value}</span></div>

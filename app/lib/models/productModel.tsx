@@ -48,7 +48,7 @@ export interface VariantsProps {
     isArchived: boolean,
     product?: ProductProps,
     productId?: string,
-    details?: string, // for uploading image in firebase
+    details?: string | null, // for uploading image in firebase
 }
 
 
