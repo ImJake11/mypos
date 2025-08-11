@@ -7,13 +7,12 @@ import SidebarMainButtonTile from './components/SidebarMainButtonTile';
 import SidebarIcons from './components/SidebarIcons';
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps';
 import SidebarLogo from './components/SidebarLogo';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { IconLogout2 } from '@tabler/icons-react';
 import { AuthServices } from '@/app/ui/auth/services/auth-service';
 import CircularLoadingIndicator from '../CircularLoadingIndicator';
 import { useDispatch } from 'react-redux';
-import { openToas } from '../../redux/slice/toastSlice';
-import ToasEnum from '../../enum/toastEnum';
+import { sidebarConfig } from './SidebarConfig';
 
 
 const Sidebar = ({
@@ -25,51 +24,11 @@ const Sidebar = ({
     const dispatch = useDispatch();
 
     const [isAllowed, setIsAllowed] = useState(true);
-    const [isLoading, setIsLoading] = useState(false);
+
 
     const authService = new AuthServices({});
 
-    const sidebarButtonDetails: SidebarButtonsProp[] = [
-        {
-            url: "/",
-            name: "Overview",
-        },
-        {
-            url: "/ui/point-of-sale",
-            name: "Point of Sale",
-            subroutes: [
-                {
-                    name: "Complete Orders",
-                    route: '/ui/point-of-sale/order-complete',
-                }
-            ],
-            yTranslation: 18,
-        },
-        {
-            url: "/ui/inventory",
-            name: "Products",
-            subroutes: [
-                {
-                    route: "/ui/inventory/product-form",
-                    name: "Create Product"
-                }
-            ],
-            yTranslation: 23.1,
-        },
-        {
-            url: "/ui/transaction",
-            name: "Transactions",
-        },
-        {
-            name: "Notifications",
-            url: "/ui/notifications-page"
-        },
-        {
-            name: "Settings",
-            url: "/ui/settings",
-        },
-    ];
-
+    const sidebarButtonDetails = sidebarConfig();
 
     useEffect(() => {
         const pagesWithOut = ['/ui/point-of-sale'];
@@ -131,9 +90,7 @@ const Sidebar = ({
 
                 <button className='items-center w-auto h-[3rem] text-white flex justify-center gap-2 bg-black/20 m-2 rounded-[10px]'
                     onClick={handleSignOut}>
-                    {isLoading ? <CircularLoadingIndicator size={20} borderWidth={1} />
-                        : <IconLogout2 className='text-gray-300' />
-                    }
+                    <IconLogout2 className='text-gray-300' />
                     <span>Sign out</span>
                 </button>
             </motion.div>

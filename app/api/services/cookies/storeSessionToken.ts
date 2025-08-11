@@ -17,5 +17,5 @@ export async function storeSessionToken(
         key: "session_token",
         value: token,
         maxAge,
-    })
+    });
 }

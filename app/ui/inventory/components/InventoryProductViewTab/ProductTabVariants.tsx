@@ -1,6 +1,7 @@
 import { VariantsProps } from "@/app/lib/models/productModel";
 import { faImage } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconArrowDownDashed } from "@tabler/icons-react";
 
 
 
@@ -61,13 +62,14 @@ export default function VariantsTable({ variants, lowStock }: VarintsProp) {
             </div>
 
             {/** instock units */}
-            <div className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] w-fit h-fit rounded-[4px] text-white p-[3px_5px] flex gap-3 items-center'>
+            <div className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] w-[12rem] h-[2.5rem] rounded-[4px] text-white p-[3px_5px] flex gap-3 items-center'>
                 <i className="ri-stock-fill text-[1.2rem]" /><span>Stock in units: {totalStock}</span>
             </div>
 
             {/** low stock treshold */}
-            <div className='border border-gray-400 dark:border-white w-fit h-fit rounded-[4px] text-white p-[3px_5px] flex gap-3 items-center'>
-                <i className="ri-stock-fill text-[1.2rem]" /><span>Low stock treshold: {lowStock}</span>
+            <div className='border border-gray-400 dark:border-white w-[12rem] h-[2.5rem] rounded-[4px] text-black dark:text-gray-200 p-[3px_5px] flex gap-2 items-center'>
+                <IconArrowDownDashed className="stroke-gray-500 dark:stroke-gray-200" size={18} />
+                <span>Low stock treshold: {lowStock}</span>
             </div>
         </div>
     )

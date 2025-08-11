@@ -24,6 +24,8 @@ const ViewProductTab = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
+  const role = localStorage.getItem('role') ?? "user";
+
   const [data, setProductData] = useState<ProductProps | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -136,26 +138,26 @@ const ViewProductTab = () => {
             <div className='min-h-[2rem]' />
 
             {/** actions */}
-            <div className='flex w-full items-center justify-end gap-3 pr-5'>
+            <div className='flex w-full items-center justify-end gap-3'>
 
-              <button className='px-3 py-2 rounded-[4px] flex items-center gap-2  text-white dark:text-white border border-gray-500'
+              <button className='px-3 py-2 rounded-[4px] flex items-center gap-2  text-gray-500 dark:text-white border border-gray-500'
               >
                 <FontAwesomeIcon icon={faClose} />
                 <span>Close</span>
               </button>
 
               {/** update */}
-              <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] px-3 py-2 rounded-[4px] flex items-center gap-2 text-white'
+              {role !== "user" && <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] px-3 py-2 rounded-[4px] flex items-center gap-2 text-white'
                 onClick={handleUpdate}
               >
                 <FontAwesomeIcon icon={faEdit} />
                 <span>Update</span>
-              </button>
+              </button>}
             </div>
 
 
             {/** add to cart button */}
-            <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] place-self-center w-[calc(100%-3rem)]  min-h-[2.5rem] rounded-[7px] flex items-center gap-2.5 justify-center text-white'>
+            <button className='bg-linear-120 from-[var(--color-brand-primary)] to-[var(--color-brand-secondary)] w-full min-h-[2.5rem] rounded-[4px] flex items-center gap-2.5 justify-center text-white'>
               <FontAwesomeIcon icon={faCartPlus} />
               Add to cart
             </button>

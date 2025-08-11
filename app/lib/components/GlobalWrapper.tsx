@@ -10,7 +10,6 @@ import Toas from './Toas';
 import Sidebar from './Sidebar/Sidebar';
 import SidebarFloatingTab from './Sidebar/SidebarFloatingTab';
 import { useTheme } from '../utils/hooks/useTheme';
-import ThemeProvider from './ThemProvider';
 
 const GlobalWrapper = ({ children }: { children: React.ReactNode }) => {
 

@@ -5,6 +5,9 @@ import bcrypt from "bcryptjs";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { createCookie } from "../../services/cookies/createCookies";
+import { insetSessioToken } from "../../services/token/insetSessionToken";
+import { storeSessionToken } from "../../services/cookies/storeSessionToken";
+import { storeUserPayload } from "../../services/cookies/storeUserPayload";
 
 // get user token
 export async function GET(req: NextRequest) {
@@ -117,12 +120,16 @@ async function verifyOTP(req: NextRequest): Promise<NextResponse> {
             )
         }
 
-        await prisma.users.update({
+        const user = await prisma.users.update({
             where: { email },
             data: {
                 otp: null,
                 isVerified: true,
                 isActive: true,
+            },
+            select: {
+                id: true,
+                role: true,
             }
         });
 
@@ -148,23 +155,20 @@ async function verifyOTP(req: NextRequest): Promise<NextResponse> {
             }
         });
 
-        /** store email and sessionn token to cookies */
-        const maxAge = 60 * 60 * 3;
+        const session = await insetSessioToken(email);
 
-        await createCookie({
-            key: "email",
-            value: email,
-            maxAge,
+        if (session) return session;
+
+        await storeUserPayload({
+            id: user.id,
+            role: user.role,
         });
 
-        await createCookie({
-            key: "session_token",
-            value: token,
-            maxAge,
-        })
-
         return NextResponse.json(
-            { message: "User account verified" },
+            {
+                message: "User account verified",
+                role: user.role,
+            },
             { status: 200 }
         )
     } catch (e) {

@@ -70,10 +70,10 @@ function HeaderTile({ name, flex, attr, }: {
 function LoadingTile() {
     return <div className='w-full h-full flex flex-col gap-3 bg-[var(--main-bg-primary)] dark:bg-[var(--main-bg-primary-dark)] rounded-[12px] p-5'>
         <div className='flex w-full gap-3'>
-            {Array.from({ length: 6 }).map((_, i) => <div key={i} className='flex-1 min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary-dark)]'>
+            {Array.from({ length: 6 }).map((_, i) => <div key={i} className='flex-1 min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]'>
             </div>)}
         </div>
-        {Array.from({ length: 15 }).map((_, i) => <div key={i} className='w-full min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary-dark)]'>
+        {Array.from({ length: 15 }).map((_, i) => <div key={i} className='w-full min-h-[3rem] rounded-[5px] bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)]'>
         </div>)}
     </div>
 }

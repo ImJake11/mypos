@@ -7,13 +7,20 @@ import { createNewNotification } from "../services/createNotification";
 import { NotificationFilterType } from "@/app/lib/enum/notificationType";
 import { upsertProductExpenses } from "../services/upsertProductExpenses";
 import { createNewActivityLog } from "../services/createNewActivityLog";
-import { raw } from "@/app/generated/prisma/runtime/library";
+import { getUserRole } from "../services/auth/getUserRole";
 
 const socket = io(process.env.SOCKET_URL || "");
 
 export async function POST(req: NextRequest) {
 
     const { data } = await req.json();
+
+    const userRole = await getUserRole();
+
+    if (userRole === "user") return NextResponse.json(
+        { error: "This user it unauthorized to perform this action" },
+        { status: 401 }
+    )
 
     const rawdata: ProductProps = data;
 

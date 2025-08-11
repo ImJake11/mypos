@@ -8,13 +8,16 @@ import { insertValidationToken } from "../token/insertNewValidationToken";
 import { handleAccountManagement } from "../account-management/handleAccountManagement";
 import { resendCode } from "./resendCode";
 import { createNewActivityLog } from "../createNewActivityLog";
+import { storeUserPayload } from "../cookies/storeUserPayload";
 
 export async function signUp(req: NextRequest): Promise<NextResponse> {
     try {
         const { email, password, username } = await req.json();
 
         /** Check if current email is already registered */
-        const existingUser = await prisma.users.findUnique({ where: { email } });
+        const existingUser = await prisma.users.findUnique({
+            where: { email },
+        });
 
         if (existingUser) {
             await createNewActivityLog({
@@ -67,7 +70,7 @@ export async function signUp(req: NextRequest): Promise<NextResponse> {
         /** Create the new user */
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        await prisma.users.create({
+        const newuser = await prisma.users.create({
             data: {
                 email,
                 password: hashedPassword,
@@ -75,6 +78,10 @@ export async function signUp(req: NextRequest): Promise<NextResponse> {
                 username,
                 otp: hashedOTP,
             },
+            select: {
+                id: true,
+                role: true,
+            }
         });
 
         /** Send verification code */
@@ -97,8 +104,16 @@ export async function signUp(req: NextRequest): Promise<NextResponse> {
             userId: email,
         });
 
+        await storeUserPayload({
+            id: newuser.id,
+            role: newuser.role,
+        })
+
         return NextResponse.json(
-            { message: "Account created successfully" },
+            {
+                message: "Account created successfully",
+                role: newuser.role,
+            },
             { status: 200 }
         );
 

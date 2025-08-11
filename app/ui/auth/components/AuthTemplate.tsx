@@ -82,6 +82,8 @@ const AuthTemplate = ({
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         const { email } = userInput;
 
+        if (isLoginPage) return;
+
         if (!email!.trim()) {
             setErrorMsg({
                 ...errorMsg,
@@ -103,6 +105,8 @@ const AuthTemplate = ({
     const handlePassword = () => {
         const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
         const { password } = userInput;
+
+        if (isLoginPage) return;
 
         if (!password) {
             setErrorMsg({

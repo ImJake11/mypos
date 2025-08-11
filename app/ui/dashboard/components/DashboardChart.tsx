@@ -1,19 +1,20 @@
 'use client';
 
+import { ThemeContext } from '@/app/lib/components/ThemProvider';
 import { AnnualChartModel } from '@/app/lib/models/AnnualChartModel';
 import { AnnualTransactionModel } from '@/app/lib/models/annualTransactionModel';
 import { dashboardSetAnnualTransactionData, dashboarSetChartData } from '@/app/lib/redux/slice/dashboardSlice';
 import { RootState } from '@/app/lib/redux/store';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
-import React, { useEffect, useRef, useState } from 'react'
+import { useTheme } from '@/app/lib/utils/hooks/useTheme';
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { Area, AreaChart, Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 
 const DashboardChart = () => {
   const dispatch = useDispatch();
-  const theme = localStorage.getItem("theme") ?? "dark";
 
+  const { theme } = useTheme();
   const isDark = theme === "dark";
 
   const { annualChartData } = useSelector((state: RootState) => state.dashboarSlice);

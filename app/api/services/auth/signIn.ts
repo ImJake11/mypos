@@ -5,6 +5,7 @@ import { handleAccountManagement } from "../account-management/handleAccountMana
 import { resendCode } from "./resendCode";
 import { insetSessioToken } from "../token/insetSessionToken";
 import { createNewActivityLog } from "../createNewActivityLog";
+import { storeUserPayload } from "../cookies/storeUserPayload";
 
 export async function signIn(req: NextRequest): Promise<NextResponse> {
     try {
@@ -15,7 +16,9 @@ export async function signIn(req: NextRequest): Promise<NextResponse> {
             select: {
                 isVerified: true,
                 password: true,
-                username: true
+                username: true,
+                role: true,
+                id: true,
             }
         });
 
@@ -87,6 +90,12 @@ export async function signIn(req: NextRequest): Promise<NextResponse> {
             return sessionError;
         }
 
+        // store user payload
+        await storeUserPayload({
+            id: _userData.id,
+            role: _userData.role,
+        });
+
         // Log successful login
         await createNewActivityLog({
             action: "User successfully logged in",
@@ -96,7 +105,10 @@ export async function signIn(req: NextRequest): Promise<NextResponse> {
         });
 
         return NextResponse.json(
-            { message: "Successfully logged in" },
+            {
+                message: "Successfully logged in",
+                role: _userData.role,
+            },
             { status: 200 }
         );
 

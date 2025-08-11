@@ -11,7 +11,7 @@ const DarkModeToggle = () => {
     const isDark = theme === "dark";
 
     return (
-        <div className='w-[3.7rem] h-[2rem] dark:bg-[var(--main-bg-primary-dark)] rounded-full dark:border-gray-500 bg-gray-100 border relative px-2 overflow-hidden transition-all duration-300 ease-in'>
+        <div className='w-[3.7rem] h-[2rem] dark:bg-[var(--main-bg-primary-dark)] rounded-full dark:border-gray-500 border-gray-300 bg-gray-100 border relative px-2 overflow-hidden transition-all duration-300 ease-in'>
 
             <IconSunFilled size={20} className={`fill-orange-400 absolute top-1/2 -translate-y-1/2 ${isDark ? "left-1" : "-left-5"} transition-all duration-300 ease-in`} />
 

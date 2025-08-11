@@ -58,12 +58,16 @@ export class AuthServices {
                 })
             });
 
+            const data = await res.json();
+
             if (!res.ok) {
-                const { error } = await res.json();
+                const { error } = data;
                 if (onError) onError(error);
                 throw new Error("Failed to Sign Up");
             }
 
+            const { role } = data;
+            localStorage.setItem("role", role);
             if (onSuccess) onSuccess("Account created successfully");
 
         } catch (e: any) {
@@ -108,7 +112,6 @@ export class AuthServices {
             });
 
             if (!res.ok) {
-
                 const {
                     error,
                     redirect
@@ -124,6 +127,8 @@ export class AuthServices {
                 return;
             }
 
+            const { role } = await res.json();
+            localStorage.setItem("role", role);
             if (onSuccess) onSuccess();
 
         } catch (e) {

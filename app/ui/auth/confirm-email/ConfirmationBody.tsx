@@ -81,6 +81,8 @@ const ConfirmationBody = ({ }) => {
                 return;
             }
 
+            const { role } = await res.json();
+            localStorage.setItem("role", role);
             router.push("/");
 
         } catch (e) {
