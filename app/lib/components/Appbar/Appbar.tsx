@@ -16,7 +16,9 @@ const Appbar = ({ child, title, icon }: {
 
             {child && child}
             <NotificationButton />
-            <DarkModeToggle />
+            <div className='hidden md:block'>
+                <DarkModeToggle />
+            </div>
             <UserProfile />
         </header>
     )

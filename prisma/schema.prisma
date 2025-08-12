@@ -51,6 +51,7 @@ model Product {
   CartCache             CartCache[]
   ProductExpenses       ProductExpenses[]
   lastSoldDate          DateTime?
+  TransactionItems      TransactionItems[]
 }
 
 model Variants {
@@ -129,6 +130,8 @@ model TransactionItems {
   bulkTier      BulkTire?          @relation(references: [id], fields: [bulkTierID])
   unitPrice     Int
   vatStatus     String
+  mainProduct   Product            @relation(fields: [mainProductId], references: [id])
+  mainProductId String
 }
 
 model CartCache {

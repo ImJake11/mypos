@@ -25,7 +25,6 @@ const Sidebar = ({
 
     const [isAllowed, setIsAllowed] = useState(true);
 
-
     const authService = new AuthServices({});
 
     const sidebarButtonDetails = sidebarConfig();

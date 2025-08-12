@@ -77,6 +77,7 @@ export async function POST(req: NextRequest) {
             // save to transaction items
             await prisma.transactionItems.create({
                 data: {
+                    mainProductId: item.mainProductId,
                     productId: item.productId,
                     quantity: item.quantity,
                     unitPrice: item.unitPrice,

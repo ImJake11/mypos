@@ -19,6 +19,7 @@ import { useFetchProductList } from '@/app/lib/utils/hooks/useFetchProducts';
 import InventoryListVies from '../services/InventoryListVies';
 import InventoryGridView from '../InventoryGridView';
 import Searchbar from '@/app/lib/components/Searchbar/Searchbar';
+import TileViewButton from '@/app/lib/components/TileViewButton';
 
 const ProductList = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -69,7 +70,12 @@ const ProductList = () => {
           exit={{ opacity: 0 }}
         >
           <div className='bg-gray-100 dark:bg-[var(--main-bg-secondary-dark)] flex flex-col flex-1 min-h-0 overflow-auto p-3 rounded-[8px]'>
-            <div className='w-full grid place-content-center mb-2 md:hidden'><Searchbar context='inventory' showEditIcon={true} /></div>
+            <div className='w-full flex items-center mb-2 md:hidden gap-2'>
+              <div className='flex-1'>
+                <Searchbar context='inventory' showEditIcon={true} />
+              </div>
+              <TileViewButton />
+            </div>
 
             <div className='flex-1 overflow-auto'>
               {isListView ? <InventoryListVies data={displayList} /> : <InventoryGridView data={displayList} />}

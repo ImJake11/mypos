@@ -31,10 +31,10 @@ const UserProfile = () => {
 
     return (
         <div className="relative min-w-fit group">
-            <div className='h-[2rem] min-w-fit border border-[var(--color-brand-primary)] flex justify-between rounded-[20px] items-center gap-2 px-2 bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)]'>
+            <div className='h-[2rem] min-w-fit border border-transparent md:border-[var(--color-brand-primary)] flex justify-between rounded-[20px] items-center gap-2 md:px-2 bg-transparent md:bg-gray-100 md:dark:bg-[var(--main-bg-tertiary-dark)]'>
 
-                <span className="text-gray-500 dark:text-white">Hi {username}!</span>
-                <div className={`min-w-[1.5rem] h-[1.5rem] rounded-full overflow-hidden border border-gray-300`}>
+                <span className="text-gray-500 dark:text-white hidden md:block">Hi {username}!</span>
+                <div className={`w-[2rem] h-[2rem] md:min-w-[1.5rem] md:h-[1.5rem] rounded-full overflow-hidden border border-gray-300`}>
                     <div className="w-full h-full bg-[var(--color-brand-primary)] text-white grid place-content-center">
                         {usernameFirstChar}
                     </div>

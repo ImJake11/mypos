@@ -1,6 +1,6 @@
 'use client';
 
-import { IconEdit, IconEditCircle, IconSearch } from '@tabler/icons-react'
+import { IconEdit, IconSearch } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react'
 import CircularLoadingIndicator from '../CircularLoadingIndicator';
@@ -10,7 +10,6 @@ import ToasEnum from '../../enum/toastEnum';
 import { inventoryToggleProductView } from '../../redux/slice/inventorySlice';
 import Link from 'next/link';
 import { posSelectProduct } from '../../redux/slice/posSlice';
-import { useWindowSize } from '../../utils/hooks/useGetWindowSize';
 
 const Searchbar = ({
     context,
@@ -105,8 +104,8 @@ const Searchbar = ({
 
 
     return (
-        <div className='w-fit h-fit relative'>
-            <input ref={inputRef} value={query} placeholder='Search Product' type="text" className={`w-[90vw] md:w-[30rem] h-[2.3rem] border border-gray-300 dark:border-gray-500 bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] rounded-[8px] pl-10 p-1 outline-0 focus:border-[var(--color-brand-primary)] focus:border-[2px]`}
+        <div className='w-full md:w-fit h-fit relative'>
+            <input ref={inputRef} value={query} placeholder='Search Product' type="text" className={`w-full md:w-[30rem] h-[2.3rem] border border-gray-300 dark:border-gray-500 bg-gray-100 dark:bg-[var(--main-bg-tertiary-dark)] rounded-[8px] pl-10 p-1 outline-0 focus:border-[var(--color-brand-primary)] focus:border-[2px]`}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                     const { value } = e.target;
                     setQuery(value);

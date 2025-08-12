@@ -1,7 +1,7 @@
 'use client';
 
-import { IconMoonFilled, IconSunFilled, IconSunLowFilled } from '@tabler/icons-react';
-import React, { useState } from 'react'
+import { IconMoonFilled, IconSunFilled } from '@tabler/icons-react';
+import React from 'react'
 import { useTheme } from '../../utils/hooks/useTheme';
 
 const DarkModeToggle = () => {

@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import React from 'react'
 import InventoryTableViewTile from '../components/InventoryProductTiles/InventoryTableViewTile';
 import InventoryNoDataFound from '@/app/lib/components/PagesState/PageNoDataFoundPage';
-import { useWindowSize } from '@/app/lib/utils/hooks/useGetWindowSize';
 
 const InventoryListVies = ({
     data
@@ -12,9 +11,6 @@ const InventoryListVies = ({
     data: ProductProps[]
 }) => {
 
-    const { width } = useWindowSize();
-
-    const isMobile = width < 700;
 
     return (
         <div className='h-full w-full bg-[var(--main-bg-secondary)] dark:bg-[var(--main-bg-secondary-dark)] overflow-hidden'>
@@ -27,12 +23,14 @@ const InventoryListVies = ({
                 <TableHeaderTile flex='flex-[3]' title='Product' />
                 <TableHeaderTile flex='flex-[2]' title='Stock' />
                 <TableHeaderTile flex='flex-[2]' title='Stock Status' />
-                {!isMobile && <>
-                    <TableHeaderTile flex='flex-[2]' title='Price' />
-                    <TableHeaderTile flex='flex-[2]' title='Variant' />
-                    <TableHeaderTile flex='flex-[2]' title='Availability' />
-                    <TableHeaderTile flex='flex-[1]' title='Action' />
-                </>}
+                <div className='hidden md:block'>
+                    <>
+                        <TableHeaderTile flex='flex-[2]' title='Price' />
+                        <TableHeaderTile flex='flex-[2]' title='Variant' />
+                        <TableHeaderTile flex='flex-[2]' title='Availability' />
+                        <TableHeaderTile flex='flex-[1]' title='Action' />
+                    </>
+                </div>
             </motion.div>
             <ul className='w-full h-full flex flex-col overflow-auto gap-2'>
                 <AnimatePresence>

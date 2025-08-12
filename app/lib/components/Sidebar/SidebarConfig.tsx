@@ -1,15 +1,19 @@
 
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { SidebarButtonsProp } from '../../models/SidebarIconsProps'
 
 export const sidebarConfig = (): SidebarButtonsProp[] => {
+    const [role, setRole] = useState<string>("");
 
-    const role = localStorage.getItem('role') ?? "user";
+    useEffect(() => {
+        const cachedRole = localStorage.getItem('role') ?? "user";
+
+        setRole(cachedRole);
+    })
 
     if (role === "user") {
         return userSidebar;
     }
-
 
     return adminSIdebar;
 }

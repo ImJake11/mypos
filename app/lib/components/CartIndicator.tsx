@@ -1,10 +1,9 @@
 
 import React from 'react'
-import CartIcon from '../icons/cartIcon'
 import { posToggleCartTab } from '../redux/slice/posSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../redux/store'
-import { IconShoppingCart, IconShoppingCartFilled } from '@tabler/icons-react'
+import { IconShoppingCartFilled } from '@tabler/icons-react'
 
 const CartIndicator = () => {
 

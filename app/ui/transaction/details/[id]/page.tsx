@@ -15,14 +15,16 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     include: {
       purchasedItems: {
         select: {
-          productId: true,
-          unitPrice: true,
           bulkTier: true,
-          quantity: true,
-          vatStatus: true,
           product: true,
+          unitPrice: true,
+          vatStatus: true,
+          quantity: true,
+          mainProductId: true,
+          productId: true,
         }
       },
+
     }
   });
 
@@ -39,8 +41,6 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     amountPaid: Number(data?.amountPaid),
     changeGiven: Number(data?.changeGiven),
   }
-
-  console.log(transactionData);
 
   return (
     <div className='w-screen h-screen flex'>

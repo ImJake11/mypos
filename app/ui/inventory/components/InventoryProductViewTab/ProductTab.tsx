@@ -24,10 +24,9 @@ const ViewProductTab = () => {
   const router = useRouter();
   const dispatch = useDispatch();
 
-  const role = localStorage.getItem('role') ?? "user";
-
   const [data, setProductData] = useState<ProductProps | null>(null);
   const [isLoading, setIsLoading] = useState(false);
+  let role;
 
   const { productViewID, isProductViewVisible } = useSelector((state: RootState) => state.inventorySlice)
 
@@ -51,7 +50,10 @@ const ViewProductTab = () => {
 
     if (!isProductViewVisible) return;
 
+    role = localStorage.getItem('role') ?? "user";
+
     const fetchData = async () => {
+
       try {
         const product = await fetchSingleProductData(productViewID);
 

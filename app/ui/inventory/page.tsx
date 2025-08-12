@@ -1,5 +1,4 @@
 import React from 'react'
-import Sidebar from '@/app/lib/components/Sidebar/Sidebar'
 import ProductList from './components/InventoryProductList';
 import InventoryAppar from './components/InventoryAppar';
 import FilterTab from '../../lib/components/FilterTab/FilterTab';

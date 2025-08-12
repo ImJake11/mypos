@@ -5,7 +5,6 @@ import io from "socket.io-client";
 import { createNewActivityLog } from "../../services/createNewActivityLog";
 import { createNewNotification } from "../../services/createNotification";
 import { NotificationFilterType } from "@/app/lib/enum/notificationType";
-import { transactionSetData } from "@/app/lib/redux/slice/transactionSlice";
 
 const socket = io(process.env.SOCKET_URL || "");
 
@@ -38,6 +37,7 @@ export async function POST(req: NextRequest) {
                 purchasedItems: {
                     createMany: {
                         data: rawData.purchasedItems.map(item => ({
+                            mainProductId: item.mainProductId,
                             productId: item.productId,
                             quantity: item.quantity,
                             unitPrice: item.unitPrice,
@@ -64,7 +64,7 @@ export async function POST(req: NextRequest) {
 
             await prisma.product.update({
                 where: {
-                    id: item.mainProductId,
+                    id: item.mainProductId!,
                 },
                 data: {
                     stock: {
