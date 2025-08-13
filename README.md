@@ -33,7 +33,7 @@ The app is **fully responsive** and optimized for both desktop and mobile device
 
 ### 1️⃣ Clone the repository
 ```bash
-git clone https://github.com/yourusername/pos-system.git
+git clone https://github.com/ImJake11/mypos.git
 cd mypos
 ```
 
